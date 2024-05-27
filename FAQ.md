@@ -27,20 +27,15 @@ Genesis requires a minimum of 15-20 complete OHLC time periods to start forecast
 **What are Genesis’ data inputs?** 
 
 - Datetime (YYYY-MM-DD HH:MM:SS)
-  - Format: YYYY-MM-DD HH:MM:SS
-- Open Price
-  - Format: Float 
-- High Price
-  - Format: Float
-- Low Price
-  - Format: Float
-- Close Price
-  - Format: Float
+- Open Price (Float)
+- High Price (Float)
+- Low Price (Float)
+- Close Price (Float)
 
 **What are Genesis’ outputs?**
 
-- Price trend forecast
-- Risk forecast
+- Price trend forecast (int)
+- Risk forecast (float)
 
 **Can Genesis quantify the risk associated with each forecast?**
 
