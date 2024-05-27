@@ -61,7 +61,8 @@
                 "essentials/settings",
                 "essentials/navigation",
                 "essentials/reusable-snippets",
-                "essentials/model_library"
+                "essentials/model_library",
+                "essentials/Genesis"
             ]
         },
         {
