@@ -44,22 +44,24 @@
         }
     ],
     "navigation": [{
-            "group": "About",
+            "group": "Introduction",
             "pages": [
                 "introduction",
                 "about",
+                "Model Library",
                 "FAQ"
             ]
         },
         {
-            "group": "Essentials",
+            "group": "Model Walkthroughs",
             "pages": [
                 "essentials/markdown",
                 "essentials/code",
                 "essentials/images",
                 "essentials/settings",
                 "essentials/navigation",
-                "essentials/reusable-snippets"
+                "essentials/reusable-snippets",
+                "essentials/model_library"
             ]
         },
         {
