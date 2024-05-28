@@ -46,11 +46,11 @@ class TimePeriodSchema(Schema):
 
 
 
-> Here is a helper function to turn your dataframe into json format ready for the post request.
+> Here is a helper function to turn your dataframe into a Python dictionary object ready.
 
 ```
 
-def create_json(df,date_column_header):
+def create_json(df):
     
     data = {}
 
@@ -75,16 +75,35 @@ def create_json(df,date_column_header):
 > Import your price data and start forecasting using your API key.
 
 
-```
-
+\`\`\`python
+# This is a Python code block
 import requests 
+import json
+
+def create_json(df):
+    
+    data = {}
+
+    for idx, row in df.iterrows():
+
+        key = idx+1
+        
+        data[f'P{key}'] = {
+            'Datetime': row['Datetime'],
+            'Open': row['Open'],
+            'High': row['High'],
+            'Low': row['Low'],
+            'Close': row['Close']
+        }
+    
+    return(data)
 
 df = pd.read_csv("import_data.csv")
 
-json_data = create_json(df)
+json_data = json.dumps(create_json(df))
 
 json_data.update({"API_KEY":"API_KEY_FOR_GENESIS"})
 
 response = requests.post("https://www.sumtyme.ai/api/genesis", json=json_data)
 
-```
+\`\`\`
