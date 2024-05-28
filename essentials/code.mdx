@@ -1,37 +1,90 @@
 ---
-title: 'Code Blocks'
-description: 'Display inline code and code blocks'
+title: 'Genesis'
+description: 'API Walkthrough'
 icon: 'code'
 ---
 
-## Basic
-
-### Inline Code
-
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+> Each time period must contain the below fields.
 
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+
+class TimePeriodSchema(Schema):
+    
+    Datetime = fields.DateTime(required=True) # YYYY-MM-DD %H:%M:%S
+    Open = fields.Float(required=True) # 120.02
+    High = fields.Float(required=True) # 253.93
+    Low = fields.Float(required=True) # 102.84
+    Close = fields.Float(required=True) # 247.43
+
 ```
 
-### Code Block
+> Genesis accepts OHLC time series data with the last period being the period you want to forecast for (max. 5000 time periods).
+> In this case, we want to forecast the next second at 2024-04-30 12:11:00. 
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+|| Datetime     | Open   | High        | Low           | Close  |
+|| ------------- | ------|----------- | --------------- | --------------- |
+|1| 2024-04-27 00:00:00 | 1201.85 | 1201.85  | 1201.85 | 1201.85 |
+|2| 2024-04-27 00:00:01 | 1280.53 | 1280.53  | 1280.53 | 1280.53 |
+|3| 2024-04-27 00:00:02 | 1305.85 | 1305.85  | 1305.85 | 1305.85 |
+|| ...| ... | ...  | ... | ... |
+|4998| 2024-04-30 12:10:58 | 1425.85 | 1425.85  | 1425.85 | 1425.85 |
+|4999| 2024-04-30 12:10:59 | 1427.44 | 1427.44  | 1427.44 | 1427.44 |
+|5000| 2024-04-30 12:11:00 | 0 | 0  | 0 | 0 |
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
+> For Genesis to provide a risk forecast, an open price must be specified (as we are forecasting into the future the previous period's close price can be used).
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
+|| Datetime     | Open   | High        | Low           | Close  |
+|| ------------- | ------|----------- | --------------- | --------------- |
+|1| 2024-04-27 00:00:00 | 1201.85 | 1201.85  | 1201.85 | 1201.85 |
+|2| 2024-04-27 00:00:01 | 1280.53 | 1280.53  | 1280.53 | 1280.53 |
+|3| 2024-04-27 00:00:02 | 1305.85 | 1305.85  | 1305.85 | 1305.85 |
+|| ...| ... | ...  | ... | ... |
+|4998| 2024-04-30 12:10:58 | 1425.85 | 1425.85  | 1425.85 | 1425.85 |
+|4999| 2024-04-30 12:10:59 | 1427.44 | 1427.44  | 1427.44 | 1427.44 |
+|5000| 2024-04-30 12:11:00 | 1427.44 | 0  | 0 | 0 |
+
 ````
+
+
+> Here is a helper function to turn your dataframe into json format ready for the post request.
+
+```
+
+def create_json(df,date_column_header):
+    
+    data = {}
+
+    for idx, row in df.iterrows():
+
+        key = idx+1
+        
+        data[f'P{key}'] = {
+            'Datetime': row[Datetime],
+            'Open': row['Open'],
+            'High': row['High'],
+            'Low': row['Low'],
+            'Close': row['Close']
+        }
+    
+    return(data)
+
+
+```
+
+
+> Import your price data and start forecasting using your API key.
+
+
+```
+
+import requests 
+
+df = pd.read_csv("import_data.csv")
+
+json_data = create_json(df)
+
+json_data.update({"API_KEY":"API_KEY_FOR_GENESIS"})
+
+response = requests.post("https://www.sumtyme.ai/api/genesis", json=json_data)
+
+```
