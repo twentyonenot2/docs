@@ -47,10 +47,9 @@
         }
     ],
     "navigation": [{
-            "group": "Introduction",
+            "group": "sumtymme.ai",
             "pages": [
-                "introduction",
-                "about",
+                "About",
                 "Model Library",
                 "FAQ"
             ]
@@ -77,9 +76,8 @@
         {
             "group": "Endpoint Examples",
             "pages": [
-                "api-reference/endpoint/get",
-                "api-reference/endpoint/create",
-                "api-reference/endpoint/delete"
+                "api-reference/endpoint/genesis",
+                "api-reference/endpoint/genesis-stc",
             ]
         }
     ],
