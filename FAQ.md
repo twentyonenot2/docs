@@ -45,6 +45,10 @@ Genesis provides an associated risk forecast with each price trend forecast. The
 
 Genesis can currently only hand univariate time series. 
 
+**Can Genesis forecast multiple steps ahead?**
+
+Genesis can currently only forecast one-step ahead.
+
 **Can Genesis handle irregular time stamps?**
 
 Genesis can handle financial time series with irregular timestamps (format: YYYY-MM-DD HH:MM:SS).
