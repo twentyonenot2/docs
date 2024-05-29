@@ -1,5 +1,6 @@
 ---
 title: 'About'
+icon: 'address-card'
 ---
 
 ## Sumtyme.ai
