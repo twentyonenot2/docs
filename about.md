@@ -2,11 +2,16 @@
 title: 'About'
 ---
 
-## About
+## Sumtyme.ai
 
-Sumtyme.ai is a machine learning startup focused on building foundation models for the financial markets. Our proprietary machine learning technology is designed to understand the complex context and drivers behind price movements, allowing us to effectively model short and long-term volatility shifts across global markets. 
+We are a machine learning startup focused on building foundation models for the financial markets. Our proprietary machine learning algorithms are designed to understand the complex context and drivers behind price movements, allowing us to effectively model short and long-term volatility shifts across global markets. 
+
+
+## Mission
 
 Our mission is to provide clients with a real-time, contextualised view into how financial markets are evolving. We provide predictive insights that allows traders, investors, and institutions to make more informed decisions and stay ahead of market trends. 
+
+## Genesis
 
 Our first model, Genesis is a pre-trained time series model for financial time series forecasting specifically trained for the financial markets. Genesis is trained on proprietary directional price volatility data, allowing it to remain predictive during times of extreme market volatility. 
 
