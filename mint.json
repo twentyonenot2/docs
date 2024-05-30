@@ -2,14 +2,14 @@
     "$schema": "https://mintlify.com/schema.json",
     "name": "Starter Kit",
     "logo": {
-        "dark": "/sumtyme_svg.svg",
-        "light": "/sumtyme_svg.svg"
+        "dark": "/sumtyme white.svg",
+        "light": "/sumtyme black.svg"
     },
-    "favicon": "/sumtyme_svg.svg",
+    "favicon": "/s.svg",
     "colors": {
         "primary": "#0D9373",
-        "light": "#07C983",
-        "dark": "#0D9373",
+        "light": "#141616",
+        "dark": "#dcdcdc",
         "anchors": {
             "from": "#0D9373",
             "to": "#07C983"
@@ -22,10 +22,6 @@
         "name": "Demo",
         "url": "https://genesis-demo.streamlit.app"
     }],
-    "topbarCtaButton": {
-        "name": "Dashboard",
-        "url": "https://dashboard.mintlify.com"
-    },
 
 
     "navigation": [{
