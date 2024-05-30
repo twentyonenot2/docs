@@ -18,23 +18,23 @@ icon: 'code'
     A pre-trained time series model designed to be more sensitive to short-term price fluctuations.
   </Card>
    <Card
-    title="Genesis-M (In DEV)"
+    title="Genesis-M (DEV)"
     icon="lightbulb" iconType="duotone" color="#ffa500"
   >
-    In Development: This stateful version of Genesis will remember and maintain its internal state from the previous forecast. To make a new forecast, it will only require the new data points for the next time period, and it will use its remembered state along with the new data to generate the forecast.
+    This stateful version of Genesis will remember and maintain its internal state from the previous forecast. To make a new forecast, it will only require the new data points for the next time period, and it will use its remembered state along with the new data to generate the forecast.
   </Card>
    <Card
-    title="Genesis-STC-M"
+    title="Genesis-STC-M (DEV)"
     icon="lightbulb" iconType="duotone" color="#ffa500"
   >
-    In Development: This stateful version of Genesis-STC-M will remember and maintain its internal state from the previous forecast. To make a new forecast, it will only require the new data points for the next time period, and it will use its remembered state along with the new data to generate the forecast.
+    This stateful version of Genesis-STC will remember and maintain its internal state from the previous forecast. To make a new forecast, it will only require the new data points for the next time period, and it will use its remembered state along with the new data to generate the forecast.
   </Card>
 </CardGroup>
 
 
 > Here we use SPY's daily time series to forecast one step ahead using Genesis.
 
-<Tip>More price data given to Genesis will result in better forecasts as it can learn better underlying context and price dynamicsreceives the more context it understands.</Tip>
+<Tip>As Genesis ingests more data, its forecasting capabilities improve because the additional data points enables the model to better capture underlying patterns and context.</Tip>
 
 <Frame caption="SPY Daily Forecast (Feb 18th 2021-Nov 14th 2023)">
   <img src="spy_daily.png" />
@@ -50,7 +50,7 @@ icon: 'code'
 <Tip>Combining a shorter time horizon with our target time horizon can help inform and identify the start or end points of trends.</Tip>
 
 
-> Genesis-STC forecasted the end of the downtrend and a possible uptrend starting at various times between Oct. 30th and Nov. 1st 2023 earlier than the change of trend using the daily time series.">
+> Genesis-STC predicted the end of the downtrend and the potential start of an uptrend between October 30th and November 1st, 2023, ahead of the actual trend change, using the daily time series.">
 
 <Accordion title="SPY 15 Minute">
 
@@ -95,8 +95,5 @@ icon: 'code'
 </Accordion>
 
 
-<Frame caption="Using Genesis-STC, the end of the downtrend was identified at 2pm on October 30th.">
-  <img src="spy_hour_stc.png" />
-</Frame>
 
 
