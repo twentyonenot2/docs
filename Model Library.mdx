@@ -6,16 +6,97 @@ icon: 'code'
 <CardGroup cols={2}>
   <Card
     title="Genesis"
-    icon="code"
-    href="https://mintlify.com/docs/quickstart"
+    icon="lightbulb" iconType="duotone" color="#8fbc8f"
   >
     A pre-trained time series model that fairly weights both short-term and long-term directional price volatility.
   </Card>
   <Card
     title="Genesis-STC"
-    icon="code-branch"
-    href="https://mintlify.com/docs/development"
+    sub
+    icon="lightbulb" iconType="duotone" color="#8fbc8f"
   >
     A pre-trained time series model designed to be more sensitive to short-term price fluctuations.
   </Card>
+   <Card
+    title="Genesis-M (In DEV)"
+    icon="lightbulb" iconType="duotone" color="#ffa500"
+  >
+    In Development: This stateful version of Genesis will remember and maintain its internal state from the previous forecast. To make a new forecast, it will only require the new data points for the next time period, and it will use its remembered state along with the new data to generate the forecast.
+  </Card>
+   <Card
+    title="Genesis-STC-M"
+    icon="lightbulb" iconType="duotone" color="#ffa500"
+  >
+    In Development: This stateful version of Genesis-STC-M will remember and maintain its internal state from the previous forecast. To make a new forecast, it will only require the new data points for the next time period, and it will use its remembered state along with the new data to generate the forecast.
+  </Card>
 </CardGroup>
+
+
+> Here we use SPY's daily time series to forecast one step ahead using Genesis.
+
+<Tip>More price data given to Genesis will result in better forecasts as it can learn better underlying context and price dynamicsreceives the more context it understands.</Tip>
+
+<Frame caption="SPY Daily Forecast (Feb 18th 2021-Nov 14th 2023)">
+  <img src="spy_daily.png" />
+</Frame>
+
+
+
+<Tip>Combining a shorter time horizon with our target time horizon can help inform and identify the start or end points of trends.</Tip>
+
+<Frame caption="October 27th marked the negative inflection point.">
+  <img src=".png" />
+</Frame>
+
+<Frame caption="Genesis-STC forecasted the end of the downtrend and a possible uptrend starting at various times between Oct. 30th and Nov. 1st 2023 earlier than the change of trend using the daily time series.">
+  <img src="spy_hour_stc.png" />
+</Frame>
+
+<Accordion title="SPY 15 Minute">
+
+  | Datetime | Open | High | Low | Close | Trend Forecast | Risk Forecast | Risk Forecast breach |
+  | --------------------- | ------ | -------- | ------ | ----- | -------------- | ------------- | -------------------- |
+  | ... | ... | ... | ... | ... | ... | ... | ... |
+  | 2023-10-27 23:57:00.0 | 410.42 | 413.35 | 410.22 | 413.11 | 0 | 411.27 | Y |
+  | 2023-10-30 08:12:00.0 | 413.10 | 413.43 | 412.95 | 413.09 | 1 | 410.63 | N |
+  | ... | ... | ... | ... | ... | ... | ... | ... |
+  
+</Accordion>
+
+<Accordion title="SPY 1 Hour">
+
+  | Datetime | Open | High | Low | Close | Trend Forecast | Risk Forecast | Risk Forecast breach |
+  | --------------------- | ------ | -------- | ------ | ----- | -------------- | ------------- | -------------------- |
+  | ... | ... | ... | ... | ... | ... | ... | ... |
+  | 2023-10-30 13:00:00.0 | 413.15 | 415.34 | 413.10 | 414.90 | -1 | 414.53 | Y |
+  | 2023-10-30 14:00:00.0 | 414.90 | 415.03 | 412.22 | 413.03 | 1 | 412.43 | N |
+  | ... | ... | ... | ... | ... | ... | ... | ... |
+  
+</Accordion>
+
+<Accordion title="SPY 2 Hour">
+  | Datetime | Open | High | Low | Close | Trend Forecast | Risk Forecast | Risk Forecast breach |
+  | --------------------- | ------ | -------- | ------ | ----- | -------------- | ------------- | -------------------- |
+  | ... | ... | ... | ... | ... | ... | ... | ... |
+  | 2023-10-31 19:00:00.0 | 418.11 | 418.50 | 417.23 | 417.4 | 0 | 418.79 | N |
+  | 2023-10-31 21:00:00.0 | 417.40 | 417.68 | 417.24 | 417.52 | 1 | 412.43 | N |
+  | ... | ... | ... | ... | ... | ... | ... | ... |
+  
+</Accordion>
+
+<Accordion title="SPY 3 Hour">
+  | Datetime | Open | High | Low | Close | Trend Forecast | Risk Forecast | Risk Forecast breach |
+  | --------------------- | ------ | -------- | ------ | ----- | -------------- | ------------- | -------------------- |
+  | ... | ... | ... | ... | ... | ... | ... | ... |
+  | 2023-11-01 10:00:00.0 | 416.70 | 418.79 | 416.25 | 418.42 | -1 | 418.06 | Y |
+  | 2023-11-01 13:00:00.0 | 418.41 | 421.90 | 417.85 | 420.72 | 1 | 414.27 | N |
+  | ... | ... | ... | ... | ... | ... | ... | ... |
+  
+</Accordion>
+
+
+<Frame caption="Using Genesis-STC, the end of the downtrend was identified at 2pm on October 30th.">
+  <img src="spy_hour_stc.png" />
+</Frame>
+
+
