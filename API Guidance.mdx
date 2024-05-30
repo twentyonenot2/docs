@@ -1,12 +1,12 @@
 ---
 title: 'Genesis'
-description: 'API Walkthrough'
+description: 'API Guidance'
 icon: 'code'
 ---
 
 > Each time period must contain the below fields.
 
-```
+```python
 
 class TimePeriodSchema(Schema):
     
@@ -47,7 +47,7 @@ class TimePeriodSchema(Schema):
 
 > Here's a helper function to turn your dataframe into a Python dictionary object ready for use with Genesis:
 
-```
+```python
 
 def create_genesis_input(df):
     """
@@ -78,7 +78,7 @@ def create_genesis_input(df):
 > Import your price data and start forecasting using your API key.
 
 
-```
+```python
 import requests
 import json
 import pandas as pd
