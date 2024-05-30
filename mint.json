@@ -5,13 +5,13 @@
         "dark": "/sumtyme white.svg",
         "light": "/sumtyme black.svg"
     },
-    "favicon": "/s.svg",
+    "favicon": "/sumtyme black.svg",
     "colors": {
         "primary": "#0D9373",
         "light": "#141616",
         "dark": "#dcdcdc",
         "anchors": {
-            "from": "#0D9373",
+            "from": "#dcdcdc",
             "to": "#07C983"
         }
     },
