@@ -29,10 +29,11 @@
 
 
     "navigation": [{
-        "group": "sumtymme.ai",
+        "group": "sumtyme.ai",
         "pages": [
             "About",
             "Model Library",
+            "API Guidance",
             "FAQ"
         ]
     }]
