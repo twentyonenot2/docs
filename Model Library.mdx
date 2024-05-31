@@ -5,43 +5,44 @@ icon: 'code'
 
 ## Models
 <CardGroup cols={1}>
+  <Check>In Production</Check>
   <Card
     title="Genesis - https://www.sumtyme.ai/api/genesis"
     icon="lightbulb" iconType="duotone" color="#8fbc8f"
   >
+  <Tabs>
+  <Tab title="Description">
+    A pre-trained time series model that fairly weights both short-term and long-term directional volatility.
+  </Tab>
+  <Tab title="Endpoint">
+    https://www.sumtyme.ai/api/genesis
+  </Tab>
+  
+  </Tabs>
+
     A pre-trained time series model that fairly weights both short-term and long-term directional volatility.
 
   </Card>
   <Card
-    title="Genesis-STC"
+    title="Genesis-STC: https://www.sumtyme.ai/api/genesis-stc"
     sub
     icon="lightbulb" iconType="duotone" color="#8fbc8f"
   >
     > Desc: A pre-trained time series model designed to be more sensitive to short-term price directional volatility.
-    >
-    > Status: In Production
-    >
-    > URL: https://www.sumtyme.ai/api/genesis-stc 
   </Card>
+  <Warning>In Development</Warning>
    <Card
     title="Genesis-M"
     icon="lightbulb" iconType="duotone" color="#ffa500"
   >
     > Desc: This stateful version of Genesis will remember and maintain its internal state from the previous forecast.
-    >
-    > Status: In Development
-    >
-    > URL: https://www.sumtyme.ai/api/TBC  
+  
   </Card>
    <Card
     title="Genesis-STC-M"
     icon="lightbulb" iconType="duotone" color="#ffa500"
   >
     > Desc: This stateful version of Genesis-STC will remember and maintain its internal state from the previous forecast.
-    >
-    > Status: In Development
-    >
-    > URL: https://www.sumtyme.ai/api/TBC
   </Card>
 </CardGroup>
 
