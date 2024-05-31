@@ -13,7 +13,7 @@ The model was trained using proprietary volatility data derived from the S&P 500
 
 **What is the minimum time periods Genesis needs to start forecasting?**
 
-Genesis requires a minimum of 15-20 complete OHLC time periods to start forecasting, however we recommend at least 400 complete OHLC time periods to allow Genesis to understand the context of the underlying time series. 
+Genesis requires a minimum of 100 complete OHLC time periods to start forecasting, however we recommend at least 400 complete OHLC time periods to allow Genesis to understand the context of the underlying time series. 
 
 **What asset classes can Genesis be applied to?**
 
@@ -27,7 +27,7 @@ Genesis requires a minimum of 15-20 complete OHLC time periods to start forecast
 
 **What are Genesis’ data inputs?** 
 
-- Datetime (YYYY-MM-DD HH:MM:SS)
+- Datetime (YYYY-MM-DD HH:MM:SS.f)
 - Open Price (Float)
 - High Price (Float)
 - Low Price (Float)
@@ -35,8 +35,10 @@ Genesis requires a minimum of 15-20 complete OHLC time periods to start forecast
 
 **What are Genesis’ outputs?**
 
-- Price trend forecast (int)
-- Risk forecast (float)
+- Price trend forecast: 1 = bullish, -1 = bearish or 0 = stable.  
+- Price trend forecast plot: cumulative value of the price trend forecast. 
+- Risk Forecast: higher/ lower price boundary.
+- Risk Forecast (%): Lower price boundary represented as a percentage from open price.
 
 **Can Genesis quantify the risk associated with each forecast?**
 

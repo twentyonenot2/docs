@@ -10,10 +10,10 @@ icon: 'keyboard'
 class TimePeriodSchema(Schema):
     
     Datetime = fields.DateTime(required=True) # 2023-05-28 10:30:45.789
-    Open = fields.Float(required=True) # 120.02
-    High = fields.Float(required=True) # 253.93
-    Low = fields.Float(required=True) # 102.84
-    Close = fields.Float(required=True) # 247.43
+    Open = fields.Float(required=True) # 1201.85
+    High = fields.Float(required=True) # 1280.53
+    Low = fields.Float(required=True) # 1305.85
+    Close = fields.Float(required=True) # 1425.85
 
 ```
 
@@ -44,7 +44,7 @@ class TimePeriodSchema(Schema):
 
 
 
-> Here's a helper function to turn your dataframe into a Python dictionary object ready for use with Genesis:
+> Here's a helper function to turn the dataframe into a Python dictionary object ready for use with Genesis:
 
 ```python
 
@@ -73,9 +73,7 @@ def create_genesis_input(df):
 
 ```
 
-
-> Import your price data and start forecasting using your API key.
-
+## Example Python Script
 
 ```python
 import requests
@@ -113,5 +111,17 @@ json_payload = json.dumps(genesis_input)
 response = requests.post("https://www.sumtyme.ai/api/genesis", json=json_payload)
 
 print(response.json())
+
+```
+
+## Example Response 
+
+```python
+
+{'2024-01-14': {'price_trend_forecast': -1.0, 'price_trend_forecast_plot': -1.0, 'risk_forecast': 99.34202, 'risk_forecast_%': 1.593563},
+ '2024-01-15': {'price_trend_forecast': -1.0, 'price_trend_forecast_plot': -2.0, 'risk_forecast': 99.41202, 'risk_forecast_%': 2.550992},
+ '2024-01-16': {'price_trend_forecast': -1.0, 'price_trend_forecast_plot': -3.0, 'risk_forecast': 97.514325, 'risk_forecast_%': 2.293246},
+ '2024-01-17': {'price_trend_forecast': -1.0, 'price_trend_forecast_plot': -4.0, 'risk_forecast': 97.534325, 'risk_forecast_%': 1.372451},
+ '2024-01-18': {'price_trend_forecast': -1.0, 'price_trend_forecast_plot': -5.0, 'risk_forecast': 98.052172, 'risk_forecast_%': 2.034186}}
 
 ```

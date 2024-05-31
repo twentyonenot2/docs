@@ -1,11 +1,11 @@
 {
     "$schema": "https://mintlify.com/schema.json",
-    "name": "Starter Kit",
+    "name": "sumtyme.ai",
     "logo": {
-        "dark": "/sumtyme white.svg",
-        "light": "/sumtyme black.svg"
+        "dark": "/hourglass-white.svg",
+        "light": "/hourglass-black.svg"
     },
-    "favicon": "/sumtyme black.svg",
+    "favicon": "/hourglass-black.svg",
     "colors": {
         "primary": "#0D9373",
         "light": "#141616",
@@ -25,7 +25,7 @@
 
 
     "navigation": [{
-        "group": "",
+        "group": "sumtyme.ai",
         "pages": [
             "About",
             "Model Library",

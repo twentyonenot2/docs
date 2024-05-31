@@ -3,14 +3,13 @@ title: 'Model Library'
 icon: 'code'
 ---
 
+## Models
 <CardGroup cols={2}>
   <Card
     title="Genesis"
     icon="lightbulb" iconType="duotone" color="#8fbc8f"
   >
     A pre-trained time series model that fairly weights both short-term and long-term directional price volatility.
-    Endpoint: https://www.sumtyme.ai/api/genesis
-
   </Card>
   <Card
     title="Genesis-STC"
@@ -18,26 +17,32 @@ icon: 'code'
     icon="lightbulb" iconType="duotone" color="#8fbc8f"
   >
     A pre-trained time series model designed to be more sensitive to short-term price fluctuations.
-    Endpoint: https://www.sumtyme.ai/api/genesis-stc
   </Card>
    <Card
-    title="Genesis-M (DEV)"
+    title="Genesis-M"
     icon="lightbulb" iconType="duotone" color="#ffa500"
   >
     This stateful version of Genesis will remember and maintain its internal state from the previous forecast.
   </Card>
    <Card
-    title="Genesis-STC-M (DEV)"
+    title="Genesis-STC-M"
     icon="lightbulb" iconType="duotone" color="#ffa500"
   >
     This stateful version of Genesis-STC will remember and maintain its internal state from the previous forecast.
   </Card>
 </CardGroup>
 
+## Endpoints 
 
+| Endpoint   | Production  | 
+| ----------- | ------------------------ | 
+| **https://www.sumtyme.ai/api/genesis** | `<sup>PROD</sup>` | 
+| **https://www.sumtyme.ai/api/genesis-stc**   | `<sub>PROD</sub>`   |
+
+## Forecast Example
 > Here we use SPY's daily time series to forecast one step ahead using Genesis.
 
-<Tip>As Genesis ingests more data, its forecasting capabilities improve because the additional data points enables the model to better capture underlying patterns and context.</Tip>
+<Tip>As Genesis ingests more data, its forecasting capabilities improve due to the additional data points enabling the model to better capture underlying patterns and context.</Tip>
 
 <Frame caption="SPY Daily Forecast (Feb 18th 2021-Nov 14th 2023)">
   <img src="spy_daily.png" />
