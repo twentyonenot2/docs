@@ -16,11 +16,11 @@
         }
     },
     "topbarLinks": [{
-        "name": "Support",
-        "url": "mailto:hello@sumtyme.ai"
-    }, {
         "name": "Demo",
         "url": "https://genesis-demo.streamlit.app"
+    },{
+        "name": "Contact",
+        "url": "mailto:hello@sumtyme.ai"
     }],
 
 
