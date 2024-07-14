@@ -22,7 +22,11 @@
     }],
 
 
-    "navigation": [{
+    "navigation": [
+        {
+      "title": "Model Library",
+      "path": "/model-library"
+    },{
         "group": "sumtyme.ai",
         "pages": [
             "Model Library",
