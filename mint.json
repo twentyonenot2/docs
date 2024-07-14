@@ -29,6 +29,10 @@
             "Foundation Model",
             "Trading Agent"
         ]
-    }]
+    },
+    {
+      "group": "Getting Started",
+      "pages": ["introduction", "quickstart"]
+    },]
 
 }
