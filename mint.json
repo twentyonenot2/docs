@@ -24,8 +24,13 @@
 
     "navigation": [
         {
-      "title": "Model Library",
-      "path": "/model-library"
+      "group": "Getting Started",
+      "pages": [
+        {
+          "title": "Model Library",
+          "path": "/model-library"
+        }
+      ]
     },{
         "group": "sumtyme.ai",
         "pages": [
