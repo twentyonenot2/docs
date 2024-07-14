@@ -25,9 +25,9 @@
     "navigation": [{
         "group": "sumtyme.ai",
         "pages": [
-            "Model Library",
-            "API Guidance: Foundation Model",
-            "API Guidance: Trading Agent"
+            "Genesis",
+            "Foundation Model",
+            "Trading Agent"
         ]
     }]
 
