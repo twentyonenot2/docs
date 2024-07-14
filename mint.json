@@ -15,10 +15,8 @@
             "to": "#218bd1"
         }
     },
-    "topbarLinks": [{
-        "name": "Demo",
-        "url": "https://genesis-demo.streamlit.app"
-    },{
+    "topbarLinks": [
+       {
         "name": "Contact",
         "url": "mailto:hello@sumtyme.ai"
     }],
@@ -27,10 +25,9 @@
     "navigation": [{
         "group": "sumtyme.ai",
         "pages": [
-            "About",
             "Model Library",
-            "API Guidance",
-            "FAQ"
+            "API Guidance: Foundation Model",
+            "API Guidance: Trading Agent"
         ]
     }]
 
