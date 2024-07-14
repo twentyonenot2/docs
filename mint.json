@@ -26,11 +26,9 @@
         {
       "group": "Getting Started",
       "pages": [
-        {
-          "title": "Model Library",
-          "path": "/model-library"
-        }
+        "/model-library"
       ]
+      
     },{
         "group": "sumtyme.ai",
         "pages": [
