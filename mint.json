@@ -22,7 +22,7 @@
     }],
     "navigation": [
         {
-            "group": "Getting Started",
+            "group": "sumtyme.ai",
             "pages": [
                 "About",
                 "Foundation Model",
