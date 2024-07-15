@@ -84,7 +84,10 @@ icon: 'arrow-trend-up'
 
 <ParamField body="higher_timeframe_bucket" type="integer" default="5">
   Groups submitted time series into higher timeframe for signal/confirmation analysis.
+  Accepted values: [3,4,5,6,7,8,9].
 </ParamField>
+
+<Tip>To best identify trading opportunities, different combinations of time series lengths and timeframe buckets can be used to uncover optimal entry points.</Tip>
 
 
 #### Example Request Structure
@@ -95,19 +98,16 @@ icon: 'arrow-trend-up'
 ```
 
 
-<Tip>The array of time periods should end with the period to forecast.</Tip>
+<Tip>The last time period in the array should represent the period for trade identification.</Tip>
 
 ```python
 
 ## Example Structure
 
-## To forecast the price trend on Feb 1st, zero (0) can be used. 
+## To identify whether there is a trading opportunity on Feb 1st, zero (0) can be used. 
 
 {'P501': {'Datetime': '2024-02-01 00:00:00', 'Open': 0, 'High': 0, 'Low': 0,'Close': 0}}
 
-## To generate a price trend and risk forecast, an open price must be specified (previous close price can be used). 
-
-{'P501': {'Datetime': '2024-02-01 00:00:00', 'Open': 24.66, 'High': 0, 'Low': 0,'Close': 0}}
 
 ```
 
@@ -135,42 +135,70 @@ icon: 'arrow-trend-up'
 ## Example Request with Synthetic Data
 
 ```python
-import requests
-import json
+# Import necessary libraries
+import numpy as np
 import pandas as pd
+import requests
 
-def create_genesis_input(df):
-    """
-    Helper function to turn your dataframe into a Python dictionary object ready for Genesis.
+# Define function to create input for Genesis API
+def json_dict(df):
+    # Convert DataFrame to dictionary format required by Genesis
+    return {f'P{i+1}': row.to_dict() for i, row in df.iterrows()}
 
-    Parameters:
-        df (pd.DataFrame): The dataframe containing the OHLC data.
+# Set random seed for reproducibility
+np.random.seed(42)
 
-    Returns:
-        dict: The dictionary formatted for Genesis API.
-    """
-    data = {}
+# Set number of periods for data generation
+periods = 501
 
-    for idx, row in df.iterrows():
-        key = idx + 1
-        data[f'P{key}'] = {
-            'Datetime': str(row['Datetime']),
-            'Open': row['Open'],
-            'High': row['High'],
-            'Low': row['Low'],
-            'Close': row['Close']
-        }
-    return data
+# Generate date range for the specified number of periods
+date_rng = pd.date_range(start='2023-01-01', periods=periods, freq='D')
 
-# Example usage
-df = pd.read_csv("import_data.csv")
-genesis_input = create_genesis_input(df)
-genesis_input.update({"API_KEY": "API_KEY_FOR_GENESIS"})
+# Set base price and volatility for price generation
+base_price = 100
+volatility = 0.02
 
-json_payload = json.dumps(genesis_input)
-response = requests.post("https://www.sumtyme.ai/api/genesis", json=json_payload)
+# Generate daily returns using normal distribution
+daily_returns = np.random.normal(0, volatility, periods)
 
-print(response.json())
+# Calculate close prices based on daily returns
+close_prices = base_price * np.cumprod(1 + daily_returns)
+
+# Create DataFrame with datetime, close prices, and open prices
+df = pd.DataFrame({
+    'Datetime': date_rng.strftime("%Y-%m-%d %H:%M:%S"),
+    'Close': close_prices,
+    'Open': close_prices * (1 + np.random.normal(0, volatility/2, periods)),
+})
+
+# Calculate high prices
+df['High'] = df[['Open', 'Close']].max(axis=1) * (1 + np.abs(np.random.normal(0, volatility/2, periods)))
+
+# Calculate low prices
+df['Low'] = df[['Open', 'Close']].min(axis=1) * (1 - np.abs(np.random.normal(0, volatility/2, periods)))
+
+# Round all price columns to 2 decimal places
+df[['Open', 'High', 'Low', 'Close']] = df[['Open', 'High', 'Low', 'Close']].round(2)
+
+# Create JSON payload for API request
+json_payload = json_dict(df)
+
+# Specify Base URL
+BASE_URL = ""
+
+# Set API endpoint URL
+url = f"https://{BASE_URL}/genesis/trading-agent"
+
+# Set header for API request
+headers = {"API-KEY":""}
+
+# Send POST request to API
+response = requests.post(url, json=json_payload, headers=headers)
+
+# Parse JSON response
+resp = response.json()
+
+```
 
 ```
 
