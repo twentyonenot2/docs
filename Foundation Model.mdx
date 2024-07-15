@@ -139,7 +139,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-# Define function to create input for Genesis API
+# Define function to create json for API
 def df_to_dict(df):
     # Convert DataFrame to dictionary format required by Genesis
     return {f'P{i+1}': row.to_dict() for i, row in df.iterrows()}
