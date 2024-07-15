@@ -182,8 +182,11 @@ df[['Open', 'High', 'Low', 'Close']] = df[['Open', 'High', 'Low', 'Close']].roun
 # Create JSON payload for API request
 json_payload = df_to_dict(df)
 
+# Specify Base URL
+BASE_URL = ""
+
 # Set API endpoint URL
-url = "https://sumtyme-demo.azurewebsites.net/genesis/foundation-model"
+url = f"https://{BASE_URL}/genesis/foundation-model"
 
 # Set headers for API request
 headers = {"API-KEY":""}
