@@ -25,7 +25,8 @@
             "group": "Getting Started",
             "pages": [
                 "About",
-                "Foundation Model"
+                "Foundation Model",
+                "Trading Agent"
             ]
         }
     ]
