@@ -141,7 +141,7 @@ import requests
 
 # Define function to create json for API
 def df_to_dict(df):
-    # Convert DataFrame to dictionary format required by Genesis
+    # Convert DataFrame to dictionary format
     return {f'P{i+1}': row.to_dict() for i, row in df.iterrows()}
 
 # Set random seed for reproducibility
