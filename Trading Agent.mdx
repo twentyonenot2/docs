@@ -140,8 +140,8 @@ import numpy as np
 import pandas as pd
 import requests
 
-# Define function to create input for Genesis API
-def json_dict(df):
+# Define function to create json for API
+def df_to_dict(df):
     # Convert DataFrame to dictionary format required by Genesis
     return {f'P{i+1}': row.to_dict() for i, row in df.iterrows()}
 
@@ -181,7 +181,7 @@ df['Low'] = df[['Open', 'Close']].min(axis=1) * (1 - np.abs(np.random.normal(0, 
 df[['Open', 'High', 'Low', 'Close']] = df[['Open', 'High', 'Low', 'Close']].round(2)
 
 # Create JSON payload for API request
-json_payload = json_dict(df)
+json_payload = df_to_dict(df)
 
 # Specify Base URL
 BASE_URL = ""
