@@ -183,13 +183,13 @@ df[['Open', 'High', 'Low', 'Close']] = df[['Open', 'High', 'Low', 'Close']].roun
 json_payload = df_to_dict(df)
 
 # Specify Base URL
-BASE_URL = ""
+BASE_URL = "https://www.given-url.com"
 
 # Set API endpoint URL
-url = f"https://{BASE_URL}/genesis/foundation-model"
+url = f"{BASE_URL}/genesis/foundation-model"
 
 # Set headers for API request
-headers = {"API-KEY":""}
+headers = {"API-KEY":"123key456"}
 
 # Send POST request to API
 response = requests.post(url, json=json_payload, headers=headers)
