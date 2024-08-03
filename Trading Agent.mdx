@@ -170,7 +170,7 @@ close_prices = base_price * np.cumprod(1 + daily_returns)
 
 # Create DataFrame with datetime, close prices, and open prices
 df = pd.DataFrame({
-    'Datetime': date_rng.dt.strftime("%Y-%m-%d %H:%M:%S"),
+    'Datetime': date_rng.strftime("%Y-%m-%d %H:%M:%S"),
     'Close': close_prices,
     'Open': close_prices * (1 + np.random.normal(0, volatility/2, periods)),
 })
