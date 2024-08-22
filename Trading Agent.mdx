@@ -84,7 +84,7 @@ icon: 'arrow-trend-up'
 
 <ParamField body="timeframe_aggregation" type="integer" default="5">
   The submitted time series data is aggregated into higher timeframes for signal analysis.
-  Accepted values: [3,4,5,6,7,8,9,10,11,12].
+  Accepted value range: 3-12
 </ParamField>
 
 <Tip>To effectively identify trading opportunities, exploring various combinations of time series lengths and timeframe aggregations can help uncover optimal entry points.</Tip>
@@ -149,43 +149,12 @@ def df_to_dict(df):
     # Convert DataFrame to dictionary format
     return {f'P{i+1}': row.to_dict() for i, row in df.iterrows()}
 
-# Set random seed for reproducibility
-np.random.seed(42)
-
-# Set number of periods for data generation
-periods = 501
-
-# Generate date range for the specified number of periods
-date_rng = pd.date_range(start='2023-01-01', periods=periods, freq='D')
-
-# Set base price and volatility for price generation
-base_price = 100
-volatility = 0.02
-
-# Generate daily returns using normal distribution
-daily_returns = np.random.normal(0, volatility, periods)
-
-# Calculate close prices based on daily returns
-close_prices = base_price * np.cumprod(1 + daily_returns)
-
-# Create DataFrame with datetime, close prices, and open prices
-df = pd.DataFrame({
-    'Datetime': date_rng.strftime("%Y-%m-%d %H:%M:%S"),
-    'Close': close_prices,
-    'Open': close_prices * (1 + np.random.normal(0, volatility/2, periods)),
-})
-
-# Calculate high prices
-df['High'] = df[['Open', 'Close']].max(axis=1) * (1 + np.abs(np.random.normal(0, volatility/2, periods)))
-
-# Calculate low prices
-df['Low'] = df[['Open', 'Close']].min(axis=1) * (1 - np.abs(np.random.normal(0, volatility/2, periods)))
-
-# Round all price columns to 2 decimal places
-df[['Open', 'High', 'Low', 'Close']] = df[['Open', 'High', 'Low', 'Close']].round(2)
+# Import Data
+df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
 # Create JSON payload for API request
 json_payload = df_to_dict(df)
+json_payload['timeframe_aggregation'] = 5
 
 # Specify Base URL
 BASE_URL = "https://www.given-url.com"
