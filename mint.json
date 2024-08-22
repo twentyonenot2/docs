@@ -25,7 +25,7 @@
             "group": "sumtyme.ai",
             "pages": [
                 "About",
-                "Foundation Model",
+                "Time Series Forecasting Model",
                 "Trading Agent"
             ]
         }
