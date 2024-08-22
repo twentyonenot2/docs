@@ -8,7 +8,7 @@ icon: 'arrow-trend-up'
 | Detail | Count                           |
 | -------- | ------------------------------------- |
 | Mandatory Time Periods     | 1 - 501                    |
-| Optional Time Periods      | 502 - 3000                         |
+| Optional Time Periods      | 502 - 5000                         |
 
 ### Request Header 
 
@@ -82,7 +82,7 @@ icon: 'arrow-trend-up'
   </Expandable>
 </ParamField>
 
-<ParamField body="signal_timeframe_aggregation" type="integer" default="5">
+<ParamField body="timeframe_aggregation" type="integer" default="5">
   The submitted time series data is aggregated into higher timeframes for signal analysis.
   Accepted values: [3,4,5,6,7,8,9,10,11,12].
 </ParamField>
