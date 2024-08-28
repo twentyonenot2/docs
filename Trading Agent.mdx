@@ -147,15 +147,23 @@ import pandas as pd
 import requests
 
 # Define function to create json for API
-def df_to_dict(df):
+  
+def trading_model_dict(df,aggregation):
     # Convert DataFrame to dictionary format
-    return {f'P{i+1}': row.to_dict() for i, row in df.iterrows()}
+    return {
+        "Datetime": df['Datetime'].tolist(),
+        "Open": df['Open'].tolist(),
+        "High": df['High'].tolist(),
+        "Low": df['Low'].tolist(),
+        "Close": df['Close'].tolist(),
+        "Aggregation": [aggregation] 
+    }
 
 # Import Data
 df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
 # Create JSON payload for API request
-json_payload = df_to_dict(df)
+json_payload = trading_model_dict(df,5)
 
 # Specify Base URL
 BASE_URL = ""
