@@ -1,16 +1,23 @@
 ---
 title: 'Trading Agent'
 icon: 'arrow-trend-up'
+description: 'Single Price Path Analysis'
 ---
 
-### Model Details 
+## Model Details 
 
-| Detail | Count                           |
-| -------- | ------------------------------------- |
-| Mandatory Time Periods     | 1 - 501                    |
-| Optional Time Periods      | 502 - 5000                         |
 
-### Request Header 
+<CardGroup cols={2}>
+  <Card title="Mandatory Time Periods">
+    1 - 501
+  </Card>
+  <Card title="Optional Time Periods">
+    502 - 5000
+  </Card>
+
+</CardGroup>
+
+## Request Header 
 
 
 <ParamField header="API-KEY" type="string" required>
@@ -18,129 +25,124 @@ icon: 'arrow-trend-up'
     </ParamField>
 
 
-### Request Body 
+## Request Body 
 
-##### The request body should contain an array of time periods. Each period must include all required fields and may include optional time periods. The dictionary structure is consistent for all periods.
 
-<ParamField body="P1" type="dict" required>
-  <Expandable title="P1">
-    <ParamField body="Datetime" type="string" required>
-      Datetime for the period
-    </ParamField>
-    <ParamField body="Open" type="number" required>
-      Opening price for the period
-    </ParamField>
-    <ParamField body="High" type="number" required>
-      Highest price for the period
-    </ParamField>
-    <ParamField body="Low" type="number" required>
-      Lowest price for the period
-    </ParamField>
-    <ParamField body="Close" type="number" required>
-      Closing price for the period
-    </ParamField>
-  </Expandable>
-</ParamField>
-...
-<ParamField body="P502" type="dict">
-  <Expandable title="P502">
-    <ParamField body="Datetime" type="string">
-      Datetime for the period
-    </ParamField>
-    <ParamField body="Open" type="number">
-      Opening price for the period
-    </ParamField>
-    <ParamField body="High" type="number">
-      Highest price for the period
-    </ParamField>
-    <ParamField body="Low" type="number">
-      Lowest price for the period
-    </ParamField>
-    <ParamField body="Close" type="number">
-      Closing price for the period
-    </ParamField>
-  </Expandable>
-</ParamField>
-...
-<ParamField body="P3000" type="dict">
-  <Expandable title="P3000">
-    <ParamField body="Datetime" type="string">
-      Datetime for the period
-    </ParamField>
-    <ParamField body="Open" type="number">
-      Opening price for the period
-    </ParamField>
-    <ParamField body="High" type="number">
-      Highest price for the period
-    </ParamField>
-    <ParamField body="Low" type="number">
-      Lowest price for the period
-    </ParamField>
-    <ParamField body="Close" type="number">
-      Closing price for the period
-    </ParamField>
-  </Expandable>
+<ParamField body="Datetime" type="list" required>
 </ParamField>
 
-<ParamField body="timeframe_aggregation" type="integer" default="5">
-  The submitted time series data is aggregated into higher timeframes for signal analysis.
+<ParamField body="Open" type="list" required>
+</ParamField>
+
+<ParamField body="High" type="list" required>
+</ParamField>
+
+<ParamField body="Low" type="list" required>
+</ParamField>
+
+<ParamField body="Close" type="list" required>
+</ParamField>
+
+<ParamField body="timeframe_aggregation" type="integer" default="5" required>
   Accepted value range: 3-12
 </ParamField>
 
 <Tip>To effectively identify trading opportunities, exploring various combinations of time series lengths and timeframe aggregations can help uncover optimal entry points.</Tip>
 
 
-#### Request Example
+## Request Example
+
 ```python
 
-{'P1': {'Datetime': '2024-01-01 00:00:00', 'Open': 17.24, 'High': 20.14, 'Low': 16.47,'Close': 20.16}, 'P2': {'Datetime': '2024-01-02 00:00:00', 'Open': 20.26, 'High': 24.60, 'Low': 20.01, 'Close': 24.66}, "higher_timeframe_bucket":5"}
+{
+'Datetime': ["2023-01-01 00:00:00",...,"2024-08-24 00:00:00"], 
+'Open': [25.98,...,50.99], 
+'High': [30.65,...,52.65], 
+'Low': [23.76,...,33.45], 
+'Close': [24.01,...,35.76], 
+"timeframe_aggregation": [5]
+}
+
+```
+
+```python
+
+## To identify whether there is a trading opportunity on Feb 24th, zero (0) can be used. 
+
+{
+'Datetime': ["2024-01-01 00:00:00",...,"2024-08-24 00:00:00"], 
+'Open': [25.98,...,0], 
+'High': [30.65,...,0], 
+'Low': [23.76,...,0], 
+'Close': [24.01,...,0], 
+"timeframe_aggregation": [5]
+}
 
 ```
 
 
-<Tip>The last time period in the array should represent the period for trade identification.</Tip>
+## Response Fields
+
+<ResponseField name="datetime" type="string">
+  Trade opportunity timestamp 
+</ResponseField>
+
+<ResponseField name="conviction" type="string">
+   <Check>**Strong:** Optimal trade entry.</Check>
+   <Note>**Medium:** Possible trade entry.</Note>
+   <Warning>**Low:** Trade opportunity identified but optimal entry missed.</Warning>
+
+</ResponseField>
+
+<ResponseField name="direction" type="string">
+  Buy (1) / Sell (-1)
+</ResponseField>
+
+<ResponseField name="stv-exit" type="string">
+  Short-term volatility exit warning
+</ResponseField>
+
+<ResponseField name="ltv-exit" type="string">
+  Long-term volatility exit warning 
+</ResponseField>
+
+<ResponseField name="existing-trade" type="string">
+  Previous trade opportunity still open 
+</ResponseField>
+
+
+
+## Response Example
 
 ```python
-
-## Example Structure
-
-## To identify whether there is a trading opportunity on Feb 1st, zero (0) can be used. 
-
-{'P501': {'Datetime': '2024-02-01 00:00:00', 'Open': 0, 'High': 0, 'Low': 0,'Close': 0}}
-
-
+{
+"2024-02-24 00:00:00": {
+      "conviction": "Strong",
+      "direction": "1"
+      "stv-exit": "2024-03-10 00:00:00",
+      "ltv-exit": "2024-05-08 00:00:00",
+      "existing-trade": "false"
+    },
+"2024-02-24 00:00:00": {
+      "conviction": "Medium",
+      "direction": "1"
+      "stv-exit": "2024-03-10 00:00:00",
+      "ltv-exit": "",
+      "existing-trade": "false"
+    },
+"2024-02-24 00:00:00": {
+      "conviction": "Low",
+      "direction": "1"
+      "stv-exit": "",
+      "ltv-exit": "",
+      "pre-existing-trade": "true"
+    }
+}
 ```
-
-
-### Response Fields
-
-| Field | Description                           |
-| -------- | ------------------------------------- |
-| trade_open     | Trade opportunity identified (datetime).                 |
-| trade_conviction| Trade conviction: Strong, Medium, Low.|
-| exit_warning_stv   | Exit warning based on short term directional volatility patterns.|
-| exit_warning_ltv   | Exit warning based on long term directional volatility patterns. |
-| trade_direction   | Signal direction: Buy (1) or Sell (-1). |
-
-
-<Check>**Strong Trade Conviction:** Optimal trade entry.</Check>
-<Note>**Medium Trade Conviction:** Possible trade entry.</Note>
-<Warning>**Low Trade Conviction:** Trade opportunity identified but optimal entry missed. </Warning>
-
-#### Response Example
-
-```python
-
-{"2024-02-24 00:00:00":{"trade_conviction":"Strong","exit_warning_stv":"2024-03-10 00:00:00","exit_warning_ltv":"2024-05-08 00:00:00","trade_direction":"1"}}
-
-```
-
-
-## Synthetic Data - API Request Example
+## API Request Example
 
 ```python
 # Import necessary libraries
-import numpy as np
 import pandas as pd
 import requests
 
@@ -154,10 +156,9 @@ df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
 # Create JSON payload for API request
 json_payload = df_to_dict(df)
-json_payload['timeframe_aggregation'] = 5
 
 # Specify Base URL
-BASE_URL = "https://www.given-url.com"
+BASE_URL = ""
 
 # Set API endpoint URL
 url = f"{BASE_URL}/genesis/trading-agent"
