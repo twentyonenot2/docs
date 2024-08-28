@@ -98,15 +98,15 @@ description: 'Single Price Path Analysis'
   Buy (1) / Sell (-1)
 </ResponseField>
 
-<ResponseField name="stv-exit" type="string">
+<ResponseField name="stv_exit" type="string">
   Short-term volatility exit warning
 </ResponseField>
 
-<ResponseField name="ltv-exit" type="string">
+<ResponseField name="ltv_exit" type="string">
   Long-term volatility exit warning 
 </ResponseField>
 
-<ResponseField name="existing-trade" type="string">
+<ResponseField name="pre_existing_trade" type="string">
   Previous trade opportunity still open 
 </ResponseField>
 
@@ -119,23 +119,23 @@ description: 'Single Price Path Analysis'
 "2024-02-24 00:00:00": {
       "conviction": "Strong",
       "direction": "1"
-      "stv-exit": "2024-03-10 00:00:00",
-      "ltv-exit": "2024-05-08 00:00:00",
-      "existing-trade": "false"
+      "stv_exit": "2024-03-10 00:00:00",
+      "ltv_exit": "2024-05-08 00:00:00",
+      "pre_existing_trade": "false"
     },
 "2024-02-24 00:00:00": {
       "conviction": "Medium",
       "direction": "1"
-      "stv-exit": "2024-03-10 00:00:00",
-      "ltv-exit": "",
-      "existing-trade": "false"
+      "stv_exit": "2024-03-10 00:00:00",
+      "ltv_exit": "",
+      "pre_existing_trade": "false"
     },
 "2024-02-24 00:00:00": {
       "conviction": "Low",
       "direction": "1"
-      "stv-exit": "",
-      "ltv-exit": "",
-      "pre-existing-trade": "true"
+      "stv_exit": "",
+      "ltv_exit": "",
+      "pre_existing_trade": "true"
     }
 }
 ```
