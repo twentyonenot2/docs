@@ -3,14 +3,20 @@ title: 'Time Series Forecasting Model'
 icon: 'arrow-trend-up'
 ---
 
-### Model Details 
+## Model Details 
 
-| Detail | Count                           |
-| -------- | ------------------------------------- |
-| Mandatory Time Periods     | 1 - 501                    |
-| Optional Time Periods      | 502 - 10,000                         |
 
-### Request Header 
+<CardGroup cols={2}>
+  <Card title="Mandatory Time Periods">
+    1 - 501
+  </Card>
+  <Card title="Optional Time Periods">
+    502 - 10,000
+  </Card>
+
+</CardGroup>
+
+## Request Header 
 
 
 <ParamField header="API-KEY" type="string" required>
@@ -18,9 +24,8 @@ icon: 'arrow-trend-up'
     </ParamField>
 
 
-### Request Body 
+## Request Body 
 
-##### The request body should contain an array of time periods. Each period must include all required fields and may include optional time periods. The dictionary structure is consistent for all periods.
 
 <ParamField body="P1" type="dict" required>
   <Expandable title="P1">
@@ -85,48 +90,88 @@ icon: 'arrow-trend-up'
 
 
 
-#### Request Example
+## Request Example
 ```python
 
-{'P1': {'Datetime': '2024-01-01 00:00:00', 'Open': 17.24, 'High': 20.14, 'Low': 16.47,'Close': 20.16}, 'P2': {'Datetime': '2024-01-02 00:00:00', 'Open': 20.26, 'High': 24.60, 'Low': 20.01, 'Close': 23.63}}
+{
+  'P1': 
+    {
+      'Datetime': '2024-01-01 00:00:00',
+      'Open': 17.24,
+      'High': 20.14, 
+      'Low': 16.47,
+      'Close': 20.16
+    },
+
+  'P2': 
+    {
+      'Datetime': '2024-01-02 00:00:00',
+      'Open': 20.26, 
+      'High': 24.60, 
+      'Low': 20.01, 
+      'Close': 23.63
+    }   
+  ...
+}
 
 ```
 
 
 <Tip>The array of time periods should end with the period to forecast.</Tip>
 
+
+## Response Fields
+
+
+<ResponseField name="datetime" type="string">
+  Trade opportunity timestamp 
+</ResponseField>
+
+<ResponseField name="open" type="string">
+Opening price
+</ResponseField>
+
+
+<ResponseField name="current_trend" type="string">
+Current trend: Bullish (1) or Bearish (-1)
+</ResponseField>
+
+
+<ResponseField name="price_trend_forecast" type="string">
+Predicted trend: Bullish (1), Bearish (-1), Uncertain (0)
+</ResponseField>
+
+
+<ResponseField name="risk_forecast_%" type="string">
+Expected price movement range (%)
+</ResponseField>
+
+
+<ResponseField name="risk_forecast" type="string">
+Expected price movement range (absolute)
+</ResponseField>
+
+
+## Response Example
+
 ```python
 
-## Example Structure
+{
+  ..., 
 
-## To forecast the price trend on Feb 1st, zero (0) can be used. 
-
-{'P501': {'Datetime': '2024-02-01 00:00:00', 'Open': 0, 'High': 0, 'Low': 0,'Close': 0}}
-
-## To generate a price trend and risk forecast, an open price must be specified (previous close price can be used). 
-
-{'P501': {'Datetime': '2024-02-01 00:00:00', 'Open': 23.63, 'High': 0, 'Low': 0,'Close': 0}}
-
-```
-
-
-### Response Fields
-
-| Field | Description                           |
-| -------- | ------------------------------------- |
-| datetime     | Datetime for time period.                 |
-| open| Open price for time period.|
-| current_trend   | Forecasted price trend for time period: Bullish (1) or  Bearish (-1).|
-| price_trend_forecast   | Forecasted price trend for time period: Bullish (1) or  Bearish (-1) or Uncertain (0).|
-| risk_forecast_%   | Indicates the expected upper/lower percentage bound of an instrument's price movement over a specific time frame.|
-| risk_forecast_price   | Indicates the expected upper/lower price bound of an instrument's price movement over a specific time frame. |
-
-
-#### Response Example
-
-```python
-
-{"501":{"datetime":"2024-02-01","open":23.63,"current_trend":1,"price_trend_forecast":0,"risk_forecast":1.2,"risk_forecast":23.35}}
+  "501":
+    {
+      
+      "datetime":"2024-02-01",
+      "open":23.63,
+      "current_trend":1,
+      "price_trend_forecast":0,
+      "risk_forecast_%":1.2,
+      "risk_forecast":23.35
+      
+    }
+    
+}
 
 ```
 
@@ -135,7 +180,6 @@ icon: 'arrow-trend-up'
 
 ```python
 # Import necessary libraries
-import numpy as np
 import pandas as pd
 import requests
 
