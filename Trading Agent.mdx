@@ -173,7 +173,7 @@ TOKEN = ""
 url = f"{BASE_URL}/genesis/trading-agent"
 
 # Set header for API request
-headers = {"Authorization": f"Bearer {token}", 'Content-Type': 'application/json'}
+headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
 
 # Send POST request to API
 response = requests.post(url, json=data, headers=headers)
