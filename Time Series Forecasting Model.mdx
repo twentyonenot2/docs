@@ -67,8 +67,8 @@ icon: 'arrow-trend-up'
   </Expandable>
 </ParamField>
 ...
-<ParamField body="P5000" type="dict">
-  <Expandable title="P5000">
+<ParamField body="P10000" type="dict">
+  <Expandable title="P10000">
     <ParamField body="Datetime" type="string">
       Datetime for the period
     </ParamField>
@@ -191,17 +191,19 @@ def df_to_dict(df):
 # Import Data
 df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
-# Create JSON payload for API request
-json_payload = df_to_dict(df)
+data = df_to_dict(df)
+
+# Convert payload to JSON
+json_payload = json.dumps(data)
 
 # Specify Base URL
-BASE_URL = "https://www.given-url.com"
+BASE_URL = ""
 
 # Set API endpoint URL
 url = f"{BASE_URL}/genesis/ts-forecasting-model"
 
 # Set headers for API request
-headers = {"API-KEY":"123key456"}
+headers = {"API-KEY":"123key456", 'Content-Type': 'application/json'}
 
 # Send POST request to API
 response = requests.post(url, json=json_payload, headers=headers)
