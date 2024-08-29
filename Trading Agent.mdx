@@ -95,7 +95,7 @@ description: 'Single Price Path Analysis'
 </ResponseField>
 
 <ResponseField name="direction" type="string">
-  Buy (1) / Sell (-1)
+  Buy or Sell
 </ResponseField>
 
 <ResponseField name="stv_exit" type="string">
@@ -107,7 +107,7 @@ description: 'Single Price Path Analysis'
 </ResponseField>
 
 <ResponseField name="pre_existing_trade" type="string">
-  Previous trade opportunity still open 
+  Previous trade opportunity still open (True or False)
 </ResponseField>
 
 
@@ -121,16 +121,16 @@ description: 'Single Price Path Analysis'
       "direction": "1"
       "stv_exit": "2024-03-10 00:00:00",
       "ltv_exit": "2024-05-08 00:00:00",
-      "pre_existing_trade": "false"
+      "pre_existing_trade": "False"
     },
-"2024-02-24 00:00:00": {
+"2024-03-25 00:00:00": {
       "conviction": "Medium",
       "direction": "1"
       "stv_exit": "2024-03-10 00:00:00",
       "ltv_exit": "",
-      "pre_existing_trade": "false"
+      "pre_existing_trade": "False"
     },
-"2024-02-24 00:00:00": {
+"2024-04-26 00:00:00": {
       "conviction": "Low",
       "direction": "1"
       "stv_exit": "",
@@ -146,8 +146,7 @@ description: 'Single Price Path Analysis'
 import pandas as pd
 import requests
 
-# Define function to create json for API
-  
+# Define function to create json for API 
 def trading_model_dict(df,aggregation):
     # Convert DataFrame to dictionary format
     return {
@@ -163,7 +162,10 @@ def trading_model_dict(df,aggregation):
 df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
 # Create JSON payload for API request
-json_payload = trading_model_dict(df,5)
+data = trading_model_dict(df,5)
+
+# Convert payload to JSON
+json_payload = json.dumps(data)
 
 # Specify Base URL
 BASE_URL = ""
@@ -172,7 +174,7 @@ BASE_URL = ""
 url = f"{BASE_URL}/genesis/trading-agent"
 
 # Set header for API request
-headers = {"API-KEY":"123key456"}
+headers = {"API-KEY":"123key456", 'Content-Type': 'application/json'}
 
 # Send POST request to API
 response = requests.post(url, json=json_payload, headers=headers)
