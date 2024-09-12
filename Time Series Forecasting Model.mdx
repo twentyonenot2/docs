@@ -19,105 +19,46 @@ icon: 'arrow-trend-up'
 ## Request Header 
 
 
-<ParamField header="API-KEY" type="string" required>
-      API Key
-    </ParamField>
-
+<ParamField header="Authorization" type="string" required>
+  The authorization token for API requests. This should be a valid Bearer token.
+   </ParamField>
 
 ## Request Body 
 
+<ParamField body="Datetime" type="list" required>
+</ParamField>
 
-<ParamField body="P1" type="dict" required>
-  <Expandable title="P1">
-    <ParamField body="Datetime" type="string" required>
-      Datetime for the period
-    </ParamField>
-    <ParamField body="Open" type="number" required>
-      Opening price for the period
-    </ParamField>
-    <ParamField body="High" type="number" required>
-      Highest price for the period
-    </ParamField>
-    <ParamField body="Low" type="number" required>
-      Lowest price for the period
-    </ParamField>
-    <ParamField body="Close" type="number" required>
-      Closing price for the period
-    </ParamField>
-  </Expandable>
+<ParamField body="Open" type="list" required>
 </ParamField>
-...
-<ParamField body="P502" type="dict">
-  <Expandable title="P502">
-    <ParamField body="Datetime" type="string">
-      Datetime for the period
-    </ParamField>
-    <ParamField body="Open" type="number">
-      Opening price for the period
-    </ParamField>
-    <ParamField body="High" type="number">
-      Highest price for the period
-    </ParamField>
-    <ParamField body="Low" type="number">
-      Lowest price for the period
-    </ParamField>
-    <ParamField body="Close" type="number">
-      Closing price for the period
-    </ParamField>
-  </Expandable>
+
+<ParamField body="High" type="list" required>
 </ParamField>
-...
-<ParamField body="P10000" type="dict">
-  <Expandable title="P10000">
-    <ParamField body="Datetime" type="string">
-      Datetime for the period
-    </ParamField>
-    <ParamField body="Open" type="number">
-      Opening price for the period
-    </ParamField>
-    <ParamField body="High" type="number">
-      Highest price for the period
-    </ParamField>
-    <ParamField body="Low" type="number">
-      Lowest price for the period
-    </ParamField>
-    <ParamField body="Close" type="number">
-      Closing price for the period
-    </ParamField>
-  </Expandable>
+
+<ParamField body="Low" type="list" required>
+</ParamField>
+
+<ParamField body="Close" type="list" required>
 </ParamField>
 
 
 
 
 ## Request Example
+
 ```python
 
 {
-  'P1': 
-    {
-      'Datetime': '2024-01-01 00:00:00',
-      'Open': 17.24,
-      'High': 20.14, 
-      'Low': 16.47,
-      'Close': 20.16
-    },
-
-  'P2': 
-    {
-      'Datetime': '2024-01-02 00:00:00',
-      'Open': 20.26, 
-      'High': 24.60, 
-      'Low': 20.01, 
-      'Close': 23.63
-    }   
-  ...
+'Datetime': ["2023-01-01 00:00:00",...,"2024-08-24 00:00:00"], 
+'Open': [25.98,...,0], 
+'High': [30.65,...,0], 
+'Low': [23.76,...,0], 
+'Close': [24.01,...,0]
 }
 
 ```
 
 
-<Tip>The array of time periods should end with the period to forecast.</Tip>
+<Tip>The last period with zeros represents the future time point you want to forecast.</Tip>
 
 
 ## Response Fields
@@ -159,10 +100,9 @@ Expected price movement range (absolute)
 {
   ..., 
 
-  "501":
+  "2024-08-24":
     {
       
-      "datetime":"2024-02-01",
       "open":23.63,
       "current_trend":1,
       "price_trend_forecast":0,
@@ -183,30 +123,35 @@ Expected price movement range (absolute)
 import pandas as pd
 import requests
 
-# Define function to create json for API
-def df_to_dict(df):
+# Define function to create json for API 
+def ts_model_dict(df):
     # Convert DataFrame to dictionary format
-    return {f'P{i+1}': row.to_dict() for i, row in df.iterrows()}
+    return {
+        "Datetime": df['Datetime'].tolist(),
+        "Open": df['Open'].tolist(),
+        "High": df['High'].tolist(),
+        "Low": df['Low'].tolist(),
+        "Close": df['Close'].tolist()
+    }
 
 # Import Data
 df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
-data = df_to_dict(df)
+# Create JSON payload for API request
+data = ts_model_dict(df)
 
-# Convert payload to JSON
-json_payload = json.dumps(data)
-
-# Specify Base URL
+# Specify Base URL & Access Token
 BASE_URL = ""
+TOKEN = ""
 
 # Set API endpoint URL
-url = f"{BASE_URL}/genesis/ts-forecasting-model"
+url = f"{BASE_URL}/genesis/ts-model"
 
-# Set headers for API request
-headers = {"API-KEY":"", 'Content-Type': 'application/json'}
+# Set header for API request
+headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
 
 # Send POST request to API
-response = requests.post(url, json=json_payload, headers=headers)
+response = requests.post(url, json=data, headers=headers)
 
 # Parse JSON response
 resp = response.json()
