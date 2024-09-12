@@ -1,6 +1,6 @@
 {
     "$schema": "https://mintlify.com/schema.json",
-    // "name": "sumtyme.ai",
+    "name": "sumtyme.ai",
     "logo": {
         "dark": "/Sumtyme_Brandmark_white.svg",
         "light": "/Sumtyme_Brandmark_Black.svg"
