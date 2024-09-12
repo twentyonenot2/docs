@@ -26,7 +26,8 @@
             "pages": [
                 "About",
                 "Time Series Forecasting Model",
-                "Trading Agent"
+                "Trading Agent",
+                "library"
             ]
         }
     ]
