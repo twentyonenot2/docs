@@ -24,10 +24,9 @@
         {
             "group": "sumtyme.ai",
             "pages": [
-                "About",
+                "library",
                 "Time Series Forecasting Model",
-                "Trading Agent",
-                "library"
+                "Trading Agent"
             ]
         }
     ]
