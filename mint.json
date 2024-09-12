@@ -24,7 +24,7 @@
         {
             "group": "sumtyme.ai",
             "pages": [
-                "library",
+                "model-library",
                 "ts-model",
                 "trading-agent"
             ]
