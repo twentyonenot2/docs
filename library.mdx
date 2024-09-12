@@ -1,0 +1,62 @@
+---
+icon: 'people-group'
+---
+
+<CardGroup cols={1}>
+  <Check>In Production</Check>
+  <Card
+    title="Time Series Forecasting Model"
+    icon="lightbulb" iconType="duotone" color="#8fbc8f"
+  >
+  <Tabs>
+  <Tab title="Description">
+    A pre-trained time series model that predicts directional volatility trends.
+  </Tab>
+  <Tab title="Endpoint">
+    https://[BASE_URL]/genesis/ts-forecasting-model
+  </Tab>
+  </Tabs>
+  </Card>
+  
+  <Card
+    title="Trading Agent - Single Price Path"
+    sub
+    icon="lightbulb" iconType="duotone" color="#8fbc8f"
+  >
+  <Tabs>
+  
+  <Tab title="Description">
+   
+    **Price Path Analysis:**
+
+    Evaluates a single price path per API call and performs sequential time series analysis.
+
+  </Tab>
+  <Tab title="Endpoint">
+    https://[BASE_URL]/genesis/trading-agent
+  </Tab>
+  </Tabs>
+  </Card>
+  <Note>In Development</Note>
+  <Card
+    title="Trading Agent - Multi-Price Path"
+    sub
+    icon="lightbulb" iconType="duotone" color="#ff8c00"
+  >
+  <Tabs>
+  
+  <Tab title="Description">
+
+    **Price Path Analysis:**
+
+    Analyses multiple price paths (up to 3,000) per API call using a Monte Carlo inspired search algorithm.
+
+  </Tab>
+  <Tab title="Endpoint">
+    https://[BASE_URL]/genesis/trading-agent/mpp
+  </Tab>
+  </Tabs>
+  </Card>
+  
+</CardGroup>
+
