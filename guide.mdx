@@ -1,20 +1,37 @@
 ---
 title: 'Model Guide'
 description: 'Description of your new file.'
+slug: '/models-guide'
+
 ---
 
-### Model Training 
-All models are trained using synthetic data to ensure that each model will be able to generalise to different asset classes and timeframes.
 
-### Time Series Model 
+<Tip>All models are trained using synthetic data to ensure that each model will be able to generalise to different asset classes and timeframes.</Tip>
+
+## Time Series Model 
 
 A pre-trained model designed to forecast directional volatility trends and expected price range within a defined period. The model can analyse price data across all asset classes, identifying trends from tick-level to long term horizons. 
 
-**How to Interpret the results** 
+### Key Features
 
-Directional Price Forecast 
+**Directional Price Forecasts**
 
-Risk Forecast 
+- Predicts the price trend for the financial instrument.
+- Multiple timeframe analysis will show how prices are changing over different periods.
+
+**Risk Forecasts**
+
+- Defines a range for expected price movement during the forecast period
+- Can be used to assess and quantify potential market risks
+- Serves as a potential signal for trend changes. If price moves outside this range, it may indicate a shift in the instrument's trend. Such signals can be confirmed by analysing different timeframes
+
+**Forecast Range**
+
+- Provides a holistic view of price movement from tick level to weeks ahead.
+
+**Position Management**
+
+- Manages trades based on forecasted directions and risk boundaries.
 
 
 
@@ -25,37 +42,51 @@ Time Series Model API Guidance: [Documentation](https://docs.sumtyme.ai/ts-model
 
 
 
-### Trading Agent
+## Trading Agent
 
-The trading agent is designed to navigate various markets and timeframes by recognizing consistent directional volatility patterns. Its performance is influenced by the price path, meaning that different lengths and aggregation periods can yield varying numbers of identified trade opportunities.
+The Agent was trained to identify and evaluate trading opportunities across global markets. It leverages directional volatility patterns as a primary indicator for potential trades. The Agent can adapt to various market environments without retraining, analysing price movements to detect consistent patterns that may signal profitable trading opportunities.
+
+### Key Features
 
 **Search Multiple Price Paths**
 
-For example, when analysing Tesla's 1-minute price data from September 3, 2024, starting at 9:30 AM and ending on September 29, 2024, the Agent identified 44 trade opportunities using a 5 day aggregation.
+The Agent identifies trading opportunities by simultaneously examining multiple price paths. By analysing an instrument's price path from different starting points it can provide a multidimensional view of market dynamics. For example:
 
-In contrast, when the Agent analysed an additional 19 price paths, each starting the day after the previous one, the total number of trade opportunities increased to 187.
+- When analysing Tesla's 1-minute price data from September 3, 2024 (9:30 AM) to September 29, 2024, using a 5-day aggregation, the Agent identified 44 trade opportunities.
 
-This illustrates how incorporating multiple price paths can significantly enhance the agent's ability to identify trades.
+- By analysing an additional 19 price paths, each starting the day after the previous one, the total number of identified opportunities increased to 187.
 
-**Aggregation Periods**
+This multi-path approach significantly enhances the Agent's ability to identify potential trades.
 
-gggggggggggggggg
+**Timeframe Aggregation**
 
+The Agent combines short-term price data (like 1-minute intervals) into longer periods (such as 5-minute intervals). This 'aggregation' helps identify consistent volatility patterns across different timeframes, potentially indicating profitable trading opportunities.
 
-**True Signal**
+**Valid Trade Signal**
 
-A trade opportunity is deemed valid when there are no prevailing open trade opportunities. Specifically, both short-term and long-term volatility exits for existing trades must not be "None."
+A trade opportunity is considered valid under the following conditions:
 
-**Filter False Signals**
-Trade opportunities should be disregarded if there are still prevailing open trades. In this case, previous opportunities may have either or both short-term and long-term volatility exits listed as "None."
+- There are no existing open trade opportunities.
+- Both short-term and long-term volatility exits for any previously identified opportunities have been filled.
 
-**Best Entry Signal**
-The earliest true signal is regarded as the best entry point, offering the lowest risk for a directional trade. However, subsequent trading opportunities can be pursued at the client's discretion.
+**Invalid Trade Signal**
+
+The following criteria should be applied to filter out false signals:
+
+Trade opportunities are disregarded if there are any prevailing open trades.
+The following criteria should be applied to filter out false signals:
+- The short-term volatility exit is not filled.
+- The long-term volatility exit is not filled.
+
+This approach minimises the risk of entering a trade when the price might still be influenced by previous positions, ensuring that only reliable and actionable signals are pursued. 
+
+**Optimal Entry Signal**
+
+The earliest buy or sell signal within a series of consecutive signals is regarded as the best entry point, offering the lowest risk for a directional trade. However, subsequent trading opportunities can be pursued at the client's discretion.
 
 **Final Exit Signal**
-If a trading position remains open, it should be closed at the first opposing trade signal encountered.
 
-
+Trading positions should typically close upon receiving an opposing signal. However, clients may choose to keep positions open at their discretion.
 
 
 Trading Agent API Guidance: [Documentation](https://docs.sumtyme.ai/ts-model)
