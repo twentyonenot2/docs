@@ -1,0 +1,61 @@
+---
+title: 'Model Guide'
+description: 'Description of your new file.'
+---
+
+### Model Training 
+All models are trained using synthetic data to ensure that each model will be able to generalise to different asset classes and timeframes.
+
+### Time Series Model 
+
+A pre-trained model designed to forecast directional volatility trends and expected price range within a defined period. The model can analyse price data across all asset classes, identifying trends from tick-level to long term horizons. 
+
+**How to Interpret the results** 
+
+Directional Price Forecast 
+
+Risk Forecast 
+
+
+
+
+Time Series Model API Guidance: [Documentation](https://docs.sumtyme.ai/ts-model)
+
+
+
+
+
+### Trading Agent
+
+The trading agent is designed to navigate various markets and timeframes by recognizing consistent directional volatility patterns. Its performance is influenced by the price path, meaning that different lengths and aggregation periods can yield varying numbers of identified trade opportunities.
+
+**Search Multiple Price Paths**
+
+For example, when analysing Tesla's 1-minute price data from September 3, 2024, starting at 9:30 AM and ending on September 29, 2024, the Agent identified 44 trade opportunities using a 5 day aggregation.
+
+In contrast, when the Agent analysed an additional 19 price paths, each starting the day after the previous one, the total number of trade opportunities increased to 187.
+
+This illustrates how incorporating multiple price paths can significantly enhance the agent's ability to identify trades.
+
+**Aggregation Periods**
+
+gggggggggggggggg
+
+
+**True Signal**
+
+A trade opportunity is deemed valid when there are no prevailing open trade opportunities. Specifically, both short-term and long-term volatility exits for existing trades must not be "None."
+
+**Filter False Signals**
+Trade opportunities should be disregarded if there are still prevailing open trades. In this case, previous opportunities may have either or both short-term and long-term volatility exits listed as "None."
+
+**Best Entry Signal**
+The earliest true signal is regarded as the best entry point, offering the lowest risk for a directional trade. However, subsequent trading opportunities can be pursued at the client's discretion.
+
+**Final Exit Signal**
+If a trading position remains open, it should be closed at the first opposing trade signal encountered.
+
+
+
+
+Trading Agent API Guidance: [Documentation](https://docs.sumtyme.ai/ts-model)
