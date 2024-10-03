@@ -52,18 +52,6 @@ slug: '/trading-agent'
 
 ## Request Example
 
-```python
-
-{
-'Datetime': ["2023-01-01 00:00:00",...,"2024-08-24 00:00:00"], 
-'Open': [25.98,...,50.99], 
-'High': [30.65,...,52.65], 
-'Low': [23.76,...,33.45], 
-'Close': [24.01,...,35.76], 
-"Aggregation": [5]
-}
-
-```
 
 ```python
 
@@ -116,23 +104,23 @@ slug: '/trading-agent'
 
 ```python
 {
-"2024-02-24 00:00:00": {
+"2024-07-24 00:00:00": {
       "conviction": "Strong",
-      "direction": "1"
+      "direction": "buy"
       "stv_exit": "2024-03-10 00:00:00",
       "ltv_exit": "2024-05-08 00:00:00",
       "pre_existing_trade": "False"
     },
-"2024-03-25 00:00:00": {
+"2024-07-25 00:00:00": {
       "conviction": "Medium",
-      "direction": "1"
+      "direction": "buy"
       "stv_exit": "2024-03-10 00:00:00",
       "ltv_exit": "",
       "pre_existing_trade": "False"
     },
-"2024-04-26 00:00:00": {
+"2024-08-24 00:00:00": {
       "conviction": "Low",
-      "direction": "1"
+      "direction": "buy"
       "stv_exit": "",
       "ltv_exit": "",
       "pre_existing_trade": "true"
