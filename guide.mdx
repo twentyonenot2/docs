@@ -61,6 +61,8 @@ This multi-path approach significantly enhances the Agent's ability to identify 
 
 The Agent combines short-term price data (like 1-minute intervals) into longer periods (such as 5-minute intervals). This 'aggregation' helps identify consistent volatility patterns across different timeframes, potentially indicating profitable trading opportunities.
 
+<Tip>In backtesting, most historic volatility-based exits, both short-term and long-term, would typically be filled. Consequently, valid trades can be identified by ensuring that the trade opportunity date occurs after all previous long-term volatility exit dates.</Tip>
+
 **Valid Trade Signal**
 
 A trade opportunity is considered valid under the following conditions:
@@ -79,6 +81,8 @@ The following criteria should be applied to filter out false signals:
 
 This approach minimises the risk of entering a trade when the price might still be influenced by previous positions, ensuring that only reliable and actionable signals are pursued. 
 
+<Tip>In backtesting, most historic volatility-based exits, both short-term and long-term, would typically be filled. Consequently, valid trades can be identified by ensuring that the trade opportunity date occurs after all previous long-term volatility exit dates.</Tip>
+
 **Optimal Entry Signal**
 
 The earliest buy or sell signal within a series of consecutive signals is regarded as the best entry point, offering the lowest risk for a directional trade. However, subsequent trading opportunities can be pursued at the client's discretion.
@@ -86,6 +90,8 @@ The earliest buy or sell signal within a series of consecutive signals is regard
 **Final Exit Signal**
 
 Trading positions should typically close upon receiving an opposing signal. However, clients may choose to keep positions open at their discretion.
+
+
 
 
 Trading Agent API Guidance: [Documentation](https://docs.sumtyme.ai/ts-model)
