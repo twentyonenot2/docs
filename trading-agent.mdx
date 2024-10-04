@@ -75,10 +75,10 @@ slug: '/trading-agent'
   Trade opportunity timestamp 
 </ResponseField>
 
-<ResponseField name="conviction" type="string">
-   <Check>**Strong:** Optimal trade entry.</Check>
-   <Note>**Medium:** Possible trade entry.</Note>
-   <Warning>**Low:** Trade opportunity identified but optimal entry missed.</Warning>
+<ResponseField name="trade_entry" type="string">
+   <Check>**Optimal:** Ideal trade entry.</Check>
+   <Note>**Suboptimal:** Trade entry identified, however earlier signal found.</Note>
+   
 
 </ResponseField>
 
@@ -104,26 +104,20 @@ slug: '/trading-agent'
 
 ```python
 {
-"2024-07-24 00:00:00": {
-      "conviction": "Strong",
-      "direction": "buy"
-      "stv_exit": "2024-03-10 00:00:00",
-      "ltv_exit": "2024-05-08 00:00:00",
-      "pre_existing_trade": "False"
-    },
+
 "2024-07-25 00:00:00": {
-      "conviction": "Medium",
+      "conviction": "Optimal",
       "direction": "buy"
       "stv_exit": "2024-03-10 00:00:00",
       "ltv_exit": "",
       "pre_existing_trade": "False"
     },
 "2024-08-24 00:00:00": {
-      "conviction": "Low",
+      "conviction": "Suboptimal",
       "direction": "buy"
       "stv_exit": "",
       "ltv_exit": "",
-      "pre_existing_trade": "true"
+      "pre_existing_trade": "True"
     }
 }
 ```
