@@ -5,18 +5,16 @@ slug: '/models-guide'
 ---
 
 
-<Tip>All models are trained using synthetic data to ensure that each model will be able to generalise to different asset classes and timeframes.</Tip>
+## Time Series Model: Directional Price Volatility Forecasting
 
-## Time Series Model 
-
-A pre-trained model designed to forecast directional volatility trends and expected price range within a defined period. The model can analyse price data across all asset classes, identifying trends from tick-level to long term horizons. 
+A pre-trained model designed to forecast directional volatility trends and expected price range within a defined time period. The model can analyse OHLC (Open, High, Low, Close) price data across multiple asset classes, identifying trends from tick-level to long term horizons. 
 
 ### Key Features
 
 **Directional Price Forecasts**
 
 - Predicts the price trend for the financial instrument.
-- Multiple timeframe analysis will show how prices are changing over different periods.
+- Multiple timeframe analysis will show how prices are changing holistically.
 
 **Risk Forecasts**
 
@@ -33,17 +31,53 @@ A pre-trained model designed to forecast directional volatility trends and expec
 - Manages trades based on forecasted directions and risk boundaries.
 
 
+### Training Process
+The model was trained using a large dataset of synthetic OHLC price data generated in-house. This approach allows for robust performance across various market conditions and asset classes. By using synthetic data, the model has learnt from a diverse range of market scenarios, enhancing its adaptability and generalisation capabilities.
 
+
+### Model Architecture
+The Time Series Model employs an encoder-decoder inspired architecture, specifically tailored for directional price volatility forecasting:
+
+**1. Encoder**
+
+- Processes the input OHLC price data for an instrument.
+- Encodes each OHLC period into a proprietary volatility value.
+- This value represents the instrument's periodic directional magnitude.
+
+**2. Long-Term Attention Mechanism**
+
+- Incorporates Markov model probabilities to capture short & long-term dependencies.
+- Enables the model to consider historical patterns and transitions over extended periods.
+
+**3. Decoder**
+
+- Utilises the encoded volatility values
+- Generates accurate directional trend forecasts for the defined timeframe.
+
+This architecture enables the model to effectively capture the complex patterns in price movements and translate them into low-latency actionable directional forecasts.
+
+### Applicable Asset Classes 
+- Bonds 
+- Cryptocurrencies
+- Derivatives 
+- Equities 
+- Indices 
+- FX 
 
 Time Series Model API: [Documentation](https://docs.sumtyme.ai/ts-model)
-
-
-
 
 
 ## Trading Agent
 
 The Agent was trained to identify and evaluate trading opportunities across global markets. It leverages directional volatility patterns as a primary indicator for potential trades. The Agent can adapt to various market environments without retraining, analysing price movements to detect consistent patterns that may signal profitable trading opportunities.
+
+
+### Training Process
+
+The Agent has been trained to leverage the directional volatility forecasts and market risk forecasts from the Time Series Model to identify the most significant directional patterns with highest probability of directional movement.
+
+
+ leverage the directional volatility and associated risk forecasts from the Time Series Model filtering  out noise to focus on the most significant directional patterns.
 
 ### Key Features
 
@@ -60,8 +94,6 @@ This multi-path approach significantly enhances the Agent's ability to identify 
 **Timeframe Aggregation**
 
 The Agent combines short-term price data (like 1-minute intervals) into longer periods (such as 5-minute intervals). This 'aggregation' helps identify consistent volatility patterns across different timeframes, potentially indicating profitable trading opportunities.
-
-
 
 **Valid Trade Signal**
 
@@ -90,8 +122,5 @@ The earliest buy or sell signal within a series of consecutive signals is regard
 **Final Exit Signal**
 
 Trading positions should typically close upon receiving an opposing signal. However, clients may choose to keep positions open at their discretion.
-
-
-
 
 Trading Agent API Guidance: [Documentation](https://docs.sumtyme.ai/ts-model)
