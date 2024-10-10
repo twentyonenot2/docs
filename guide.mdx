@@ -42,17 +42,19 @@ The Time Series Model employs an encoder-decoder inspired architecture, specific
 **1. Encoder**
 
 - Processes the input OHLC price data.
-- Encodes each OHLC period into a proprietary volatility value.
+- Encodes each OHLC period into a single proprietary volatility value.
 - This value represents the instrument's periodic directional magnitude.
+- This encoding step helps reduce noise and focus on the most relevant price movements.
 
 **2. Long-Term Attention Mechanism**
 
-- Incorporates Markov model probabilities to capture short & long-term dependencies.
-- Enables the model to consider historical patterns and transitions over extended periods.
+- Incorporates Markov model probabilities to analyse the likelihood of transitioning from one directional volatility state to another.
+- The attention mechanism allows the model to weigh different historical periods differently when making a forecast.
+- Through incorporating both short and long-term dependencies, the model can capture both immediate market reactions and longer-term market patterns.
 
 **3. Decoder**
 
-- Utilises the encoded volatility values
+- The decoder uses the encoded volatility values and attention-weighted historical context to produce the final forecast. 
 - Generates accurate directional trend forecasts for the defined timeframe.
 
 This architecture enables the model to effectively capture the complex patterns in price movements and translate them into low-latency actionable directional forecasts.
