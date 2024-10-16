@@ -34,25 +34,25 @@ slug: 'ts-model'
 <ParamField body="interval" type="string" required>
 
 <Expandable title="Options">
-    <ResponseField name="1m" type="string">
+    <ParamField name="1m" type="string">
       1 minute time series
-    </ResponseField>
+    </ParamField>
 
-    <ResponseField name="5m" type="string">
+    <ParamField name="5m" type="string">
       5 minute time series
-    </ResponseField>
+    </ParamField>
 
-    <ResponseField name="1h" type="string">
+    <ParamField name="1h" type="string">
       1 hour time series
-    </ResponseField>
+    </ParamField>
 
-    <ResponseField name="d" type="string">
+    <ParamField name="d" type="string">
       Daily time series
-    </ResponseField>
+    </ParamField>
 
-    <ResponseField name="w" type="string">
+    <ParamField name="w" type="string">
       Weekly time series
-    </ResponseField>
+    </ParamField>
 
   </Expandable>
 </ParamField>
@@ -61,9 +61,9 @@ slug: 'ts-model'
 
 <ParamField body="date_from" type="string" required>
 <Expandable title="Format">
-    <ResponseField name="date_from" type="string">
+    <ParamField name="date_from" type="string">
       YYYY-MM-DD HH:MM:SS
-    </ResponseField>
+    </ParamField>
 
   </Expandable>
 </ParamField>
@@ -72,9 +72,9 @@ slug: 'ts-model'
 
 <ParamField body="date_to" type="list" required>
 <Expandable title="Format">
-    <ResponseField name="date_to" type="string">
+    <ParamField name="date_to" type="string">
       YYYY-MM-DD HH:MM:SS
-    </ResponseField>
+    </ParamField>
 
   </Expandable>
 </ParamField>
@@ -92,12 +92,34 @@ Opening price
 
 
 <ResponseField name="current_trend" type="number">
-Current trend: Bullish (1) or Bearish (-1)
+<Expandable title="Responses">
+    <ResponseField name="1" type="string">
+      Bullish Trend
+    </ResponseField>
+
+    <ResponseField name="-1" type="string">
+      Bearish Trend
+    </ResponseField>
+
+  </Expandable>
 </ResponseField>
 
 
 <ResponseField name="price_trend_forecast" type="number">
-Predicted trend: Bullish (1), Bearish (-1), Uncertain (0)
+<Expandable title="Responses">
+    <ResponseField name="1" type="string">
+      Bullish Trend
+    </ResponseField>
+
+    <ResponseField name="-1" type="string">
+      Bearish Trend
+    </ResponseField>
+
+    <ResponseField name="0" type="string">
+      Uncertain
+    </ResponseField>
+
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="cumulative_trend_forecast" type="number">
