@@ -71,7 +71,7 @@ slug: '/trading-agent'
 
 
 
-<ParamField body="date_to_forecast" type="list" required>
+<ParamField body="date_to_forecast" type="string" required>
 <Expandable title="Format">
     <ResponseField name="date_to" type="string">
       Date and time to generate forecast for (format: YYYY-MM-DD HH:MM:SS)
@@ -79,7 +79,7 @@ slug: '/trading-agent'
 
   </Expandable>
 </ParamField>
-<ParamField body="Aggregation" type="list" required>
+<ParamField body="aggregation" type="string" required>
   <Expandable title="Options">
     <ResponseField name="3" type="number">
       3 period aggregation
@@ -195,7 +195,8 @@ params = {
     "ticker": "MSFT",
     "interval": "5m",
     "historical_data_from": "2020-08-03 13:30:00",
-    "date_to_forecast": "2024-08-04 19:00:00"
+    "date_to_forecast": "2024-08-04 19:00:00",
+    "aggregation":"5"
 }
 
 # Headers for the API request
