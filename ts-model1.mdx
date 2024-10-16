@@ -114,7 +114,7 @@ Expected price movement range (absolute)
 </ResponseField>
 
 
-## Request Example
+## Example - API Request
 
 ```python
 
@@ -130,7 +130,7 @@ ACCESS_TOKEN = ""
 params = {
     "ticker": "AAPL",
     "interval": "d",
-    "date_from": "2020-08-01 00:00:00",
+    "date_from": "2020-08-03 00:00:00",
     "date_to": "2024-09-04 00:00:00"
 }
 
@@ -146,13 +146,13 @@ api_url = f"{BASE_URL}/genesis/ts-model"
 result = requests.get(api_url).json()
 ```
 
-## Response Example
+## Example - API Response
 
 ```python
 
 {
   
-  "2024-08-03 00:00:00":
+  "2020-08-03 00:00:00":
     {
       "open":194.33,
       "current_trend":1,
@@ -161,7 +161,7 @@ result = requests.get(api_url).json()
       "risk_forecast":193.94
     },
 
-  "2024-08-04 00:00:00":
+  "2020-08-04 00:00:00":
     {
       "open":194.95,
       "current_trend":1,
