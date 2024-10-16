@@ -25,48 +25,101 @@ slug: '/trading-agent'
   The authorization token for API requests. This should be a valid Bearer token.
    </ParamField>
 
-## Request Body 
+## Parameter Fields 
 
-
-<ParamField body="Datetime" type="list" required>
+<ParamField body="ticker" type="string" required>
 </ParamField>
 
-<ParamField body="Open" type="list" required>
+
+
+<ParamField body="interval" type="string" required>
+
+<Expandable title="Options">
+    <ResponseField name="1m" type="string">
+      1 minute time series
+    </ResponseField>
+
+    <ResponseField name="5m" type="string">
+      5 minute time series
+    </ResponseField>
+
+    <ResponseField name="1h" type="string">
+      1 hour time series
+    </ResponseField>
+
+    <ResponseField name="d" type="string">
+      Daily time series
+    </ResponseField>
+
+    <ResponseField name="w" type="string">
+      Weekly time series
+    </ResponseField>
+
+  </Expandable>
 </ParamField>
 
-<ParamField body="High" type="list" required>
+
+
+<ParamField body="historical_data_from" type="string" required>
+<Expandable title="Format">
+    <ResponseField name="date_from" type="string">
+      Start date and time for historical data retrieval (format: YYYY-MM-DD HH:MM:SS)
+    </ResponseField>
+
+  </Expandable>
 </ParamField>
 
-<ParamField body="Low" type="list" required>
-</ParamField>
 
-<ParamField body="Close" type="list" required>
-</ParamField>
 
+<ParamField body="date_to_forecast" type="list" required>
+<Expandable title="Format">
+    <ResponseField name="date_to" type="string">
+      Date and time to generate forecast for (format: YYYY-MM-DD HH:MM:SS)
+    </ResponseField>
+
+  </Expandable>
+</ParamField>
 <ParamField body="Aggregation" type="list" required>
-  Accepted value range: 3-10
+  <Expandable title="Options">
+    <ResponseField name="3" type="number">
+      3 period aggregation
+    </ResponseField>
+
+    <ResponseField name="4" type="number">
+      4 period aggregation
+    </ResponseField>
+
+    <ResponseField name="5" type="number">
+      5 period aggregation
+    </ResponseField>
+
+    <ResponseField name="6" type="number">
+      6 period aggregation
+    </ResponseField>
+
+    <ResponseField name="7" type="number">
+      7 period aggregation
+    </ResponseField>
+
+    <ResponseField name="8" type="number">
+      8 period aggregation
+    </ResponseField>
+
+    <ResponseField name="9" type="number">
+      9 period aggregation
+    </ResponseField>
+
+    <ResponseField name="10" type="number">
+      10 period aggregation
+    </ResponseField>
+
+  </Expandable>
 </ParamField>
 
 <Tip>To effectively identify trading opportunities, exploring various combinations of time series lengths and timeframe aggregations can help uncover optimal entry points.</Tip>
 
 
-## Request Example
 
-
-```python
-
-## To identify whether there is a trading opportunity on Feb 24th, zero (0) can be used. 
-
-{
-'Datetime': ["2024-01-01 00:00:00",...,"2024-08-24 00:00:00"], 
-'Open': [25.98,...,0], 
-'High': [30.65,...,0], 
-'Low': [23.76,...,0], 
-'Close': [24.01,...,0], 
-"Aggregation": [5]
-}
-
-```
 
 
 ## Response Fields
@@ -75,93 +128,97 @@ slug: '/trading-agent'
   Trade opportunity timestamp 
 </ResponseField>
 
-<ResponseField name="trade_entry" type="string">
-   <Check>**Optimal:** Ideal trade entry.</Check>
-   <Note>**Suboptimal:** Trade entry identified, however earlier signal found.</Note>
-   
+<ResponseField name="entry_quality" type="string">
+  <Expandable title="Options">
+    <ResponseField name="Optimal" type="string">
+      Entry at ideal price point.
+    </ResponseField>
+    <ResponseField name="Suboptimal" type="string">
+      Trade entry identified, however ideal price point missed.
+    </ResponseField>
+  </Expandable>   
 
 </ResponseField>
 
 <ResponseField name="direction" type="string">
-  Buy or Sell
+  <Expandable title="Options">
+    <ResponseField name="buy" type="string">
+      Long position identified
+    </ResponseField>
+
+    <ResponseField name="sell" type="string">
+      Short position identified
+    </ResponseField>
+
+  </Expandable>
 </ResponseField>
 
 <ResponseField name="stv_exit" type="string">
-  Short-term volatility exit warning
+  Exit warning due to short-term volatility patterns 
 </ResponseField>
 
 <ResponseField name="ltv_exit" type="string">
-  Long-term volatility exit warning 
+  Exit warning due to long-term volatility patterns 
 </ResponseField>
 
-<ResponseField name="pre_existing_trade" type="string">
-  Previous trade opportunity still open (True or False)
+<ResponseField name="open_trade" type="boolean">
+  Indicates if a previous trade opportunity is still active
 </ResponseField>
 
 
 
-## Response Example
+
+## Example - API Request
+
+```python
+
+# Import necessary libraries
+import requests  
+import json  
+
+# Define base URL and access token for the API
+BASE_URL = ""  
+ACCESS_TOKEN = ""  
+
+# Query parameters for the API request
+params = {
+    "ticker": "MSFT",
+    "interval": "5m",
+    "historical_data_from": "2020-08-03 13:30:00",
+    "date_to_forecast": "2024-08-04 19:00:00"
+}
+
+# Headers for the API request
+headers = {
+    "Authorization": f"Bearer {ACCESS_TOKEN}"
+}
+
+# API endpoint
+api_url = f"{BASE_URL}/genesis/trading-agent"
+
+# Make a GET request to the API and parse the JSON response
+result = requests.get(api_url).json()
+```
+
+
+
+## Example - API Response
 
 ```python
 {
-
-"2024-07-25 00:00:00": {
-      "conviction": "Optimal",
+"2024-08-21 15:05:00": {
+      "entry_quality": "Optimal",
       "direction": "buy"
-      "stv_exit": "2024-03-10 00:00:00",
+      "stv_exit": "2024-08-28 14:35:00",
       "ltv_exit": "",
-      "pre_existing_trade": "False"
+      "open_trade": "False"
     },
-"2024-08-24 00:00:00": {
-      "conviction": "Suboptimal",
+"2024-08-30 19:00:00": {
+      "entry_quality": "Suboptimal",
       "direction": "buy"
       "stv_exit": "",
       "ltv_exit": "",
-      "pre_existing_trade": "True"
+      "open_trade": "True"
     }
 }
 ```
-## API Request Example
-
-```python
-# Import necessary libraries
-import pandas as pd
-import requests
-
-# Define function to create json for API 
-def trading_model_dict(df,aggregation):
-    # Convert DataFrame to dictionary format
-    return {
-        "Datetime": df['Datetime'].tolist(),
-        "Open": df['Open'].tolist(),
-        "High": df['High'].tolist(),
-        "Low": df['Low'].tolist(),
-        "Close": df['Close'].tolist(),
-        "Aggregation": [aggregation] 
-    }
-
-# Import Data
-df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
-
-# Create JSON payload for API request
-data = trading_model_dict(df,5)
-
-# Specify Base URL & Access Token
-BASE_URL = ""
-TOKEN = ""
-
-# Set API endpoint URL
-url = f"{BASE_URL}/genesis/trading-agent"
-
-# Set header for API request
-headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
-
-# Send POST request to API
-response = requests.post(url, json=data, headers=headers)
-
-# Parse JSON response
-resp = response.json()
-
-```
-
-
