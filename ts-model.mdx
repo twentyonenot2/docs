@@ -34,47 +34,47 @@ slug: 'ts-model'
 <ParamField body="interval" type="string" required>
 
 <Expandable title="Options">
-    <ParamField name="1m" type="string">
+    <ResponseField name="1m" type="string">
       1 minute time series
-    </ParamField>
+    </ResponseField>
 
-    <ParamField name="5m" type="string">
+    <ResponseField name="5m" type="string">
       5 minute time series
-    </ParamField>
+    </ResponseField>
 
-    <ParamField name="1h" type="string">
+    <ResponseField name="1h" type="string">
       1 hour time series
-    </ParamField>
+    </ResponseField>
 
-    <ParamField name="d" type="string">
+    <ResponseField name="d" type="string">
       Daily time series
-    </ParamField>
+    </ResponseField>
 
-    <ParamField name="w" type="string">
+    <ResponseField name="w" type="string">
       Weekly time series
-    </ParamField>
+    </ResponseField>
 
   </Expandable>
 </ParamField>
 
 
 
-<ParamField body="date_from" type="string" required>
+<ParamField body="historical_data_from" type="string" required>
 <Expandable title="Format">
-    <ParamField name="date_from" type="string">
-      YYYY-MM-DD HH:MM:SS
-    </ParamField>
+    <ResponseField name="date_from" type="string">
+      Start date and time for historical data retrieval (format: YYYY-MM-DD HH:MM:SS)
+    </ResponseField>
 
   </Expandable>
 </ParamField>
 
 
 
-<ParamField body="date_to" type="list" required>
+<ParamField body="date_to_forecast" type="list" required>
 <Expandable title="Format">
-    <ParamField name="date_to" type="string">
-      YYYY-MM-DD HH:MM:SS
-    </ParamField>
+    <ResponseField name="date_to" type="string">
+      Date and time to generate forecast for (format: YYYY-MM-DD HH:MM:SS)
+    </ResponseField>
 
   </Expandable>
 </ParamField>
@@ -83,15 +83,15 @@ slug: 'ts-model'
 
 
 <ResponseField name="datetime" type="string">
-  Trade opportunity timestamp 
+  Timestamp for forecast
 </ResponseField>
 
 <ResponseField name="open" type="number">
-Opening price
+Opening price for period
 </ResponseField>
 
 
-<ResponseField name="current_trend" type="number">
+<ResponseField name="current_trend_direction" type="number">
 <Expandable title="Responses">
     <ResponseField name="1" type="string">
       Bullish Trend
@@ -105,7 +105,7 @@ Opening price
 </ResponseField>
 
 
-<ResponseField name="price_trend_forecast" type="number">
+<ResponseField name="forecasted_trend_direction" type="number">
 <Expandable title="Responses">
     <ResponseField name="1" type="string">
       Bullish Trend
