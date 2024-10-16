@@ -79,25 +79,6 @@ slug: 'ts-model'
   </Expandable>
 </ParamField>
 
-
-
-
-
-
-## Request Example
-
-```python
-
-params = {
-        "ticker": "AAPL",
-        "interval": "5m", 
-        "date_from": "2024-01-01 00:00:00",
-        "date_to": "2024-09-10 00:00:00"
-    }
-
-```
-
-
 ## Response Fields
 
 
@@ -120,7 +101,7 @@ Predicted trend: Bullish (1), Bearish (-1), Uncertain (0)
 </ResponseField>
 
 <ResponseField name="cumulative_trend_forecast" type="number">
-Cumulative price trend forecast for comparison with actual price
+Cumulative price trend forecast for comparison with actual price (Not to Scale)
 </ResponseField>
 
 <ResponseField name="risk_forecast_%" type="number">
@@ -133,67 +114,82 @@ Expected price movement range (absolute)
 </ResponseField>
 
 
+## Request Example
+
+```python
+
+# Import necessary libraries
+import requests  
+import json  
+
+# Define base URL and access token for the API
+BASE_URL = ""  
+ACCESS_TOKEN = ""  
+
+# Query parameters for the API request
+params = {
+    "ticker": "AAPL",
+    "interval": "d",
+    "date_from": "2020-08-01 00:00:00",
+    "date_to": "2024-09-04 00:00:00"
+}
+
+# Headers for the API request
+headers = {
+    "Authorization": f"Bearer {ACCESS_TOKEN}"
+}
+
+# API endpoint
+api_url = f"{BASE_URL}/genesis/ts-model"
+
+# Make a GET request to the API and parse the JSON response
+result = requests.get(api_url).json()
+```
+
 ## Response Example
 
 ```python
 
 {
-  ..., 
-
-  "2024-08-24":
+  
+  "2024-08-03 00:00:00":
     {
-      "open":23.63,
+      "open":194.33,
+      "current_trend":1,
+      "price_trend_forecast":1,
+      "risk_forecast_%":-0.2,
+      "risk_forecast":193.94
+    },
+
+  "2024-08-04 00:00:00":
+    {
+      "open":194.95,
       "current_trend":1,
       "price_trend_forecast":0,
-      "risk_forecast_%":1.2,
-      "risk_forecast":23.35 
+      "risk_forecast_%":-0.52,
+      "risk_forecast":193.94 
+    }
+  
+  ..., 
+
+  "2024-09-03 00:00:00":
+    {
+      "open":286.35,
+      "current_trend":-1,
+      "price_trend_forecast":-1,
+      "risk_forecast_%":1.1,
+      "risk_forecast":289.5 
+    },
+
+  "2024-09-04 00:00:00":
+    {
+      "open":286.55,
+      "current_trend":-1,
+      "price_trend_forecast":-1,
+      "risk_forecast_%":0.9,
+      "risk_forecast":289.13
     }
     
 }
-
-```
-
-
-## API Request Example
-
-```python
-# Import necessary libraries
-import pandas as pd
-import requests
-
-# Define function to create json for API 
-def ts_model_dict(df):
-    # Convert DataFrame to dictionary format
-    return {
-        "Datetime": df['Datetime'].tolist(),
-        "Open": df['Open'].tolist(),
-        "High": df['High'].tolist(),
-        "Low": df['Low'].tolist(),
-        "Close": df['Close'].tolist()
-    }
-
-# Import Data
-df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
-
-# Create JSON payload for API request
-data = ts_model_dict(df)
-
-# Specify Base URL & Access Token
-BASE_URL = ""
-TOKEN = ""
-
-# Set API endpoint URL
-url = f"{BASE_URL}/genesis/ts-model"
-
-# Set header for API request
-headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
-
-# Send POST request to API
-response = requests.post(url, json=data, headers=headers)
-
-# Parse JSON response
-resp = response.json()
-
-print(resp['Analysis'])
 
 ```
