@@ -1,7 +1,7 @@
 ---
-title: 'Trading Agent'
+title: 'Trade Identifier - Data Submission'
 icon: 'cloud'
-slug: '/trading-agent'
+slug: '/trade-identifier-data-submission'
 
 ---
 
@@ -43,11 +43,8 @@ slug: '/trading-agent'
 <ParamField body="Close" type="list" required>
 </ParamField>
 
-<ParamField body="Aggregation" type="list" required>
-  Accepted value range: 3-10
-</ParamField>
 
-<Tip>To effectively identify trading opportunities, exploring various combinations of time series lengths and timeframe aggregations can help uncover optimal entry points.</Tip>
+<Tip>To effectively identify trading opportunities, exploring varying time series lengths can help uncover optimal entry points.</Tip>
 
 
 ## Request Example
@@ -62,8 +59,7 @@ slug: '/trading-agent'
 'Open': [25.98,...,0], 
 'High': [30.65,...,0], 
 'Low': [23.76,...,0], 
-'Close': [24.01,...,0], 
-"Aggregation": [5]
+'Close': [24.01,...,0]
 }
 
 ```
@@ -75,27 +71,16 @@ slug: '/trading-agent'
   Trade opportunity timestamp 
 </ResponseField>
 
-<ResponseField name="trade_entry" type="string">
-   <Check>**Optimal:** Ideal trade entry.</Check>
-   <Note>**Suboptimal:** Trade entry identified, however earlier signal found.</Note>
-   
+<ResponseField name="trade_identified" type="string">
+  <Expandable title="Options">
+    <ResponseField name="Long" type="string">
+      Long trade opportunity identified.
+    </ResponseField>
+    <ResponseField name="Short" type="string">
+      Short trade opportunity identified.
+    </ResponseField>
+  </Expandable>   
 
-</ResponseField>
-
-<ResponseField name="direction" type="string">
-  Buy or Sell
-</ResponseField>
-
-<ResponseField name="stv_exit" type="string">
-  Short-term volatility exit warning
-</ResponseField>
-
-<ResponseField name="ltv_exit" type="string">
-  Long-term volatility exit warning 
-</ResponseField>
-
-<ResponseField name="pre_existing_trade" type="string">
-  Previous trade opportunity still open (True or False)
 </ResponseField>
 
 
@@ -106,18 +91,10 @@ slug: '/trading-agent'
 {
 
 "2024-07-25 00:00:00": {
-      "conviction": "Optimal",
-      "direction": "buy"
-      "stv_exit": "2024-03-10 00:00:00",
-      "ltv_exit": "",
-      "pre_existing_trade": "False"
+      "trade_identified": "Long"
     },
 "2024-08-24 00:00:00": {
-      "conviction": "Suboptimal",
-      "direction": "buy"
-      "stv_exit": "",
-      "ltv_exit": "",
-      "pre_existing_trade": "True"
+      "trade_identified": "Long"
     }
 }
 ```
@@ -136,15 +113,14 @@ def trading_model_dict(df,aggregation):
         "Open": df['Open'].tolist(),
         "High": df['High'].tolist(),
         "Low": df['Low'].tolist(),
-        "Close": df['Close'].tolist(),
-        "Aggregation": [aggregation] 
+        "Close": df['Close'].tolist()
     }
 
 # Import Data
 df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
 # Create JSON payload for API request
-data = trading_model_dict(df,5)
+data = trading_model_dict(df)
 
 # Specify Base URL & Access Token
 BASE_URL = ""
