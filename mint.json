@@ -27,7 +27,8 @@
                 "model-library",
                 "guide",
                 "ts-model",
-                "trading-agent"
+                "trade-identifier",
+                "trade-identifier-feed"
             ]
         }
     ]

@@ -1,7 +1,7 @@
 ---
-title: 'Trade Identifier - Data Feed'
+title: 'Trading Agent'
 icon: 'cloud'
-slug: '/trade-identifier-data-feed'
+slug: '/trading-agent'
 
 ---
 
@@ -79,7 +79,42 @@ slug: '/trade-identifier-data-feed'
 
   </Expandable>
 </ParamField>
+<ParamField body="aggregation" type="string" required>
+  <Expandable title="Options">
+    <ResponseField name="3" type="number">
+      3 period aggregation
+    </ResponseField>
 
+    <ResponseField name="4" type="number">
+      4 period aggregation
+    </ResponseField>
+
+    <ResponseField name="5" type="number">
+      5 period aggregation
+    </ResponseField>
+
+    <ResponseField name="6" type="number">
+      6 period aggregation
+    </ResponseField>
+
+    <ResponseField name="7" type="number">
+      7 period aggregation
+    </ResponseField>
+
+    <ResponseField name="8" type="number">
+      8 period aggregation
+    </ResponseField>
+
+    <ResponseField name="9" type="number">
+      9 period aggregation
+    </ResponseField>
+
+    <ResponseField name="10" type="number">
+      10 period aggregation
+    </ResponseField>
+
+  </Expandable>
+</ParamField>
 
 <Tip>To effectively identify trading opportunities, exploring various combinations of time series lengths and timeframe aggregations can help uncover optimal entry points.</Tip>
 
@@ -102,17 +137,46 @@ slug: '/trade-identifier-data-feed'
   Trade opportunity timestamp 
 </ResponseField>
 
-<ResponseField name="trade_identified" type="string">
+<ResponseField name="entry_quality" type="string">
   <Expandable title="Options">
-    <ResponseField name="Long" type="string">
-      Long trade opportunity identified.
+    <ResponseField name="Optimal" type="string">
+      Entry at ideal price point.
     </ResponseField>
-    <ResponseField name="Short" type="string">
-      Short trade opportunity identified.
+    <ResponseField name="Suboptimal" type="string">
+      Trade entry identified, however ideal price point missed.
     </ResponseField>
   </Expandable>   
 
 </ResponseField>
+
+<ResponseField name="direction" type="string">
+  <Expandable title="Options">
+    <ResponseField name="buy" type="string">
+      Long position identified
+    </ResponseField>
+
+    <ResponseField name="sell" type="string">
+      Short position identified
+    </ResponseField>
+
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="stv_exit" type="string">
+  Exit warning due to short-term volatility patterns 
+</ResponseField>
+
+<ResponseField name="ltv_exit" type="string">
+  Exit warning due to long-term volatility patterns 
+</ResponseField>
+
+<ResponseField name="open_trade" type="boolean">
+  Indicates if a previous trade opportunity is still active
+</ResponseField>
+
+
+
+
 
 ## Example - API Request
 
@@ -131,7 +195,8 @@ params = {
     "ticker": "MSFT",
     "interval": "5m",
     "historical_data_from": "2020-08-03 13:30:00",
-    "date_to_forecast": "2024-08-04 19:00:00"
+    "date_to_forecast": "2024-08-04 19:00:00",
+    "aggregation":"5"
 }
 
 # Headers for the API request
@@ -153,10 +218,18 @@ result = requests.get(api_url).json()
 ```python
 {
 "2024-08-21 15:05:00": {
-      "trade_identified": "Long"
+      "entry_quality": "Optimal",
+      "direction": "buy"
+      "stv_exit": "2024-08-28 14:35:00",
+      "ltv_exit": "",
+      "open_trade": "False"
     },
 "2024-08-30 19:00:00": {
-      "trade_identified": "Short"
+      "entry_quality": "Suboptimal",
+      "direction": "buy"
+      "stv_exit": "",
+      "ltv_exit": "",
+      "open_trade": "True"
     }
 }
 ```
