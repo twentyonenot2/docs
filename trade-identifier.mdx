@@ -17,6 +17,7 @@ description: Accepts and processes client-supplied price data for calculations a
 <ParamField header="Authorization" type="string" required>
   The authorization token for API requests. This should be a valid Bearer token.
    </ParamField>
+   
 ## Request Body 
 <ParamField body="Datetime" type="list" required>
 </ParamField>
@@ -30,14 +31,30 @@ description: Accepts and processes client-supplied price data for calculations a
 </ParamField>
 <Tip>Combine different time intervals to discover potential trading opportunities and find optimal entry points.</Tip>
 ## Request Example
+
+
+When forecasting future price trends (for Feb 24th), you can use zeros (0) for unknown values:
+
 ```python
-## To identify whether there is a trading opportunity on Feb 24th, zero (0) can be used. 
 {
-'Datetime': ["2024-01-01 00:00:00",...,"2024-08-24 00:00:00"], 
-'Open': [25.98,...,0], 
-'High': [30.65,...,0], 
-'Low': [23.76,...,0], 
-'Close': [24.01,...,0]
+    'Datetime': ["2020-08-03 00:00:00", ..., "2024-09-04 00:00:00"],
+    'Open': [194.33, ..., 0],         # Unknown future value
+    'High': [197.02, ..., 0],         # Unknown future value
+    'Low': [192.87, ..., 0],          # Unknown future value
+    'Close': [195.45, ..., 0]         # Unknown future value
+}
+```
+
+
+For risk forecasting, use either the known opening price or the previous day's closing price, while keeping other future values as zero:
+
+```python
+{
+    'Datetime': ["2020-08-03 00:00:00", ..., "2024-09-04 00:00:00"],
+    'Open': [194.33, ..., 286.55],    # Known opening price or previous close
+    'High': [197.02, ..., 0],         # Unknown future value
+    'Low': [192.87, ..., 0],          # Unknown future value
+    'Close': [195.45, ..., 0]         # Unknown future value
 }
 ```
 ## Response Fields
@@ -54,22 +71,14 @@ description: Accepts and processes client-supplied price data for calculations a
     </ResponseField>
   </Expandable>   
 </ResponseField>
-## Response Example
-```python
-{
-"2024-07-25 00:00:00": {
-      "trade_identified": "Long"
-    },
-"2024-08-24 00:00:00": {
-      "trade_identified": "Long"
-    }
-}
-```
+
 ## API Request Example
 ```python
+
 # Import necessary libraries
 import pandas as pd
 import requests
+
 # Define function to create json for API 
 def trading_model_dict(df,aggregation):
     # Convert DataFrame to dictionary format
@@ -80,19 +89,38 @@ def trading_model_dict(df,aggregation):
         "Low": df['Low'].tolist(),
         "Close": df['Close'].tolist()
     }
+
 # Import Data
 df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
+
 # Create JSON payload for API request
 data = trading_model_dict(df)
+
 # Specify Base URL & Access Token
 BASE_URL = ""
 TOKEN = ""
+
 # Set API endpoint URL
 api_url = f"{BASE_URL}/genesis/trade-identifier"
+
 # Set header for API request
 headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
+
 # Send POST request to API
 response = requests.post(url, json=data, headers=headers)
+
 # Parse JSON response
 resp = response.json()
+```
+
+## API Response Example
+```python
+{
+"2024-07-25 00:00:00": {
+      "trade_identified": "Long"
+    },
+"2024-08-24 00:00:00": {
+      "trade_identified": "Long"
+    }
+}
 ```
