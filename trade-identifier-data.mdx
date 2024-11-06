@@ -1,0 +1,119 @@
+---
+title: 'Data Feed'
+icon: 'cloud'
+slug: '/trade-identifier-data-feed'
+description: Performs calculations and analysis using internal price data feeds.
+---
+## Model Details 
+<CardGroup cols={2}>
+  <Card title="Mandatory Time Periods">
+    1 - 501
+  </Card>
+  <Card title="Optional Time Periods">
+    502 - 5,000
+  </Card>
+</CardGroup>
+## Request Header 
+<ParamField header="Authorization" type="string" required>
+  The authorization token for API requests. This should be a valid Bearer token.
+   </ParamField>
+## Parameter Fields 
+<ParamField body="ticker" type="string" required>
+</ParamField>
+<ParamField body="interval" type="string" required>
+<Expandable title="Options">
+    <ResponseField name="1m" type="string">
+      1 minute time series
+    </ResponseField>
+    <ResponseField name="5m" type="string">
+      5 minute time series
+    </ResponseField>
+    <ResponseField name="1h" type="string">
+      1 hour time series
+    </ResponseField>
+    <ResponseField name="d" type="string">
+      Daily time series
+    </ResponseField>
+    <ResponseField name="w" type="string">
+      Weekly time series
+    </ResponseField>
+  </Expandable>
+</ParamField>
+<ParamField body="historical_data_from" type="string" required>
+<Expandable title="Format">
+    <ResponseField name="date_from" type="string">
+      Start date and time for historical data retrieval (format: YYYY-MM-DD HH:MM:SS)
+    </ResponseField>
+  </Expandable>
+</ParamField>
+<ParamField body="date_to_forecast" type="string" required>
+<Expandable title="Format">
+    <ResponseField name="date_to" type="string">
+      Date and time to generate forecast for (format: YYYY-MM-DD HH:MM:SS)
+    </ResponseField>
+  </Expandable>
+</ParamField>
+<Tip>Combine different time intervals to discover potential trading opportunities and find optimal entry points.</Tip>
+## Historical Data Availability
+| Timeframe | Data Range                           |
+| -------- | ------------------------------------- |
+| 1 minute     | Last 120 days                  |
+| 5 minutes      | Last 600 days                     |
+| 1 hour   | Since October 1, 2020 |
+| Daily   | Since January 1, 1990 |
+| Weekly   | Since January 1, 1990 |
+## Response Fields
+<ResponseField name="datetime" type="string">
+  Trade opportunity timestamp 
+</ResponseField>
+<ResponseField name="trade_identified" type="string">
+  <Expandable title="Options">
+    <ResponseField name="Long" type="string">
+      Long trade opportunity identified.
+    </ResponseField>
+    <ResponseField name="Short" type="string">
+      Short trade opportunity identified.
+    </ResponseField>
+  </Expandable>   
+</ResponseField>
+## Example - API Request
+```python
+# Import necessary libraries
+
+import requests  
+import json  
+
+# Define base URL and access token for the API
+BASE_URL = ""  
+ACCESS_TOKEN = ""  
+
+# Query parameters for the API request
+params = {
+    "ticker": "MSFT",
+    "interval": "5m",
+    "historical_data_from": "2020-08-03 13:30:00",
+    "date_to_forecast": "2024-08-04 19:00:00"
+}
+
+# Headers for the API request
+headers = {
+    "Authorization": f"Bearer {ACCESS_TOKEN}"
+}
+
+# API endpoint
+api_url = f"{BASE_URL}/genesis/trade-identifier-df"
+
+# Make a GET request to the API and parse the JSON response
+result = requests.get(api_url).json()
+```
+## Example - API Response
+```python
+{
+"2024-08-21 15:05:00": {
+      "trade_identified": "Long"
+    },
+"2024-08-30 19:00:00": {
+      "trade_identified": "Short"
+    }
+}
+```
