@@ -16,21 +16,31 @@
         }
     },
     "topbarLinks": [
-       {
-        "name": "Contact",
-        "url": "mailto:hello@sumtyme.ai"
-    }],
+        {
+            "name": "Contact",
+            "url": "mailto:hello@sumtyme.ai"
+        }
+    ],
     "navigation": [
         {
             "group": "sumtyme.ai",
             "pages": [
-                "model-library",
-                "guide",
+                "model-library"
+            ]
+        },
+        {
+            "group": "Time Series Model",
+            "pages": [
                 "ts-model",
+                "ts-model-data"
+            ]
+        },
+        {
+            "group": "Trade Identifier",
+            "pages": [
                 "trade-identifier",
                 "trade-identifier-data"
             ]
         }
     ]
 }
-
