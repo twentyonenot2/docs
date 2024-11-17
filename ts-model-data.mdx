@@ -134,29 +134,25 @@ description: Accepts and processes client-supplied price data for calculations a
 import pandas as pd
 import requests
 
-# Define function to create json for API 
-def trading_model_dict(df,aggregation):
-    # Convert DataFrame to dictionary format
-    return {
-        "Datetime": df['Datetime'].tolist(),
-        "Open": df['Open'].tolist(),
-        "High": df['High'].tolist(),
-        "Low": df['Low'].tolist(),
-        "Close": df['Close'].tolist()
-    }
+# Define base URL and access token for the API
+BASE_URL = ""  
+ACCESS_TOKEN = ""  
 
-# Import Data
-df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
+# Query parameters for the API request
+params = {
+    "ticker": "MSFT",
+    "interval": "5m",
+    "historical_data_from": "2020-08-03 13:30:00",
+    "date_to_forecast": "2024-08-04 19:00:00"
+}
 
-# Create JSON payload for API request
-data = trading_model_dict(df)
-
-# Specify Base URL & Access Token
-BASE_URL = ""
-TOKEN = ""
+# Headers for the API request
+headers = {
+    "Authorization": f"Bearer {ACCESS_TOKEN}"
+}
 
 # Set API endpoint URL
-api_url = f"{BASE_URL}/genesis/ts-model"
+api_url = f"{BASE_URL}/genesis/ts-model-df"
 
 # Set header for API request
 headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
