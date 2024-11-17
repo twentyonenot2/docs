@@ -5,105 +5,62 @@ slug: 'ts-model'
 description: Accepts and processes client-supplied price data for calculations and analysis.
 ---
 
-## Model Details 
-
+## Model Details
 
 <CardGroup cols={2}>
   <Card title="Mandatory Time Periods">
     1 - 501
   </Card>
+
   <Card title="Optional Time Periods">
     502 - 10,000
   </Card>
-
 </CardGroup>
 
-## Request Header 
-
+## Request Header
 
 <ParamField header="Authorization" type="string" required>
   The authorization token for API requests. This should be a valid Bearer token.
-   </ParamField>
-
-## Parameter Fields 
-
-<ParamField body="ticker" type="string" required>
 </ParamField>
 
+## Request Example
 
+When forecasting future price trends (for Feb 24th), you can use zeros (0) for unknown values:
 
-<ParamField body="interval" type="string" required>
+```python
+{
+    'Datetime': ["2020-08-03 00:00:00", ..., "2024-09-04 00:00:00"],
+    'Open': [194.33, ..., 0],         # Unknown future value
+    'High': [197.02, ..., 0],         # Unknown future value
+    'Low': [192.87, ..., 0],          # Unknown future value
+    'Close': [195.45, ..., 0]         # Unknown future value
+}
+```
 
-<Expandable title="Options">
-    <ResponseField name="1m" type="string">
-      1 minute time series
-    </ResponseField>
+For risk forecasting, use either the known opening price or the previous day's closing price, while keeping other future values as zero:
 
-    <ResponseField name="5m" type="string">
-      5 minute time series
-    </ResponseField>
-
-    <ResponseField name="1h" type="string">
-      1 hour time series
-    </ResponseField>
-
-    <ResponseField name="d" type="string">
-      Daily time series
-    </ResponseField>
-
-    <ResponseField name="w" type="string">
-      Weekly time series
-    </ResponseField>
-
-  </Expandable>
-</ParamField>
-
-
-
-<ParamField body="historical_data_from" type="string" required>
-<Expandable title="Format">
-    <ResponseField name="date_from" type="string">
-      Start date and time for historical data retrieval (format: YYYY-MM-DD HH:MM:SS)
-    </ResponseField>
-
-  </Expandable>
-</ParamField>
-
-
-
-<ParamField body="date_to_forecast" type="list" required>
-<Expandable title="Format">
-    <ResponseField name="date_to" type="string">
-      Date and time to generate forecast for (format: YYYY-MM-DD HH:MM:SS)
-    </ResponseField>
-
-  </Expandable>
-</ParamField>
-
-## Historical Data Availability
-
-| Timeframe | Data Range                           |
-| -------- | ------------------------------------- |
-| 1 minute     | Last 120 days                  |
-| 5 minutes      | Last 600 days                     |
-| 1 hour   | Since October 1, 2020 |
-| Daily   | Since January 1, 1990 |
-| Weekly   | Since January 1, 1990 |
+```python
+{
+    'Datetime': ["2020-08-03 00:00:00", ..., "2024-09-04 00:00:00"],
+    'Open': [194.33, ..., 286.55],    # Known opening price or previous close
+    'High': [197.02, ..., 0],         # Unknown future value
+    'Low': [192.87, ..., 0],          # Unknown future value
+    'Close': [195.45, ..., 0]         # Unknown future value
+}
+```
 
 ## Response Fields
-
 
 <ResponseField name="datetime" type="string">
   Timestamp for forecast
 </ResponseField>
 
 <ResponseField name="open" type="number">
-Opening price for period
+  Opening price for period
 </ResponseField>
 
-
 <ResponseField name="current_trend_direction" type="number">
-<Expandable title="Responses">
+  <Expandable title="Responses">
     <ResponseField name="1" type="string">
       Bullish Trend
     </ResponseField>
@@ -111,13 +68,11 @@ Opening price for period
     <ResponseField name="-1" type="string">
       Bearish Trend
     </ResponseField>
-
   </Expandable>
 </ResponseField>
 
-
 <ResponseField name="forecasted_trend_direction" type="number">
-<Expandable title="Responses">
+  <Expandable title="Responses">
     <ResponseField name="1" type="string">
       Bullish Trend
     </ResponseField>
@@ -129,54 +84,61 @@ Opening price for period
     <ResponseField name="0" type="string">
       Uncertain
     </ResponseField>
-
   </Expandable>
 </ResponseField>
 
 <ResponseField name="cumulative_trend_forecast" type="number">
-Cumulative price trend forecast for comparison with actual price (Not to Scale)
+  Cumulative price trend forecast for comparison with actual price (Not to Scale)
 </ResponseField>
 
 <ResponseField name="risk_forecast_%" type="number">
-Expected price movement range (%)
+  Expected price movement range (%)
 </ResponseField>
-
 
 <ResponseField name="risk_forecast" type="number">
-Expected price movement range (absolute)
+  Expected price movement range (absolute)
 </ResponseField>
-
 
 ## Example - API Request
 
 ```python
 
 # Import necessary libraries
-import requests  
-import json  
+import pandas as pd
+import requests
 
-# Define base URL and access token for the API
-BASE_URL = ""  
-ACCESS_TOKEN = ""  
+# Define function to create json for API 
+def ts_model_dict(df):
+    # Convert DataFrame to dictionary format
+    return {
+        "Datetime": df['Datetime'].tolist(),
+        "Open": df['Open'].tolist(),
+        "High": df['High'].tolist(),
+        "Low": df['Low'].tolist(),
+        "Close": df['Close'].tolist()
+    }
 
-# Query parameters for the API request
-params = {
-    "ticker": "AAPL",
-    "interval": "d",
-    "historical_data_from": "2020-08-03 00:00:00",
-    "date_to_forecast": "2024-09-04 00:00:00"
-}
+# Import Data
+df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
-# Headers for the API request
-headers = {
-    "Authorization": f"Bearer {ACCESS_TOKEN}"
-}
+# Create JSON payload for API request
+data = ts_model_dict(df)
 
-# API endpoint
+# Specify Base URL & Access Token
+BASE_URL = ""
+TOKEN = ""
+
+# Set API endpoint URL
 api_url = f"{BASE_URL}/genesis/ts-model"
 
-# Make a GET request to the API and parse the JSON response
-result = requests.get(api_url).json()
+# Set header for API request
+headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
+
+# Send POST request to API
+response = requests.post(url, json=data, headers=headers)
+
+# Parse JSON response
+resp = response.json()
 ```
 
 ## Example - API Response
