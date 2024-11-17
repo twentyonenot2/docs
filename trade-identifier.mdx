@@ -4,75 +4,60 @@ icon: 'cloud'
 slug: '/trade-identifier-data-submission'
 description: Accepts and processes client-supplied price data for calculations and analysis.
 ---
-## Model Details 
+
+## Model Details
+
 <CardGroup cols={2}>
   <Card title="Mandatory Time Periods">
     1 - 501
   </Card>
+
   <Card title="Optional Time Periods">
     502 - 5,000
   </Card>
 </CardGroup>
-## Request Header 
+
+## Request Header
+
 <ParamField header="Authorization" type="string" required>
   The authorization token for API requests. This should be a valid Bearer token.
-   </ParamField>
-   
-## Request Body 
-<ParamField body="Datetime" type="list" required>
 </ParamField>
-<ParamField body="Open" type="list" required>
-</ParamField>
-<ParamField body="High" type="list" required>
-</ParamField>
-<ParamField body="Low" type="list" required>
-</ParamField>
-<ParamField body="Close" type="list" required>
-</ParamField>
+
+## Request Body
+
+<ParamField body="Datetime" type="list" required />
+
+<ParamField body="Open" type="list" required />
+
+<ParamField body="High" type="list" required />
+
+<ParamField body="Low" type="list" required />
+
+<ParamField body="Close" type="list" required />
+
 <Tip>Combine different time intervals to discover potential trading opportunities and find optimal entry points.</Tip>
-## Request Example
 
 
-When forecasting future price trends (for Feb 24th), you can use zeros (0) for unknown values:
-
-```python
-{
-    'Datetime': ["2020-08-03 00:00:00", ..., "2024-09-04 00:00:00"],
-    'Open': [194.33, ..., 0],         # Unknown future value
-    'High': [197.02, ..., 0],         # Unknown future value
-    'Low': [192.87, ..., 0],          # Unknown future value
-    'Close': [195.45, ..., 0]         # Unknown future value
-}
-```
-
-
-For risk forecasting, use either the known opening price or the previous day's closing price, while keeping other future values as zero:
-
-```python
-{
-    'Datetime': ["2020-08-03 00:00:00", ..., "2024-09-04 00:00:00"],
-    'Open': [194.33, ..., 286.55],    # Known opening price or previous close
-    'High': [197.02, ..., 0],         # Unknown future value
-    'Low': [192.87, ..., 0],          # Unknown future value
-    'Close': [195.45, ..., 0]         # Unknown future value
-}
-```
 ## Response Fields
+
 <ResponseField name="datetime" type="string">
-  Trade opportunity timestamp 
+  Trade opportunity timestamp
 </ResponseField>
+
 <ResponseField name="trade_identified" type="string">
   <Expandable title="Options">
     <ResponseField name="Long" type="string">
       Long trade opportunity identified.
     </ResponseField>
+
     <ResponseField name="Short" type="string">
       Short trade opportunity identified.
     </ResponseField>
-  </Expandable>   
+  </Expandable>
 </ResponseField>
 
 ## Example - API Request
+
 ```python
 
 # Import necessary libraries
@@ -114,6 +99,7 @@ resp = response.json()
 ```
 
 ## Example - API Response
+
 ```python
 {
 "2024-07-25 00:00:00": {
