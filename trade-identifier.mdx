@@ -92,7 +92,7 @@ api_url = f"{BASE_URL}/genesis/trade-identifier"
 headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
 
 # Send POST request to API
-response = requests.post(url, json=data, headers=headers)
+response = requests.post(api_url, json=data, headers=headers)
 
 # Parse JSON response
 resp = response.json()
