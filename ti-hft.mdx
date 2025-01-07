@@ -82,11 +82,11 @@ POST /auth/ti-tld
 
 ## Request Example
 
-When forecasting future price trends, you must specify a future date (e.g. Jan 2nd) and use zeros (0) for unknown values:
+When forecasting future price trends, a future date must be specified (e.g. Jan 2nd at 11:28:00) and unknown values be filled with zeros (0):
 
 ```python
 {
-    'Datetime': ["2025-01-01 09:32:00.352", ..., "2025-01-02 11:28:03.000"],
+    'Datetime': ["2025-01-01 09:32:00.352", ..., "2025-01-02 11:28:00.000"],
     'Open': [194.33, ..., 0],         # Unknown future value
     'High': [197.02, ..., 0],         # Unknown future value
     'Low': [192.87, ..., 0],          # Unknown future value
