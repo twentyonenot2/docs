@@ -1,10 +1,10 @@
 ---
-title: "Trade Identifier - Tick Level Data (TLD)"
+title: "Trade Identifier"
 ---
 
 ## Model Overview
 
-This API leverages advanced mathematical modelling to analyse high-frequency tick data, identifying potential trading opportunities through abstract reasoning.
+This API leverages advanced mathematical modelling to analyse non-tick time series data, identifying potential trading opportunities through abstract reasoning.
 
 ## Supported Markets
 
@@ -29,7 +29,7 @@ This API leverages advanced mathematical modelling to analyse high-frequency tic
 ## Request Endpoint
 
 ```python
-POST /auth/ti-tld 
+POST /auth/ti 
 ```
 
 ## Model Details
@@ -82,15 +82,15 @@ POST /auth/ti-tld
 
 ## Request Example
 
-When forecasting future price trends, a future date must be specified (e.g. Jan 2nd at 11:28:00) and unknown values be filled with zeros (0):
+When forecasting future price trends, a future date must be specified (e.g. Jan 2nd at 10:00:00) and unknown values be filled with zeros (0):
 
 ```python
 {
-    'Datetime': ["2025-01-01 09:32:00.352", "2025-01-01 09:32:00:478",..., "2025-01-02 11:28:00.000"],
-    'Open': [194.33, 195.19, ..., 0],         # Unknown future value
-    'High': [194.33, 195.19, ..., 0],         # Unknown future value
-    'Low': [194.33, 195.19, ..., 0],          # Unknown future value
-    'Close': [195.33, 195.19, ..., 0]         # Unknown future value
+    'Datetime': ["2024-01-01 10:00:00","2024-01-01 11:00:00", ..., "2025-01-02 10:00:00"],
+    'Open': [194.33, 198.75, ..., 0],         # Unknown future value
+    'High': [197.02, 197.84, ..., 0],         # Unknown future value
+    'Low': [192.87, 196.33, ..., 0],          # Unknown future value
+    'Close': [195.45, 196.01, ..., 0]         # Unknown future value
 }
 ```
 
@@ -124,7 +124,7 @@ BASE_URL = ""
 TOKEN = ""
 
 # Set API endpoint URL
-api_url = f"{BASE_URL}/auth/ti-tld"
+api_url = f"{BASE_URL}/auth/ti"
 
 # Set header for API request
 headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
@@ -141,7 +141,7 @@ resp = response.json()
 ```python
 {
 
-"2025-01-02 11:28:03.733": {
+"2025-01-02 10:00:00": {
       "opportunity_identified": "1"
     }
 }
