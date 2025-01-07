@@ -22,7 +22,7 @@
         }
     ],
     "navigation": [
-        {
+        <!-- {
             "group": "sumtyme.ai",
             "pages": [
                 "introduction"
@@ -36,7 +36,7 @@
                 "credit_balance",
                 "reset_password"
             ]
-        },
+        }, -->
         {
             "group": "Trade Identifier",
             "pages": [
