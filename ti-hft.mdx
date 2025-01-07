@@ -62,7 +62,6 @@ POST /auth/ti-tld
 
 <ParamField body="Close" type="list" required />
 
-
 ## Response Fields
 
 <ResponseField name="datetime" type="string">
@@ -83,11 +82,11 @@ POST /auth/ti-tld
 
 ## Request Example
 
-When forecasting future price trends (for Jan 2nd), you can use zeros (0) for unknown values:
+When forecasting future price trends, you must specify a future date (e.g. Jan 2nd) and use zeros (0) for unknown values:
 
 ```python
 {
-    'Datetime': ["2025-01-01 09:32:00.352", ..., "2025-01-02 11:28:03.733"],
+    'Datetime': ["2025-01-01 09:32:00.352", ..., "2025-01-02 11:28:03.000"],
     'Open': [194.33, ..., 0],         # Unknown future value
     'High': [197.02, ..., 0],         # Unknown future value
     'Low': [192.87, ..., 0],          # Unknown future value
