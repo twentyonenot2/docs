@@ -1,0 +1,77 @@
+---
+title: "Available Credits Request"
+icon: "key"
+slug: "/avaialble-credits"
+---
+
+## Request Endpoint
+
+```python
+POST /auth/available-credits
+```
+
+## Request Headers
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="email" type="string" required>
+  The email address associated with your account
+</ParamField>
+
+<ParamField body="api_key" type="string" required>
+  Current API key for authentication
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  The current password associated with your account
+</ParamField>
+
+## Response Fields
+
+<ResponseField name="credit_balance" type="int">
+  Remaining API credits
+</ResponseField>
+
+## Example - Available Credits Request
+
+<CodeGroup>
+  ```python
+  import requests
+  import json
+
+  BASE_URL = ""
+
+  reset_request_data = {
+      "email": "trader@example.com",
+      "password": "SecurePassword2025!",
+      "api_key": "sk_live_abcdefghijklmnopqrstuvwxyz0123456789"
+
+  }
+
+  headers = {
+      "Content-Type": "application/json"
+  }
+
+  response = requests.post(
+      f"{BASE_URL}/auth/available-credits",
+      headers=headers,
+      data=json.dumps(reset_request_data)
+  ).json()
+  ```
+</CodeGroup>
+
+## Example - Response
+
+<CodeGroup>
+  ```python
+
+  {
+      "credit_balance": 28
+  }
+
+  ```
+</CodeGroup>

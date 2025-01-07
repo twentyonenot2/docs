@@ -1,0 +1,78 @@
+---
+title: "New API Key Request"
+icon: "key"
+slug: "/reset-api-key"
+---
+
+## Request Endpoint
+
+```python
+POST /auth/new-api-key-request
+```
+
+## Request Headers
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="email" type="string" required>
+  The email address associated with your account
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  The current password associated with your account
+</ParamField>
+
+<ParamField body="api_key" type="string" required>
+  Current API key for authentication
+</ParamField>
+
+
+## Response Fields
+
+<ResponseField name="api_key" type="string">
+  Your new API key for authentication. Keep this secure and do not share it.
+</ResponseField>
+
+## Example - New API Key Request
+
+<CodeGroup>
+  ```python
+  import requests
+  import json
+
+  BASE_URL = ""
+
+  reset_request_data = {
+      "email": "trader@example.com",
+      "password": "SecurePassword2025!",
+      "api_key": "sk_live_abcdefghijklmnopqrstuvwxyz0123456789"
+
+  }
+
+  headers = {
+      "Content-Type": "application/json"
+  }
+
+  response = requests.post(
+      f"{BASE_URL}/auth/new-api-key-request",
+      headers=headers,
+      data=json.dumps(reset_request_data)
+  ).json()
+  ```
+</CodeGroup>
+
+## Example - Response
+
+<CodeGroup>
+  ```python
+
+  {
+      "api_key": "stai-abcdefghijklmnopqrstuvwxyz9999456789"
+  }
+
+  ```
+</CodeGroup>

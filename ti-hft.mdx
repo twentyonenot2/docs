@@ -1,10 +1,36 @@
 ---
-title: 'Data Submission'
-icon: 'cloud'
-slug: '/trade-identifier-data-submission'
-description: Accepts and processes client-supplied price data for calculations and analysis.
+title: "Trade Identifier - Tick Level Data (TLD)"
 ---
 
+## Model Overview
+
+This API leverages advanced mathematical modelling to process high-frequency tick data, identifying potential trading opportunities through abstract reasoning.
+
+## Supported Markets
+
+<CardGroup cols={3}>
+  <Card title="Bonds" icon="landmark" />
+
+  <Card title="Commodities" icon="ship" />
+
+  <Card title="Cryptocurrencies" icon="bitcoin" />
+
+  <Card title="Derivatives" icon="layer-group" />
+
+  <Card title="Equities" icon="chart-line" />
+
+  <Card title="Foreign Exchange" icon="money-bill-transfer" />
+
+  <Card title="Indices" icon="chart-bar" />
+
+  <Card title="Tokenised Assets" icon="square" />
+</CardGroup>
+
+## Request Endpoint
+
+```python
+POST /auth/ti-tld 
+```
 
 ## Model Details
 
@@ -14,7 +40,7 @@ description: Accepts and processes client-supplied price data for calculations a
   </Card>
 
   <Card title="Optional Time Periods">
-    502 - 5,000
+    502 - 10,000
   </Card>
 </CardGroup>
 
@@ -36,7 +62,6 @@ description: Accepts and processes client-supplied price data for calculations a
 
 <ParamField body="Close" type="list" required />
 
-<Tip>Combine different time intervals to discover potential trading opportunities and find optimal entry points.</Tip>
 
 ## Response Fields
 
@@ -44,17 +69,31 @@ description: Accepts and processes client-supplied price data for calculations a
   Trade opportunity timestamp
 </ResponseField>
 
-<ResponseField name="trade_identified" type="string">
+<ResponseField name="opportunity_identified" type="string">
   <Expandable title="Options">
-    <ResponseField name="Long" type="string">
+    <ResponseField name="1" type="int">
       Long trade opportunity identified.
     </ResponseField>
 
-    <ResponseField name="Short" type="string">
+    <ResponseField name="-1" type="int">
       Short trade opportunity identified.
     </ResponseField>
   </Expandable>
 </ResponseField>
+
+## Request Example
+
+When forecasting future price trends (for Jan 2nd), you can use zeros (0) for unknown values:
+
+```python
+{
+    'Datetime': ["2025-01-01 09:32:00.352", ..., "2025-01-02 11:28:03.733"],
+    'Open': [194.33, ..., 0],         # Unknown future value
+    'High': [197.02, ..., 0],         # Unknown future value
+    'Low': [192.87, ..., 0],          # Unknown future value
+    'Close': [195.45, ..., 0]         # Unknown future value
+}
+```
 
 ## Example - API Request
 
@@ -65,7 +104,7 @@ import pandas as pd
 import requests
 
 # Define function to create json for API 
-def trading_model_dict(df,aggregation):
+def trade_identifier_dict(df):
     # Convert DataFrame to dictionary format
     return {
         "Datetime": df['Datetime'].tolist(),
@@ -79,14 +118,14 @@ def trading_model_dict(df,aggregation):
 df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 
 # Create JSON payload for API request
-data = trading_model_dict(df)
+data = trade_identifier_dict(df)
 
 # Specify Base URL & Access Token
 BASE_URL = ""
 TOKEN = ""
 
 # Set API endpoint URL
-api_url = f"{BASE_URL}/genesis/trade-identifier"
+api_url = f"{BASE_URL}/auth/ti-tld"
 
 # Set header for API request
 headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
@@ -102,11 +141,9 @@ resp = response.json()
 
 ```python
 {
-"2024-07-25 00:00:00": {
-      "trade_identified": "Long"
-    },
-"2024-08-24 00:00:00": {
-      "trade_identified": "Long"
+
+"2025-01-02 11:28:03.733": {
+      "opportunity_identified": "1"
     }
 }
 ```

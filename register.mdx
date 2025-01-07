@@ -1,0 +1,77 @@
+---
+title: 'Register'
+icon: 'user-plus'
+slug: '/register'
+---
+
+To access the Trade Identifier API, you'll need to register for an account and obtain an API key.
+
+## Request Endpoint
+
+```python
+POST /auth/register
+```
+
+## Request Headers
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="email" type="string" required>
+  Your email address that will be associated with the API account
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  Password for your API account. Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.
+</ParamField>
+
+## Response Fields
+
+<ResponseField name="api_key" type="string">
+  Your API key for authentication. Keep this secure and do not share it. If your key is compromised, you can generate a new one from the generate\_new\_api\_key endpoint.
+</ResponseField>
+
+<ResponseField name="available_credits" type="int">
+  Number of API credits
+</ResponseField>
+
+## Example - Registration Request
+
+```python
+import requests
+import json
+
+BASE_URL = ""
+
+registration_data = {
+    "email": "individual@example.com",
+    "password": "SecurePassword2025!",
+}
+
+headers = {
+    "Content-Type": "application/json"
+}
+
+response = requests.post(
+    f"{BASE_URL}/auth/register",
+    headers=headers,
+    data=json.dumps(reset_request_data)
+).json()
+
+```
+
+## Example - Registration Response
+
+```python
+{
+    "api_key": "stai-abcdefghijklmnopqrstuvwxyz0123456789",
+    "available_credits": 35
+}
+```
+
+<Note>
+  Contact our support team to upgrade your plan or request custom limits for your use case.
+</Note>
