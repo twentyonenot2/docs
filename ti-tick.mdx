@@ -107,7 +107,7 @@ def tick_data_dict(df):
 df = pd.read_csv("")[['Datetime','Price']]
 
 # Create JSON payload for API request
-data = trade_identifier_dict(df)
+data = tick_data_dict(df)
 
 # Specify Base URL & Access Token
 BASE_URL = ""
