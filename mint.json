@@ -25,21 +25,22 @@
         {
             "group": "sumtyme.ai",
             "pages": [
-                "model-library"
+                "quickstart"
             ]
         },
         {
-            "group": "Time Series Model",
+            "group": "Get Started",
             "pages": [
-                "ts-model",
-                "ts-model-data"
+                "register",
+                "api-key-request",
+                "credit_balance"
             ]
         },
         {
             "group": "Trade Identifier",
             "pages": [
-                "trade-identifier",
-                "trade-identifier-data"
+                "ti",
+                "ti-tick"
             ]
         }
     ]

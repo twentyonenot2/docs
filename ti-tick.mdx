@@ -53,19 +53,13 @@ POST /auth/ti-tld
 
 ## Request Body
 
-<ParamField body="Datetime" type="list" required />
+<ParamField body="Timestamp" type="list" required={true} />
 
-<ParamField body="Open" type="list" required />
-
-<ParamField body="High" type="list" required />
-
-<ParamField body="Low" type="list" required />
-
-<ParamField body="Close" type="list" required />
+<ParamField body="Price" type="list" required />
 
 ## Response Fields
 
-<ResponseField name="datetime" type="string">
+<ResponseField name="timestamp" type="string">
   Trade opportunity timestamp
 </ResponseField>
 
@@ -87,11 +81,8 @@ When forecasting future price trends, a future date must be specified (e.g. Jan 
 
 ```python
 {
-    'Datetime': ["2025-01-01 09:32:00.352", "2025-01-01 09:32:00:478",..., "2025-01-02 11:28:00.000"],
-    'Open': [194.33, 195.19, ..., 0],         # Unknown future value
-    'High': [194.33, 195.19, ..., 0],         # Unknown future value
-    'Low': [194.33, 195.19, ..., 0],          # Unknown future value
-    'Close': [195.33, 195.19, ..., 0]         # Unknown future value
+    'Timestamp': ["2025-01-01 09:32:00.352", "2025-01-01 09:32:00:478",..., "2025-01-02 11:28:00.000"],
+    'Price': [194.33, 195.19, ..., 0]         # Unknown future value
 }
 ```
 
@@ -104,18 +95,15 @@ import pandas as pd
 import requests
 
 # Define function to create json for API 
-def trade_identifier_dict(df):
+def tick_data_dict(df):
     # Convert DataFrame to dictionary format
     return {
         "Datetime": df['Datetime'].tolist(),
-        "Open": df['Open'].tolist(),
-        "High": df['High'].tolist(),
-        "Low": df['Low'].tolist(),
-        "Close": df['Close'].tolist()
+        "Price": df['Price'].tolist()
     }
 
 # Import Data
-df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
+df = pd.read_csv("")[['Datetime','Price']]
 
 # Create JSON payload for API request
 data = trade_identifier_dict(df)
@@ -141,6 +129,16 @@ resp = response.json()
 
 ```python
 {
+
+"2025-01-01 09:32:00.352": {
+      "opportunity_identified": null
+    },
+    
+"2025-01-01 09:32:00:478": {
+      "opportunity_identified": null
+    },
+
+...
 
 "2025-01-02 11:28:03.733": {
       "opportunity_identified": "1"
