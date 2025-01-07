@@ -32,7 +32,7 @@
             "group": "Get Started",
             "pages": [
                 "register",
-                "api-key-request",
+                "api_key_request",
                 "credit_balance",
                 "reset_password"
             ]
@@ -40,15 +40,15 @@
         {
             "group": "Trade Identifier",
             "pages": [
-                "ti",
-                "ti-tick"
+                "ti-tick",
+                "ti"
             ]
         },
         {
             "group": "Legal",
             "pages": [
-                "privacy-policy",
-                "terms-of-use"
+                "terms-of-use",
+                "privacy-policy"
             ]
         }
         
