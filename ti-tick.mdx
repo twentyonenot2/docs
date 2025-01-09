@@ -104,7 +104,7 @@ def tick_data_dict(df):
     }
 
 # Import Data
-df = pd.read_csv("")[['Datetime','Price']]
+df = pd.read_csv("")[['Timestamp','Price']]
 
 # Create JSON payload for API request
 data = tick_data_dict(df)
