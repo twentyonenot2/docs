@@ -64,14 +64,14 @@ POST /auth/ti-tick
   Trade opportunity timestamp
 </ResponseField>
 
-<ResponseField name="opportunity_identified" type="string">
+<ResponseField name="trend_identified" type="string">
   <Expandable title="Options">
     <ResponseField name="1" type="int">
-      Long trade opportunity identified.
+      Bullish trend
     </ResponseField>
 
     <ResponseField name="-1" type="int">
-      Short trade opportunity identified.
+      Bearish trend
     </ResponseField>
   </Expandable>
 </ResponseField>
@@ -132,17 +132,17 @@ resp = response.json()
 {
 
 "2025-01-01 09:32:00.352": {
-      "opportunity_identified": null
+      "trend_identified": null
     },
     
 "2025-01-01 09:32:00:478": {
-      "opportunity_identified": null
+      "trend_identified": null
     },
 
 ...
 
 "2025-01-02 11:28:03.733": {
-      "opportunity_identified": "1"
+      "trend_identified": "1"
     }
 }
 ```

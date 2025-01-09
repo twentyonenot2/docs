@@ -38,7 +38,7 @@
             ]
         },
         {
-            "group": "Risk Analytics",
+            "group": "Risk Models",
             "pages": [
                 "ti-tick",
                 "ti"

@@ -70,14 +70,14 @@ POST /auth/ti
   Trade opportunity timestamp
 </ResponseField>
 
-<ResponseField name="opportunity_identified" type="string">
+<ResponseField name="trend_identified" type="string">
   <Expandable title="Options">
     <ResponseField name="1" type="int">
-      Long trade opportunity identified.
+      Bullish trend
     </ResponseField>
 
     <ResponseField name="-1" type="int">
-      Short trade opportunity identified.
+      Bearish trend
     </ResponseField>
   </Expandable>
 </ResponseField>
@@ -144,17 +144,17 @@ resp = response.json()
 {
 
 "2024-01-01 10:00:00": {
-      "opportunity_identified": null
+      "trend_identified": null
     },
     
 "2024-01-01 11:00:00": {
-      "opportunity_identified": null
+      "trend_identified": null
     },
 
 ...
 
 "2025-01-02 10:00:00": {
-      "opportunity_identified": "1"
+      "trend_identified": "1"
     }
     
 }
