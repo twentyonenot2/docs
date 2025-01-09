@@ -99,7 +99,7 @@ import requests
 def tick_data_dict(df):
     # Convert DataFrame to dictionary format
     return {
-        "Datetime": df['Datetime'].tolist(),
+        "Timestamp": df['Timestamp'].tolist(),
         "Price": df['Price'].tolist()
     }
 
