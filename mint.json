@@ -38,7 +38,7 @@
             ]
         },
         {
-            "group": "Trade Identifier",
+            "group": "Risk Analytics",
             "pages": [
                 "ti-tick",
                 "ti"
