@@ -26,10 +26,6 @@ POST /auth/new-api-key-request
   The current password associated with your account
 </ParamField>
 
-<ParamField body="api_key" type="string" required>
-  Current API key for authentication
-</ParamField>
-
 ## Response Fields
 
 <ResponseField name="api_key" type="string">
@@ -48,9 +44,8 @@ POST /auth/new-api-key-request
   BASE_URL = ""
 
   reset_request_data = {
-      "email": "trader@example.com",
-      "password": "SecurePassword2025!",
-      "api_key": "sk_live_abcdefghijklmnopqrstuvwxyz0123456789"
+      "email": "name@example.com",
+      "password": "SecurePassword2025!"
 
   }
 
