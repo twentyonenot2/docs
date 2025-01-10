@@ -1,13 +1,13 @@
 ---
-title: "API Key Request"
+title: "Access Token Refresh"
 icon: "key"
-slug: "/reset-api-key"
+slug: "/refresh-access-token"
 ---
 
 ## Request Endpoint
 
 ```python
-POST /auth/regenerate-key
+POST /auth/regenerate-token
 ```
 
 ## Request Headers
@@ -28,11 +28,11 @@ POST /auth/regenerate-key
 
 ## Response Fields
 
-<ResponseField name="api_key" type="string">
-  Your new API key for authentication. Keep this secure and do not share it.
+<ResponseField name="access_token" type="string">
+  A secret authentication token required for accessing the API. Never expose this token in client-side code or public repositories. Rotate regularly and revoke if compromised.
 </ResponseField>
 
-<Note>The API key is valid for 24 hours after creation, after which it will expire and need to be regenerated.</Note>
+<Note>Each access token is valid for 24 hours after creation, after which it will expire and need to be regenerated.</Note>
 
 ## Example - API Key Request
 
@@ -54,7 +54,7 @@ POST /auth/regenerate-key
   }
 
   response = requests.post(
-      f"{BASE_URL}/auth/regenerate-key",
+      f"{BASE_URL}/auth/regenerate-token",
       headers=headers,
       data=json.dumps(reset_request_data)
   ).json()
@@ -67,7 +67,7 @@ POST /auth/regenerate-key
   ```python
 
   {
-      "api_key": "stai-abcdefghijklmnopqrstuvwxyz9999456789"
+      "access_token": "stai-abcdefghijklmnopqrstuvwxyz9999456789"
   }
 
   ```

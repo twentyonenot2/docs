@@ -4,7 +4,7 @@ icon: 'user-plus'
 slug: '/register'
 ---
 
-To access the Trade Identifier API, you'll need to register for an account and obtain an API key.
+To access our models, you'll need to register for an account and obtain an access token.
 
 ## Request Endpoint
 
@@ -30,8 +30,8 @@ POST /auth/register
 
 ## Response Fields
 
-<ResponseField name="api_key" type="string">
-  Your API key for authentication. Keep this secure and do not share it.
+<ResponseField name="access_token" type="string">
+  A secret authentication token required for accessing the API. Never expose this token in client-side code or public repositories. Rotate regularly and revoke if compromised.
 </ResponseField>
 
 <ResponseField name="available_credits" type="int">
