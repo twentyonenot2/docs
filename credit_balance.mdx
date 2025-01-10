@@ -18,6 +18,10 @@ POST /auth/available-credits
   Must be set to `application/json`
 </ParamField>
 
+<ParamField header="Authorisation" type="string" required>
+  Authentication token prefixed with "Bearer "
+</ParamField>
+
 ## Request Body
 
 <ParamField body="email" type="string" required>
@@ -47,15 +51,9 @@ POST /auth/available-credits
 
   BASE_URL = ""
 
-  reset_request_data = {
-      "email": "trader@example.com",
-      "password": "SecurePassword2025!",
-      "api_key": "sk_live_abcdefghijklmnopqrstuvwxyz0123456789"
-
-  }
-
   headers = {
       "Content-Type": "application/json"
+      "Authorisation": "Bearer stai-abcdefghijklmnopqrstuvwxyz9999456789"
   }
 
   response = requests.post(
