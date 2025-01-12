@@ -45,6 +45,19 @@
             ]
         },
         {
+            "group": "Insights",
+            "pages": [
+                "AIG",
+                "VIX",
+                "SPY",
+                "BTCUSDT",
+                "JPY",
+                "btc-election",
+                "Gold",
+                "DOGEUSDT"
+            ]
+        },
+        {
             "group": "Legal",
             "pages": [
                 "terms-of-use",
