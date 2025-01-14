@@ -22,20 +22,6 @@ POST /auth/available-credits
   Authentication token prefixed with "Bearer "
 </ParamField>
 
-## Request Body
-
-<ParamField body="email" type="string" required>
-  The email address associated with your account
-</ParamField>
-
-<ParamField body="api_key" type="string" required>
-  Current API key for authentication
-</ParamField>
-
-<ParamField body="password" type="string" required>
-  The current password associated with your account
-</ParamField>
-
 ## Response Fields
 
 <ResponseField name="credit_balance" type="int">
@@ -58,9 +44,8 @@ POST /auth/available-credits
 
   response = requests.post(
       f"{BASE_URL}/auth/available-credits",
-      headers=headers,
-      data=json.dumps(reset_request_data)
-  ).json()
+      headers=headers
+      ).json()
   ```
 </CodeGroup>
 
