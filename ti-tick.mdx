@@ -28,6 +28,12 @@ This API leverages advanced mathematical modelling to analyse high-frequency tic
   <Card title="Tokenised Assets" icon="square" />
 </CardGroup>
 
+## Base URL
+
+```python
+ https://www.sumtyme.com/shared
+```
+
 ## Request Endpoint
 
 ```python
@@ -114,7 +120,7 @@ df = pd.read_csv("")[['Timestamp','Price']]
 data = tick_data_dict(df)
 
 # Specify Base URL & API KEY
-BASE_URL = "https://www.sumtyme.com/shared"
+BASE_URL = ""
 API_KEY = ""
 
 # Set API endpoint URL
@@ -128,6 +134,9 @@ response = requests.post(api_url, json=data, headers=headers)
 
 # Parse JSON response
 resp = response.json()
+
+
+
 ```
 
 ## Example - API Response

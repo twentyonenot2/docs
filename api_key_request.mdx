@@ -4,6 +4,12 @@ icon: "key"
 slug: "/refresh-api-key"
 ---
 
+## Base URL
+
+```python
+ https://www.sumtyme.com/shared
+```
+
 ## Request Endpoint
 
 ```python
@@ -38,10 +44,13 @@ POST /auth/regenerate-api-key
 
 <CodeGroup>
   ```python
+  # Import necessary libraries
   import requests
   import json
 
+  # Specify Base URL
   BASE_URL = "https://www.sumtyme.com/shared"
+
 
   reset_request_data = {
       "email": "name@example.com",
@@ -53,11 +62,9 @@ POST /auth/regenerate-api-key
       "Content-Type": "application/json"
   }
 
-  response = requests.post(
-      f"{BASE_URL}/auth/regenerate-api-key",
-      headers=headers,
-      data=json.dumps(reset_request_data)
-  ).json()
+  # Set header for API request
+  response = requests.post(f"{BASE_URL}/auth/regenerate-api-key",headers=headers, data=json.dumps(reset_request_data)).json()
+  
   ```
 </CodeGroup>
 

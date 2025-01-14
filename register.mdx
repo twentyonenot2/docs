@@ -6,6 +6,12 @@ slug: '/register'
 
 To access our models, you'll need to register for an account and obtain an access token.
 
+## Base URL
+
+```python
+ https://www.sumtyme.com/shared
+```
+
 ## Request Endpoint
 
 ```python
@@ -55,11 +61,7 @@ headers = {
     "Content-Type": "application/json"
 }
 
-response = requests.post(
-    f"{BASE_URL}/auth/register",
-    headers=headers,
-    data=json.dumps(reset_request_data)
-).json()
+response = requests.post(f"{BASE_URL}/auth/register",headers=headers,data=json.dumps(registration_data)).json()
 
 ```
 
@@ -73,5 +75,5 @@ response = requests.post(
 ```
 
 <Note>
-  Contact our support team to upgrade your plan or request custom limits for your use case.
+  Contact our support team to request custom limits for your use case.
 </Note>

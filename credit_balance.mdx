@@ -1,10 +1,16 @@
 ---
 title: "Available Credits"
 icon: "ticket"
-slug: "/avaialble-credits"
+slug: "/available-credits"
 ---
 
 Purchase additional API credits [here](https://buy.stripe.com/eVa6qG94ibPRbUAdQQ)
+
+## Base URL
+
+```python
+ https://www.sumtyme.com/shared
+```
 
 ## Request Endpoint
 
@@ -28,20 +34,22 @@ POST /auth/available-credits
 
 <CodeGroup>
   ```python
+  # Import necessary libraries
   import requests
   import json
 
-  BASE_URL = "https://www.sumtyme.com/shared"
+  # Specify Base URL & API KEY
+  BASE_URL = ""
   API_KEY = ""
 
+  # Set header for API request
   headers = {
       "Api-Key": f"{API_KEY}"
   }
 
-  response = requests.post(
-      f"{BASE_URL}/auth/available-credits",
-      headers=headers
-      ).json()
+  # Send POST request to API
+  response = requests.post(f"{BASE_URL}/auth/available-credits",headers=headers).json()
+
   ```
 </CodeGroup>
 
