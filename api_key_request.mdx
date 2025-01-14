@@ -54,7 +54,7 @@ POST /auth/regenerate-api-key
   }
 
   response = requests.post(
-      f"{BASE_URL}/auth/regenerate-token",
+      f"{BASE_URL}/auth/regenerate-api-key",
       headers=headers,
       data=json.dumps(reset_request_data)
   ).json()
