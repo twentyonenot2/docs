@@ -48,8 +48,8 @@ POST /auth/ti
 
 ## Request Header
 
-<ParamField header="Authorization" type="string" required>
-  The authorization token for API requests. This should be a valid Bearer token.
+<ParamField header="Api-Key" type="string" required>
+  The API key used to authenticate requests to the API.
 </ParamField>
 
 ## Request Body
@@ -123,13 +123,13 @@ data = time_series_dict(df)
 
 # Specify Base URL & Access Token
 BASE_URL = ""
-TOKEN = ""
+API_KEY = ""
 
 # Set API endpoint URL
 api_url = f"{BASE_URL}/auth/ti"
 
 # Set header for API request
-headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
+headers = {"Api-Key": f"{API_KEY}", 'Content-Type': 'application/json'}
 
 # Send POST request to API
 response = requests.post(api_url, json=data, headers=headers)

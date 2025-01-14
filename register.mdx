@@ -30,8 +30,8 @@ POST /auth/register
 
 ## Response Fields
 
-<ResponseField name="access_token" type="string">
-  A secret authentication token required for accessing the API. Never expose this token in client-side code or public repositories. Rotate regularly and revoke if compromised.
+<ResponseField name="api_key" type="string">
+    The API key used to authenticate requests to the API. Valid
 </ResponseField>
 
 <ResponseField name="available_credits" type="int">
