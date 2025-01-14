@@ -48,6 +48,10 @@ POST /auth/ti
 
 ## Request Header
 
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
 <ParamField header="Api-Key" type="string" required>
   The API key used to authenticate requests to the API.
 </ParamField>
