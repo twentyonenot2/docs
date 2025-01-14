@@ -50,17 +50,21 @@ POST /register
 import requests
 import json
 
+# Specify Base URL & API KEY
 BASE_URL = ""
 
+# Create JSON payload for API request
 registration_data = {
     "email": "name@example.com",
     "password": "SecurePassword2025!",
 }
 
+# Set header for API request
 headers = {
     "Content-Type": "application/json"
 }
 
+# Send POST request to API
 response = requests.post(f"{BASE_URL}/auth/register",headers=headers,data=json.dumps(registration_data)).json()
 
 ```

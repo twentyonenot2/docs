@@ -51,20 +51,21 @@ POST /auth/regenerate-api-key
   # Specify Base URL
   BASE_URL = "https://www.sumtyme.com/shared"
 
-
-  reset_request_data = {
+  # Create JSON payload for API request
+  refresh_request_data = {
       "email": "name@example.com",
       "password": "SecurePassword2025!"
 
   }
 
+  # Set header for API request
   headers = {
       "Content-Type": "application/json"
   }
 
   # Set header for API request
-  response = requests.post(f"{BASE_URL}/auth/regenerate-api-key",headers=headers, data=json.dumps(reset_request_data)).json()
-  
+  response = requests.post(f"{BASE_URL}/auth/regenerate-api-key",headers=headers, data=json.dumps(refresh_request_data)).json()
+
   ```
 </CodeGroup>
 
