@@ -113,8 +113,8 @@ df = pd.read_csv("")[['Timestamp','Price']]
 # Create JSON payload for API request
 data = tick_data_dict(df)
 
-# Specify Base URL & Access Token
-BASE_URL = ""
+# Specify Base URL & API KEY
+BASE_URL = "https://www.sumtyme.com/shared"
 API_KEY = ""
 
 # Set API endpoint URL

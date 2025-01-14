@@ -125,8 +125,8 @@ df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
 # Create JSON payload for API request
 data = time_series_dict(df)
 
-# Specify Base URL & Access Token
-BASE_URL = ""
+# Specify Base URL & API KEY
+BASE_URL = "https://www.sumtyme.com/shared"
 API_KEY = ""
 
 # Set API endpoint URL
