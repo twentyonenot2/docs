@@ -64,7 +64,9 @@ POST /auth/regenerate-api-key
   }
 
   # Set header for API request
-  response = requests.post(f"{BASE_URL}/auth/regenerate-api-key",headers=headers, data=json.dumps(refresh_request_data)).json()
+  response = requests.post(f"{BASE_URL}/auth/regenerate-api-key",
+              headers=headers, 
+              data=json.dumps(refresh_request_data)).json()
 
   ```
 </CodeGroup>

@@ -48,7 +48,8 @@ POST /auth/available-credits
   }
 
   # Send POST request to API
-  response = requests.post(f"{BASE_URL}/auth/available-credits",headers=headers).json()
+  response = requests.post(f"{BASE_URL}/auth/available-credits",
+              headers=headers).json()
 
   ```
 </CodeGroup>
