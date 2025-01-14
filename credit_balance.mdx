@@ -18,8 +18,8 @@ POST /auth/available-credits
   Must be set to `application/json`
 </ParamField>
 
-<ParamField header="Authorisation" type="string" required>
-  Authentication token prefixed with "Bearer "
+<ParamField header="Api-Key" type="string" required>
+  The API key used to authenticate requests to the API.
 </ParamField>
 
 ## Response Fields
@@ -36,10 +36,11 @@ POST /auth/available-credits
   import json
 
   BASE_URL = ""
+  API_KEY = ""
 
   headers = {
       "Content-Type": "application/json"
-      "Authorisation": "Bearer stai-abcdefghijklmnopqrstuvwxyz9999456789"
+      "Api-Key": f"{API_KEY}"
   }
 
   response = requests.post(
