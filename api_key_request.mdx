@@ -13,7 +13,7 @@ slug: "/refresh-api-key"
 ## Request Endpoint
 
 ```python
-POST /auth/regenerate-api-key
+POST /auth/generate-api-key
 ```
 
 ## Request Headers
@@ -64,7 +64,7 @@ POST /auth/regenerate-api-key
   }
 
   # Set header for API request
-  response = requests.post(f"{BASE_URL}/auth/regenerate-api-key",
+  response = requests.post(f"{BASE_URL}/auth/generate-api-key",
               headers=headers, 
               data=json.dumps(refresh_request_data)).json()
 
