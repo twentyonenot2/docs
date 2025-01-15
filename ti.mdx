@@ -144,6 +144,8 @@ headers = {"Api-Key": f"{API_KEY}", 'Content-Type': 'application/json'}
 # Send POST request to API
 response = requests.post(api_url, json=data, headers=headers)
 
+data = json.loads(response.text)
+
 ```
 
 ## Example - API Response
