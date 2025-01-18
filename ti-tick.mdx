@@ -42,15 +42,19 @@ This API uses a neuro-symbolic approach to analyse high-frequency tick data, ide
 POST /auth/ti-tick 
 ```
 
-## Model Details
+## OHLC Input Data Lengths
 
-<CardGroup cols={2}>
-  <Card title="Mandatory Time Periods">
-    1 - 501
+<CardGroup cols={3}>
+  <Card title="Required Length">
+    200 Periods
   </Card>
 
-  <Card title="Optional Time Periods">
-    502 - 3000
+  <Card title="Recommended Length">
+    500 Periods
+  </Card>
+
+  <Card title="Extended Length">
+    501-3000 Periods
   </Card>
 </CardGroup>
 
