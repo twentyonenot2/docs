@@ -47,6 +47,7 @@
         {
             "group": "Insights",
             "pages": [
+                "mission",
                 "abstraction-theory",
                 "AIG",
                 "VIX",
