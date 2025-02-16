@@ -39,7 +39,7 @@
             ]
         },
         {
-            "group": "Get Started",
+            "group": "API Documentation",
             "pages": [
                 "introduction",
                 "register",
