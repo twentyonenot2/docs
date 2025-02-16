@@ -29,6 +29,21 @@
             ]
         },
         {
+            "group": "Insights",
+            "pages": [
+                "mission",
+                "abstraction-theory",
+                "AIG",
+                "VIX",
+                "SPY",
+                "BTCUSDT",
+                "JPY",
+                "btc-election",
+                "Gold",
+                "DOGEUSDT"
+            ]
+        },
+        {
             "group": "Get Started",
             "pages": [
                 "register",
@@ -42,21 +57,6 @@
             "pages": [
                 "ti-tick",
                 "ti"
-            ]
-        },
-        {
-            "group": "Insights",
-            "pages": [
-                "mission",
-                "abstraction-theory",
-                "AIG",
-                "VIX",
-                "SPY",
-                "BTCUSDT",
-                "JPY",
-                "btc-election",
-                "Gold",
-                "DOGEUSDT"
             ]
         },
         {
