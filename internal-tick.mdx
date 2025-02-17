@@ -134,7 +134,7 @@ TOKEN = ""
 api_url = f"{BASE_URL}/auth/ti-tick"
 
 # Set header for API request
-headers = {"Authorization": f" Bearer {TOKEN}", 'Content-Type': 'application/json'}
+headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json'}
 
 # Send POST request to API
 response = requests.post(api_url, json=data, headers=headers)
