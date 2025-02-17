@@ -38,16 +38,7 @@
                 "DOGEUSDT"
             ]
         },
-        {
-            "group": "API Documentation",
-            "pages": [
-                "introduction",
-                "register",
-                "api_key_request",
-                "credit_balance",
-                "reset_password"
-            ]
-        },
+        
         {
             "group": "Analytics",
             "pages": [
