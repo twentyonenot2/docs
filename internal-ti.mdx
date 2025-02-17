@@ -1,0 +1,178 @@
+---
+title: "Time Series Data"
+icon: "code"
+slug: "/internal-ti"
+---
+
+## Model Overview
+
+This API uses a neuro-symbolic approach to analyse time series data, identifying patterns to predict future market trends. Its modular base architecture enables efficient fine-tuning across different time horizons, significantly reducing model development time.
+
+## Supported Markets
+
+<CardGroup cols={3}>
+  <Card title="Bonds" icon="landmark" />
+
+  <Card title="Commodities" icon="ship" />
+
+  <Card title="Cryptocurrencies" icon="bitcoin" />
+
+  <Card title="Derivatives" icon="layer-group" />
+
+  <Card title="Equities" icon="chart-line" />
+
+  <Card title="Foreign Exchange" icon="money-bill-transfer" />
+
+  <Card title="Indices" icon="chart-bar" />
+
+  <Card title="REITs" icon="house" />
+
+  <Card title="Tokenised Assets" icon="square" />
+</CardGroup>
+
+## Base URL
+
+```python
+ https://demo-d9rxc.cld-seb17n282p1hf4je.s.anyscaleuserdata.com
+```
+
+## Request Endpoint
+
+```python
+POST /auth/ti 
+```
+
+## OHLC Input Data Lengths
+
+<CardGroup cols={3}>
+  <Card title="Required Length">
+    200 Periods
+  </Card>
+
+  <Card title="Recommended Length">
+    500 Periods
+  </Card>
+
+  <Card title="Extended Length">
+    501-3000 Periods
+  </Card>
+</CardGroup>
+
+## Request Header
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+<ParamField header="Api-Key" type="string" required>
+  The API key used to authenticate requests to the API.
+</ParamField>
+
+## Request Body
+
+<ParamField body="Datetime" type="list" required />
+
+<ParamField body="Open" type="list" required />
+
+<ParamField body="High" type="list" required />
+
+<ParamField body="Low" type="list" required />
+
+<ParamField body="Close" type="list" required />
+
+## Response Fields
+
+<ResponseField name="datetime" type="string">
+  Trade opportunity timestamp
+</ResponseField>
+
+<ResponseField name="trend_identified" type="string">
+  <Expandable title="Options">
+    <ResponseField name="1" type="int">
+      Bullish trend
+    </ResponseField>
+
+    <ResponseField name="-1" type="int">
+      Bearish trend
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Request Example
+
+When forecasting future price trends, a future date must be specified (e.g. Jan 2nd at 10:00:00) and unknown values be filled with zeros (0):
+
+```python
+{
+    'Datetime': ["2024-01-01 10:00:00","2024-01-01 11:00:00", ..., "2025-01-02 10:00:00"],
+    'Open': [194.33, 198.75, ..., 0],         # Unknown future value
+    'High': [197.02, 197.84, ..., 0],         # Unknown future value
+    'Low': [192.87, 196.33, ..., 0],          # Unknown future value
+    'Close': [195.45, 196.01, ..., 0]         # Unknown future value
+}
+```
+
+## Example - API Request
+
+```python
+
+# Import necessary libraries
+import pandas as pd
+import requests
+import json
+
+# Define function to create json for API 
+def time_series_dict(df):
+    # Convert DataFrame to dictionary format
+    return {
+        "Datetime": df['Datetime'].tolist(),
+        "Open": df['Open'].tolist(),
+        "High": df['High'].tolist(),
+        "Low": df['Low'].tolist(),
+        "Close": df['Close'].tolist()
+    }
+
+# Import Data
+df = pd.read_csv("")[['Datetime','Open','High','Low','Close']]
+
+# Create JSON payload for API request
+data = time_series_dict(df)
+
+# Specify Base URL & API KEY
+BASE_URL = ""
+TOKEN = ""
+
+# Set API endpoint URL
+api_url = f"{BASE_URL}/auth/ti"
+
+# Set header for API request
+headers = {"Authorization": f"Bear", 'Content-Type': 'application/json'}
+
+# Send POST request to API
+response = requests.post(api_url, json=data, headers=headers)
+
+data = json.loads(response.text)
+
+```
+
+## Example - API Response
+
+```python
+{
+
+"2024-01-01 10:00:00": {
+      "trend_identified": null
+    },
+    
+"2024-01-01 11:00:00": {
+      "trend_identified": null
+    },
+
+...
+
+"2025-01-02 10:00:00": {
+      "trend_identified": 1
+    }
+    
+}
+```
