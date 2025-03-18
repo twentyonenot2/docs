@@ -1,128 +1,574 @@
 ---
-title: "New file"
+title: "FM1 - Time Series"
 description: "Description of your new file."
 mode: "wide"
 ---
 
-### Base URL
+## Foundation Model - Time Series
+
+### Step 1: Prepare Your Data
 
 ```python
- https://www.sumtyme.com/
+
+# Import necessary libraries
+import pandas as pd
+import requests
+import json
+import time
+
+# Function to convert DataFrame to API-compatible dictionary
+def time_series_dict(df):
+    return {
+        "Datetime": df['Datetime'].tolist(),
+        "Open": df['Open'].tolist(),
+        "High": df['High'].tolist(),
+        "Low": df['Low'].tolist(),
+        "Close": df['Close'].tolist()
+    }
+
+# Sample data loading (replace with your data source)
+df = pd.read_csv("your_time_series_data.csv")
+
+# Ensure data has the required columns
+required_columns = ['Datetime', 'Open', 'High', 'Low', 'Close']
+if not all(col in df.columns for col in required_columns):
+    raise ValueError(f"Data must contain all required columns: {required_columns}")
+
+# Convert datetime to proper format if needed
+df['Datetime'] = pd.to_datetime(df['Datetime']).dt.strftime('%Y-%m-%d %H:%M:%S')
+
+# Verify data length requirements (200-10,000 periods)
+data_length = len(df)
+if data_length < 200:
+    raise ValueError(f"Data length ({data_length}) is less than minimum required (200)")
+if data_length > 10000:
+    raise ValueError(f"Data length ({data_length}) exceeds maximum allowed (10,000)")
+
+# Uncomment to add future prediction point with zeros for unknown values
+'''
+future_date = "2025-01-02 10:00:00"  # Replace with your target future date
+future_row = pd.DataFrame({
+    'Datetime': [future_date],
+    'Open': [0],
+    'High': [0],
+    'Low': [0],
+    'Close': [0]
+})
+df = pd.concat([df, future_row]).reset_index(drop=True)
+'''
 ```
 
-## Foundation Model 1.0 (FM1)
-
-FM1: a base model 
-
-### Request Endpoint
+### Step 2: Submit API Request
 
 ```python
-POST /internal/v1/base_model_ts
+
+# API configuration
+BASE_URL = "https://www.sumtyme.com/internal"
+API_KEY = "your_api_key_here"  # Replace with your actual API key
+
+# Prepare request
+api_endpoint = f"{BASE_URL}/v1/base_model_ts"
+headers = {
+    "Authorisation": f"{API_KEY}",
+    "Content-Type": "application/json"
+}
+
+# Create payload from data
+payload = time_series_dict(df)
+
+# Send POST request to API
+response = requests.post(api_endpoint, json=payload, headers=headers)
+
+# Check for successful request
+if response.status_code != 200:
+    raise Exception(f"API request failed with status code {response.status_code}: {response.text}")
+
+# Parse response
+result = response.json()
+task_id = result.get("task_id")
+status = result.get("status")
+tasks_ahead = result.get("tasks_ahead")
+
+print(f"Request submitted. Task ID: {task_id}")
+print(f"Current status: {status}")
+print(f"Tasks ahead in queue: {tasks_ahead}")
 ```
 
-## OHLC Input Data Lengths
-
-<CardGroup cols="3">
-  <Card title="Minimum Length">
-    200 Periods
-  </Card>
-  <Card title="Extended Length">
-    10,000 Periods
-  </Card>
-</CardGroup>
-
-## Request Header
-
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
-</ParamField>
-
-<ParamField header="Authorisation" type="string" required>
-  Assigned API Key
-</ParamField>
-
-## Request Body
-
-<ParamField body="Datetime" type="list" required />
-
-<ParamField body="Open" type="list" required />
-
-<ParamField body="High" type="list" required />
-
-<ParamField body="Low" type="list" required />
-
-<ParamField body="Close" type="list" required />
-
-## Response Fields
-
-<ResponseField name="datetime" type="string">
-  Trend timestamp
-</ResponseField>
-
-<ResponseField name="trend_identified" type="string">
-  <Expandable title="Options">
-    <ResponseField name="1" type="int">
-      Bullish trend
-    </ResponseField>
-    <ResponseField name="-1" type="int">
-      Bearish trend
-    </ResponseField>
-  </Expandable>
-</ResponseField>
-
-## Foundation Model 1.0 (FM1)
-
-### Request Endpoint
+### Step 3: Retrieve Analysis Results
 
 ```python
-POST /internal/v1/base_model_tick 
+
+import time
+
+# Function to poll for results
+def get_analysis_results(task_id, api_key, max_attempts=10, delay=10):
+    """
+    Poll the results endpoint until analysis is complete or max attempts reached
+    
+    Parameters:
+    base_url (str): API base URL
+    task_id (str): Task ID from initial request
+    max_attempts (int): Maximum number of polling attempts
+    delay (int): Seconds to wait between polling attempts
+    
+    Returns:
+    dict: Analysis results or error message
+    """
+    results_endpoint = f"https://www.sumtyme.com/results/{task_id}"
+    
+    for attempt in range(max_attempts):
+        print(f"Checking results (attempt {attempt+1}/{max_attempts})...")
+        
+        response = requests.get(results_endpoint)
+        
+        if response.status_code != 200:
+            print(f"Error checking results: {response.status_code}, {response.text}")
+            return None
+            
+        result_data = response.json()
+        
+        # Check if processing is complete
+        if "status" in result_data and result_data["status"] == "processing":
+            print(f"Still processing. Tasks ahead: {result_data.get('tasks_ahead', 'unknown')}")
+            time.sleep(delay)
+            continue
+            
+        # If we get here, we have results
+        return result_data
+        
+    print("Maximum polling attempts reached. Try checking results manually later.")
+    return None
+
+# Retrieve results
+analysis_results = get_analysis_results(task_id, API_KEY)
+
+if analysis_results:
+    print("Analysis complete!")
+    print(json.dumps(analysis_results['result'], indent=2))
 ```
 
-## OHLC Input Data Lengths
+## Foundation Model - Tick Data
 
-<CardGroup cols="3">
-  <Card title="Minimum Length">
-    200 Periods
-  </Card>
-  <Card title="Extended Length">
-    10,000 Periods
-  </Card>
-</CardGroup>
+### Step 1: Prepare Your Data
 
-## Request Header
+```python
 
-<ParamField header="Content-Type" type="string" required>
-  Must be set to `application/json`
-</ParamField>
+# Import necessary libraries
+import pandas as pd
+import requests
+import json
+import time
 
-<ParamField header="Authorisation" type="string" required>
-  Assigned API Key
-</ParamField>
+# Function to convert DataFrame to API-compatible dictionary
+def tick_data_dict(df):
+    return {
+        "Timestamp": df['Timestamp'].tolist(),
+        "Price": df['Price'].tolist()
+    }
 
-## Request Body
+# Sample data loading (replace with your data source)
+df = pd.read_csv("your_time_series_data.csv")
 
-<ParamField body="Timestamp" type="list" required="true">
-  
-</ParamField>
+# Ensure data has the required columns
+required_columns = ['Timestamp', 'Price']
+if not all(col in df.columns for col in required_columns):
+    raise ValueError(f"Data must contain all required columns: {required_columns}")
 
-<ParamField body="Price" type="list" required>
-  
-</ParamField>
+# Convert datetime to proper format if needed
+df['Timestamp'] = pd.to_datetime(df['Timestamp']).dt.strftime('%Y-%m-%d %H:%M:%S.%f')
 
-## Response Fields
+# Verify data length requirements (200-10,000 periods)
+data_length = len(df)
+if data_length < 200:
+    raise ValueError(f"Data length ({data_length}) is less than minimum required (200)")
+if data_length > 10000:
+    raise ValueError(f"Data length ({data_length}) exceeds maximum allowed (10,000)")
 
-<ResponseField name="timestamp" type="string">
-  Trend timestamp
-</ResponseField>
+# Uncomment to add future prediction point with zeros for unknown values
+'''
+future_date = "2025-01-02 10:00:00"  # Replace with your target future date
+future_row = pd.DataFrame({
+    'Timestamp': [future_date],
+    'Price': [0]
 
-<ResponseField name="trend_identified" type="string">
-  <Expandable title="Options">
-    <ResponseField name="1" type="int">
-      Bullish trend
-    </ResponseField>
-    <ResponseField name="-1" type="int">
-      Bearish trend
-    </ResponseField>
-  </Expandable>
-</ResponseField>
+})
+df = pd.concat([df, future_row]).reset_index(drop=True)
+'''
+```
 
+### Step 2: Submit API Request
+
+```python
+
+# API configuration
+BASE_URL = "https://www.sumtyme.com/internal"
+API_KEY = "your_api_key_here"  # Replace with your actual API key
+
+# Prepare request
+api_endpoint = f"{BASE_URL}/v1/base_model_tick"
+headers = {
+    "Authorisation": f"{API_KEY}",
+    "Content-Type": "application/json"
+}
+
+# Create payload from data
+payload = tick_data_dict(df)
+
+# Send POST request to API
+response = requests.post(api_endpoint, json=payload, headers=headers)
+
+# Check for successful request
+if response.status_code != 200:
+    raise Exception(f"API request failed with status code {response.status_code}: {response.text}")
+
+# Parse response
+result = response.json()
+task_id = result.get("task_id")
+status = result.get("status")
+tasks_ahead = result.get("tasks_ahead")
+
+print(f"Request submitted. Task ID: {task_id}")
+print(f"Current status: {status}")
+print(f"Tasks ahead in queue: {tasks_ahead}")
+```
+
+### Step 3: Retrieve Analysis Results
+
+```python
+
+import time
+
+# Function to poll for results
+def get_analysis_results(task_id, api_key, max_attempts=10, delay=10):
+    """
+    Poll the results endpoint until analysis is complete or max attempts reached
+    
+    Parameters:
+    base_url (str): API base URL
+    task_id (str): Task ID from initial request
+    max_attempts (int): Maximum number of polling attempts
+    delay (int): Seconds to wait between polling attempts
+    
+    Returns:
+    dict: Analysis results or error message
+    """
+    results_endpoint = f"https://www.sumtyme.com/results/{task_id}"
+    
+    for attempt in range(max_attempts):
+        print(f"Checking results (attempt {attempt+1}/{max_attempts})...")
+        
+        response = requests.get(results_endpoint)
+        
+        if response.status_code != 200:
+            print(f"Error checking results: {response.status_code}, {response.text}")
+            return None
+            
+        result_data = response.json()
+        
+        # Check if processing is complete
+        if "status" in result_data and result_data["status"] == "processing":
+            print(f"Still processing. Tasks ahead: {result_data.get('tasks_ahead', 'unknown')}")
+            time.sleep(delay)
+            continue
+            
+        # If we get here, we have results
+        return result_data
+        
+    print("Maximum polling attempts reached. Try checking results manually later.")
+    return None
+
+# Retrieve results
+analysis_results = get_analysis_results(task_id, API_KEY)
+
+if analysis_results:
+    print("Analysis complete!")
+    print(json.dumps(analysis_results['result'], indent=2))
+```
+
+## Volume Model
+
+### Step 1: Prepare Your Data
+
+```python
+
+# Import necessary libraries
+import pandas as pd
+import requests
+import json
+import time
+
+# Function to convert DataFrame to API-compatible dictionary
+def volume_dict(df):
+    return {
+        "Datetime": df['Datetime'].tolist(),
+        "Open": df['Open'].tolist(),
+        "High": df['High'].tolist(),
+        "Low": df['Low'].tolist(),
+        "Close": df['Close'].tolist(),
+        "Volume": df['Volume'].tolist(),
+    }
+
+# Sample data loading (replace with your data source)
+df = pd.read_csv("your_time_series_data.csv")
+
+# Ensure data has the required columns
+required_columns = ['Datetime', 'Open', 'High', 'Low', 'Close', 'Volume']
+if not all(col in df.columns for col in required_columns):
+    raise ValueError(f"Data must contain all required columns: {required_columns}")
+
+# Convert datetime to proper format if needed
+df['Datetime'] = pd.to_datetime(df['Datetime']).dt.strftime('%Y-%m-%d %H:%M:%S')
+
+# Verify data length requirements (200-10,000 periods)
+data_length = len(df)
+if data_length < 200:
+    raise ValueError(f"Data length ({data_length}) is less than minimum required (200)")
+if data_length > 10000:
+    raise ValueError(f"Data length ({data_length}) exceeds maximum allowed (10,000)")
+
+# Uncomment to add future prediction point with zeros for unknown values
+'''
+future_date = "2025-01-02 10:00:00"  # Replace with your target future date
+future_row = pd.DataFrame({
+    'Datetime': [future_date],
+    'Open': [0],
+    'High': [0],
+    'Low': [0],
+    'Close': [0],
+    'Volumne': [0]
+})
+df = pd.concat([df, future_row]).reset_index(drop=True)
+'''
+```
+
+### Step 2: Submit API Request
+
+```python
+
+# API configuration
+BASE_URL = "https://www.sumtyme.com/internal"
+API_KEY = "your_api_key_here"  # Replace with your actual API key
+
+# Prepare request
+api_endpoint = f"{BASE_URL}/v1/volume"
+headers = {
+    "Authorisation": f"{API_KEY}",
+    "Content-Type": "application/json"
+}
+
+# Create payload from data
+payload = volume_dict(df)
+
+# Send POST request to API
+response = requests.post(api_endpoint, json=payload, headers=headers)
+
+# Check for successful request
+if response.status_code != 200:
+    raise Exception(f"API request failed with status code {response.status_code}: {response.text}")
+
+# Parse response
+result = response.json()
+task_id = result.get("task_id")
+status = result.get("status")
+tasks_ahead = result.get("tasks_ahead")
+
+print(f"Request submitted. Task ID: {task_id}")
+print(f"Current status: {status}")
+print(f"Tasks ahead in queue: {tasks_ahead}")
+```
+
+### Step 3: Retrieve Analysis Results
+
+```python
+
+import time
+
+# Function to poll for results
+def get_analysis_results(task_id, api_key, max_attempts=10, delay=10):
+    """
+    Poll the results endpoint until analysis is complete or max attempts reached
+    
+    Parameters:
+    base_url (str): API base URL
+    task_id (str): Task ID from initial request
+    max_attempts (int): Maximum number of polling attempts
+    delay (int): Seconds to wait between polling attempts
+    
+    Returns:
+    dict: Analysis results or error message
+    """
+    results_endpoint = f"https://www.sumtyme.com/results/{task_id}"
+    
+    for attempt in range(max_attempts):
+        print(f"Checking results (attempt {attempt+1}/{max_attempts})...")
+        
+        response = requests.get(results_endpoint)
+        
+        if response.status_code != 200:
+            print(f"Error checking results: {response.status_code}, {response.text}")
+            return None
+            
+        result_data = response.json()
+        
+        # Check if processing is complete
+        if "status" in result_data and result_data["status"] == "processing":
+            print(f"Still processing. Tasks ahead: {result_data.get('tasks_ahead', 'unknown')}")
+            time.sleep(delay)
+            continue
+            
+        # If we get here, we have results
+        return result_data
+        
+    print("Maximum polling attempts reached. Try checking results manually later.")
+    return None
+
+# Retrieve results
+analysis_results = get_analysis_results(task_id, API_KEY)
+
+if analysis_results:
+    print("Analysis complete!")
+    print(json.dumps(analysis_results['result'], indent=2))
+```
+
+## Correlation Model
+
+### Step 1: Prepare Your Data
+
+```python
+
+# Import necessary libraries
+import pandas as pd
+import requests
+import json
+import time
+
+# Function to convert DataFrame to API-compatible dictionary
+def correl_dict(df_list):
+
+    def time_series_dict(df):
+      return {
+          "Datetime": df['Datetime'].tolist(),
+          "Open": df['Open'].tolist(),
+          "High": df['High'].tolist(),
+          "Low": df['Low'].tolist(),
+          "Close": df['Close'].tolist()
+      }
+
+    data_dict = []
+
+    for df_ in df_list:
+
+        data_dict.append(time_series_dict(df_))
+
+    return ({'portfolio':data_dict})
+
+# Sample data loading (replace with your data source)
+df = pd.read_csv("your_time_series_data.csv")
+df1 = pd.read_csv("your_time_series_data_1.csv") 
+
+df_list = [df,df1]
+
+
+# Verify data length requirements (200-10,000 periods)
+
+for df in df_list:
+
+    # Convert datetime to proper format if needed
+    df['Datetime'] = pd.to_datetime(df['Datetime']).dt.strftime('%Y-%m-%d %H:%M:%S')
+
+    data_length = len(df)
+    
+    if data_length < 200:
+        raise ValueError(f"Data length ({data_length}) is less than minimum required (200)")
+    if data_length > 10000:
+        raise ValueError(f"Data length ({data_length}) exceeds maximum allowed (10,000)")
+```
+
+### Step 2: Submit API Request
+
+```python
+
+# API configuration
+BASE_URL = "https://www.sumtyme.com/internal"
+API_KEY = "your_api_key_here"  # Replace with your actual API key
+
+# Prepare request
+api_endpoint = f"{BASE_URL}/v1/correlation"
+headers = {
+    "Authorisation": f"{API_KEY}",
+    "Content-Type": "application/json"
+}
+
+# Create payload from data
+payload = correl_dict(df_list)
+
+# Send POST request to API
+response = requests.post(api_endpoint, json=payload, headers=headers)
+
+# Check for successful request
+if response.status_code != 200:
+    raise Exception(f"API request failed with status code {response.status_code}: {response.text}")
+
+# Parse response
+result = response.json()
+task_id = result.get("task_id")
+status = result.get("status")
+tasks_ahead = result.get("tasks_ahead")
+
+print(f"Request submitted. Task ID: {task_id}")
+print(f"Current status: {status}")
+print(f"Tasks ahead in queue: {tasks_ahead}")
+```
+
+### Step 3: Retrieve Analysis Results
+
+```python
+
+import time
+
+# Function to poll for results
+def get_analysis_results(task_id, api_key, max_attempts=10, delay=10):
+    """
+    Poll the results endpoint until analysis is complete or max attempts reached
+    
+    Parameters:
+    base_url (str): API base URL
+    task_id (str): Task ID from initial request
+    max_attempts (int): Maximum number of polling attempts
+    delay (int): Seconds to wait between polling attempts
+    
+    Returns:
+    dict: Analysis results or error message
+    """
+    results_endpoint = f"https://www.sumtyme.com/results/{task_id}"
+    
+    for attempt in range(max_attempts):
+        print(f"Checking results (attempt {attempt+1}/{max_attempts})...")
+        
+        response = requests.get(results_endpoint)
+        
+        if response.status_code != 200:
+            print(f"Error checking results: {response.status_code}, {response.text}")
+            return None
+            
+        result_data = response.json()
+        
+        # Check if processing is complete
+        if "status" in result_data and result_data["status"] == "processing":
+            print(f"Still processing. Tasks ahead: {result_data.get('tasks_ahead', 'unknown')}")
+            time.sleep(delay)
+            continue
+            
+        # If we get here, we have results
+        return result_data
+        
+    print("Maximum polling attempts reached. Try checking results manually later.")
+    return None
+
+# Retrieve results
+analysis_results = get_analysis_results(task_id, API_KEY)
+
+if analysis_results:
+    print("Analysis complete!")
+    print(json.dumps(analysis_results['result'], indent=2))
+```

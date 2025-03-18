@@ -10,51 +10,56 @@ This API uses a neuro-symbolic approach to analyse time series data, identifying
 
 ## Supported Markets
 
-<CardGroup cols={3}>
-  <Card title="Bonds" icon="landmark" />
-
-  <Card title="Commodities" icon="ship" />
-
-  <Card title="Cryptocurrencies" icon="bitcoin" />
-
-  <Card title="Derivatives" icon="layer-group" />
-
-  <Card title="Equities" icon="chart-line" />
-
-  <Card title="Foreign Exchange" icon="money-bill-transfer" />
-
-  <Card title="Indices" icon="chart-bar" />
-
-  <Card title="REITs" icon="house" />
-
-  <Card title="Tokenised Assets" icon="square" />
+<CardGroup cols="3">
+  <Card title="Bonds" icon="landmark">
+    
+  </Card>
+  <Card title="Commodities" icon="ship">
+    
+  </Card>
+  <Card title="Cryptocurrencies" icon="bitcoin">
+    
+  </Card>
+  <Card title="Derivatives" icon="layer-group">
+    
+  </Card>
+  <Card title="Equities" icon="chart-line">
+    
+  </Card>
+  <Card title="Foreign Exchange" icon="money-bill-transfer">
+    
+  </Card>
+  <Card title="Indices" icon="chart-bar">
+    
+  </Card>
+  <Card title="REITs" icon="house">
+    
+  </Card>
+  <Card title="Tokenised Assets" icon="square">
+    
+  </Card>
 </CardGroup>
 
 ## Base URL
 
 ```python
- https://demo-d9rxc.cld-seb17n282p1hf4je.s.anyscaleuserdata.com
+ https://www.sumtyme.com/internal
 ```
 
 ## Request Endpoint
 
 ```python
-POST /auth/ti 
+POST /v1/base_model_ts
 ```
 
 ## OHLC Input Data Lengths
 
-<CardGroup cols={3}>
-  <Card title="Required Length">
+<CardGroup cols="3">
+  <Card title="Minimum Length">
     200 Periods
   </Card>
-
-  <Card title="Recommended Length">
-    500 Periods
-  </Card>
-
-  <Card title="Extended Length">
-    501-3000 Periods
+  <Card title="Maximum Length">
+    10,000
   </Card>
 </CardGroup>
 
@@ -64,34 +69,51 @@ POST /auth/ti
   Must be set to `application/json`
 </ParamField>
 
-<ParamField header="Api-Key" type="string" required>
+<ParamField header="Authorisation" type="string" required>
   The API key used to authenticate requests to the API.
 </ParamField>
 
 ## Request Body
 
-<ParamField body="Datetime" type="list" required />
+<ParamField body="Datetime" type="list" required>
+  
+</ParamField>
 
-<ParamField body="Open" type="list" required />
+<ParamField body="Open" type="list" required>
+  
+</ParamField>
 
-<ParamField body="High" type="list" required />
+<ParamField body="High" type="list" required>
+  
+</ParamField>
 
-<ParamField body="Low" type="list" required />
+<ParamField body="Low" type="list" required>
+  
+</ParamField>
 
-<ParamField body="Close" type="list" required />
+<ParamField body="Close" type="list" required>
+  
+</ParamField>
 
 ## Response Fields
 
-<ResponseField name="datetime" type="string">
+<ResponseField name="task_id" type="string">
   Trade opportunity timestamp
 </ResponseField>
 
-<ResponseField name="trend_identified" type="string">
-  <Expandable title="Options">
-    <ResponseField name="1" type="int">
-      Bullish trend
-    </ResponseField>
+<ResponseField name="status" type="string">
+  Trade opportunity timestamp
+</ResponseField>
 
+<ResponseField name="tasks_ahead" type="int">
+  Number of API requests currently being processed.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  <Expandable title="Options">
+    <ResponseField name="processing" type="int">
+      Analysis
+    </ResponseField>
     <ResponseField name="-1" type="int">
       Bearish trend
     </ResponseField>
@@ -112,7 +134,7 @@ When forecasting future price trends, a future date must be specified (e.g. Jan 
 }
 ```
 
-## Example - API Request
+## Example - FM1 API Request
 
 ```python
 
@@ -152,20 +174,36 @@ headers = {"Authorization": f"Bearer {TOKEN}", 'Content-Type': 'application/json
 response = requests.post(api_url, json=data, headers=headers)
 
 data = json.loads(response.text)
-
 ```
 
-## Example - API Response
+## Example - FM1 API Response
+
+```python
+
+{
+  "task_id": fm1_887cc25b80b349eba038778b45288eda,
+  "status": "processing",
+  "tasks_ahead": 2
+}
+```
+
+## Example - Call Result Endpoint
+
+```python
+POST /results/{task_id}
+```
+
+## Example - Get Analysis from Results Queue
 
 ```python
 {
 
-"2024-01-01 10:00:00": {
-      "trend_identified": null
+"2024-01-01 15:00:00": {
+      "trend_identified": -1
     },
     
-"2024-01-01 11:00:00": {
-      "trend_identified": null
+"2024-01-01 16:00:00": {
+      "trend_identified": -1
     },
 
 ...
