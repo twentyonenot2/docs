@@ -1,0 +1,128 @@
+---
+title: "New file"
+description: "Description of your new file."
+mode: "wide"
+---
+
+### Base URL
+
+```python
+ https://www.sumtyme.com/
+```
+
+## Foundation Model 1.0 (FM1)
+
+FM1: a base model 
+
+### Request Endpoint
+
+```python
+POST /internal/v1/base_model_ts
+```
+
+## OHLC Input Data Lengths
+
+<CardGroup cols="3">
+  <Card title="Minimum Length">
+    200 Periods
+  </Card>
+  <Card title="Extended Length">
+    10,000 Periods
+  </Card>
+</CardGroup>
+
+## Request Header
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+<ParamField header="Authorisation" type="string" required>
+  Assigned API Key
+</ParamField>
+
+## Request Body
+
+<ParamField body="Datetime" type="list" required />
+
+<ParamField body="Open" type="list" required />
+
+<ParamField body="High" type="list" required />
+
+<ParamField body="Low" type="list" required />
+
+<ParamField body="Close" type="list" required />
+
+## Response Fields
+
+<ResponseField name="datetime" type="string">
+  Trend timestamp
+</ResponseField>
+
+<ResponseField name="trend_identified" type="string">
+  <Expandable title="Options">
+    <ResponseField name="1" type="int">
+      Bullish trend
+    </ResponseField>
+    <ResponseField name="-1" type="int">
+      Bearish trend
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Foundation Model 1.0 (FM1)
+
+### Request Endpoint
+
+```python
+POST /internal/v1/base_model_tick 
+```
+
+## OHLC Input Data Lengths
+
+<CardGroup cols="3">
+  <Card title="Minimum Length">
+    200 Periods
+  </Card>
+  <Card title="Extended Length">
+    10,000 Periods
+  </Card>
+</CardGroup>
+
+## Request Header
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+<ParamField header="Authorisation" type="string" required>
+  Assigned API Key
+</ParamField>
+
+## Request Body
+
+<ParamField body="Timestamp" type="list" required="true">
+  
+</ParamField>
+
+<ParamField body="Price" type="list" required>
+  
+</ParamField>
+
+## Response Fields
+
+<ResponseField name="timestamp" type="string">
+  Trend timestamp
+</ResponseField>
+
+<ResponseField name="trend_identified" type="string">
+  <Expandable title="Options">
+    <ResponseField name="1" type="int">
+      Bullish trend
+    </ResponseField>
+    <ResponseField name="-1" type="int">
+      Bearish trend
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
