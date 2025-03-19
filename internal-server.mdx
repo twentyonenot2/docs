@@ -101,6 +101,34 @@ print(f"Tasks ahead in queue: {tasks_ahead}")
 
 import time
 
+# Function to transform response dict to dataframe
+def dict_to_dataframe(response_dict):
+    # Extract the result dictionary
+    result_dict = response_dict['result']
+    
+    # Create lists for datetime and trend_identified values
+    datetimes = []
+    trends = []
+    
+    # Extract values from the nested dictionary
+    for timestamp, data in result_dict.items():
+        datetimes.append(timestamp)
+        trends.append(data['trend_identified'])
+    
+    # Create the DataFrame
+    df = pd.DataFrame({
+        'datetime': datetimes,
+        'trend_identified': trends
+    })
+    
+    # Convert datetime strings to pandas datetime objects
+    df['datetime'] = pd.to_datetime(df['datetime'])
+    
+    # Sort by datetime
+    df = df.sort_values('datetime')
+    
+    return df
+
 # Function to poll for results
 def get_analysis_results(task_id, max_attempts=10, delay=10):
     """
@@ -145,6 +173,13 @@ analysis_results = get_analysis_results(task_id)
 if analysis_results:
     print("Analysis complete!")
     print(json.dumps(analysis_results['result'], indent=2))
+
+
+## Uncomment to turn json to dataframe 
+# dataframe = dict_to_dataframe(analysis_results)
+
+
+
 ```
 
 ## Foundation Model - Tick Data
@@ -240,6 +275,34 @@ print(f"Tasks ahead in queue: {tasks_ahead}")
 
 import time
 
+# Function to transform response dict to dataframe
+def dict_to_dataframe(response_dict):
+    # Extract the result dictionary
+    result_dict = response_dict['result']
+    
+    # Create lists for datetime and trend_identified values
+    datetimes = []
+    trends = []
+    
+    # Extract values from the nested dictionary
+    for timestamp, data in result_dict.items():
+        datetimes.append(timestamp)
+        trends.append(data['trend_identified'])
+    
+    # Create the DataFrame
+    df = pd.DataFrame({
+        'timestamp': datetimes,
+        'trend_identified': trends
+    })
+    
+    # Convert datetime strings to pandas datetime objects
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    
+    # Sort by datetime
+    df = df.sort_values('timestamp')
+    
+    return df
+
 # Function to poll for results
 def get_analysis_results(task_id, max_attempts=10, delay=10):
     """
@@ -284,6 +347,10 @@ analysis_results = get_analysis_results(task_id)
 if analysis_results:
     print("Analysis complete!")
     print(json.dumps(analysis_results['result'], indent=2))
+
+## Uncomment to turn json to dataframe 
+# dataframe = dict_to_dataframe(analysis_results)
+
 ```
 
 ## Volume Model
@@ -386,6 +453,34 @@ print(f"Tasks ahead in queue: {tasks_ahead}")
 
 import time
 
+# Function to transform response dict to dataframe
+def dict_to_dataframe(response_dict):
+    # Extract the result dictionary
+    result_dict = response_dict['result']
+    
+    # Create lists for datetime and trend_identified values
+    datetimes = []
+    trends = []
+    
+    # Extract values from the nested dictionary
+    for timestamp, data in result_dict.items():
+        datetimes.append(timestamp)
+        trends.append(data['trend_identified'])
+    
+    # Create the DataFrame
+    df = pd.DataFrame({
+        'datetime': datetimes,
+        'trend_identified': trends
+    })
+    
+    # Convert datetime strings to pandas datetime objects
+    df['datetime'] = pd.to_datetime(df['datetime'])
+    
+    # Sort by datetime
+    df = df.sort_values('datetime')
+    
+    return df
+
 # Function to poll for results
 def get_analysis_results(task_id, max_attempts=10, delay=10):
     """
@@ -430,6 +525,10 @@ analysis_results = get_analysis_results(task_id)
 if analysis_results:
     print("Analysis complete!")
     print(json.dumps(analysis_results['result'], indent=2))
+
+## Uncomment to turn json to dataframe 
+# dataframe = dict_to_dataframe(analysis_results)
+
 ```
 
 ## Correlation Model
@@ -532,6 +631,34 @@ print(f"Tasks ahead in queue: {tasks_ahead}")
 
 import time
 
+# Function to transform response dict to dataframe
+def dict_to_dataframe(response_dict):
+    # Extract the result dictionary
+    result_dict = response_dict['result']
+    
+    # Create lists for datetime and correlation values
+    datetimes = []
+    correlations = []
+    
+    # Extract values from the nested dictionary
+    for timestamp, data in result_dict.items():
+        datetimes.append(timestamp)
+        correlations.append(data['correlation'])
+    
+    # Create the DataFrame
+    df = pd.DataFrame({
+        'datetime': datetimes,
+        'correlation': trends
+    })
+    
+    # Convert datetime strings to pandas datetime objects
+    df['datetime'] = pd.to_datetime(df['datetime'])
+    
+    # Sort by datetime
+    df = df.sort_values('datetime')
+    
+    return df
+
 # Function to poll for results
 def get_analysis_results(task_id, max_attempts=10, delay=10):
     """
@@ -576,4 +703,8 @@ analysis_results = get_analysis_results(task_id)
 if analysis_results:
     print("Analysis complete!")
     print(json.dumps(analysis_results['result'], indent=2))
+
+## Uncomment to turn json to dataframe 
+# dataframe = dict_to_dataframe(analysis_results)
+
 ```
