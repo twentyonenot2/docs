@@ -476,7 +476,9 @@ df1 = pd.read_csv("your_time_series_data_1.csv")
 df_list = [df,df1]
 
 
-# Verify data length requirements (200-10,000 periods)
+if len(df_list) < 2 or len(df_list) > 30:
+
+    raise ValueError("Minimum of 2 instruments and a maximum of 30 instruments.")
 
 for df in df_list:
 
