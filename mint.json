@@ -23,21 +23,6 @@
     ],
     "navigation": [
        
-        {
-            "group": "Insights",
-            "pages": [
-                "mission",
-                "abstraction-theory",
-                "AIG",
-                "VIX",
-                "SPY",
-                "BTCUSDT",
-                "JPY",
-                "btc-election",
-                "Gold",
-                "DOGEUSDT"
-            ]
-        },
         
         {
             "group": "Analytics",
