@@ -1,0 +1,39 @@
+---
+title: 'Results'
+description: 'Endpoint to retrieve API response'
+---
+
+
+## Base URL
+
+```python
+ https://www.sumtyme.com/results
+```
+
+## Request Endpoint
+
+```python
+POST /{task_id}
+```
+
+## Response Fields
+
+<ResponseField name="task_id" type="string">
+  Request Identifier
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  <Expandable title="Options">
+    <ResponseField name="processing" type="string">
+       Request has been accepted and is currently being processed.
+    </ResponseField>
+
+    <ResponseField name="success" type="string">
+      Request has been processed successfully.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="tasks_ahead" type="int">
+  The number of pending API requests that will be processed before this request.
+</ResponseField>

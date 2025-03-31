@@ -1,0 +1,98 @@
+---
+title: "Correlation Model"
+description: "A fine-tuned model that dynamically tracks real-time correlation shifts across multiple instruments (2-30) to optimise portfolio risk management."
+---
+
+## Supported Markets
+
+<CardGroup cols={3}>
+  <Card title="Bonds" icon="landmark" />
+
+  <Card title="Commodities" icon="ship" />
+
+  <Card title="Cryptocurrencies" icon="bitcoin" />
+
+  <Card title="Derivatives" icon="layer-group" />
+
+  <Card title="Equities" icon="chart-line" />
+
+  <Card title="Foreign Exchange" icon="money-bill-transfer" />
+
+  <Card title="Indices" icon="chart-bar" />
+
+  <Card title="REITs" icon="house" />
+
+  <Card title="Tokenised Assets" icon="square" />
+</CardGroup>
+
+## Base URL
+
+```python
+ https://www.sumtyme.com/shared
+```
+
+## Request Endpoint
+
+```python
+POST /v1/correlation 
+```
+
+## OHLC Input Data Lengths
+
+<CardGroup cols={3}>
+  <Card title="Minimum Length">
+    500 Periods
+  </Card>
+
+  <Card title="Maxiumum Length">
+    10000 Periods
+  </Card>
+</CardGroup>
+
+## Request Header
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+
+<ParamField body="portfolio" type="object[]" required>
+
+  <Expandable title="">
+  
+    <ParamField body="datetime" type="list" required />
+   
+    <ParamField body="open" type="list" required />
+    
+    <ParamField body="high" type="list" required />
+    
+    <ParamField body="low" type="list" required />
+    
+    <ParamField body="close" type="list" required />
+  </Expandable>  
+</ParamField>
+
+<ParamField body="weights" type="List[int]" optional>
+  Optional weighting to apply to each time series in the portfolio.
+</ParamField>
+
+## Response Fields
+
+<ResponseField name="datetime" type="string">
+  Trend timestamp
+</ResponseField>
+
+<ResponseField name="trend_identified" type="string">
+  <Expandable title="Options">
+    <ResponseField name="1" type="int">
+      Bullish trend
+    </ResponseField>
+
+    <ResponseField name="-1" type="int">
+      Bearish trend
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
