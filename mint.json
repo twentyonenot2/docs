@@ -39,7 +39,8 @@
                 "/developer-guides/base-model-ts",
                 "/developer-guides/base-model-tick",
                 "/developer-guides/application-volume",
-                "/developer-guides/application-correlation"
+                "/developer-guides/application-correlation",
+                "/developer-guides/reasoning-model-ts"
 
             ]
         },
