@@ -38,9 +38,9 @@
             "pages": [
                 "/developer-guides/base-model-ts",
                 "/developer-guides/base-model-tick",
+                "/developer-guides/reasoning-model-ts",
                 "/developer-guides/application-volume",
-                "/developer-guides/application-correlation",
-                "/developer-guides/reasoning-model-ts"
+                "/developer-guides/application-correlation"
 
             ]
         },
