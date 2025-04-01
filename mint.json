@@ -26,20 +26,20 @@
         {
             "group": "API Reference",
             "pages": [
-                "api-reference/base-model-ts",
-                "api-reference/base-model-tick",
-                "api-reference/application-volume",
-                "api-reference/application-correlation",
-                "api-reference/get-results"
+                "/api-reference/base-model-ts",
+                "/api-reference/base-model-tick",
+                "/api-reference/application-volume",
+                "/api-reference/application-correlation",
+                "/api-reference/get-results"
             ]
         },
         {
             "group": "Developer Guide",
             "pages": [
-                "developer-guides/base-model-ts",
-                "developer-guides/base-model-tick",
-                "developer-guides/application-volume",
-                "developer-guides/application-correlation",
+                "/developer-guides/base-model-ts",
+                "/developer-guides/base-model-tick",
+                "/developer-guides/application-volume",
+                "/developer-guides/application-correlation"
 
             ]
         },
