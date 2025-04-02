@@ -4,6 +4,8 @@ description: "A base model that generalises across all asset classes and time in
 slug: "/dev-guide/reasoning-model"
 ---
 
+<Warning>Endpoint currently down. We're working to restore service as quickly as possible.</Warning>
+
 ### Step 1: Prepare Your Data
 
 ```python
@@ -21,7 +23,7 @@ def time_series_dict(df,interval,interval_unit):
         "open": df['open'].tolist(),
         "high": df['high'].tolist(),
         "low": df['low'].tolist(),
-        "close": df['close'].tolist()
+        "close": df['close'].tolist(),
         "interval": interval,
         "interval_unit":interval_unit
     }
