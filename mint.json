@@ -28,6 +28,7 @@
             "pages": [
                 "/api-reference/base-model-ts",
                 "/api-reference/base-model-tick",
+                "/api-reference/reasoning-model-ts",
                 "/api-reference/application-volume",
                 "/api-reference/application-correlation",
                 "/api-reference/get-results"
