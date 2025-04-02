@@ -15,17 +15,21 @@ import json
 import time
 
 # Function to convert DataFrame to API-compatible dictionary
-def time_series_dict(df):
+def time_series_dict(df,interval,interval_unit):
     return {
         "datetime": df['datetime'].tolist(),
         "open": df['open'].tolist(),
         "high": df['high'].tolist(),
         "low": df['low'].tolist(),
         "close": df['close'].tolist()
+        "interval": interval,
+        "interval_unit":interval_unit
     }
 
 # Sample data loading (replace with your data source)
 df = pd.read_csv("your_time_series_data.csv")
+interval = 1
+interval_unit = "minutes" # options: seconds, minutes, days 
 
 # Ensure data has the required columns
 required_columns = ['datetime', 'open', 'high', 'low', 'close']
@@ -70,7 +74,7 @@ headers = {
 }
 
 # Create payload from data
-payload = time_series_dict(df)
+payload = time_series_dict(df,interval,interval_unit)
 
 # Send POST request to API
 response = requests.post(api_endpoint, json=payload, headers=headers)
