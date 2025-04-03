@@ -41,9 +41,9 @@ if not all(col in df.columns for col in required_columns):
 # Convert datetime to proper format if needed
 df['datetime'] = pd.to_datetime(df['datetime']).dt.strftime('%Y-%m-%d %H:%M:%S')
 
-# Verify data length requirements (6000-30,000 periods)
+# Verify data length requirements (5000-30,000 periods)
 data_length = len(df)
-if data_length < 2500:
+if data_length < 5000:
     raise ValueError(f"Data length ({data_length}) is less than minimum required (2500)")
 if data_length > 30000:
     raise ValueError(f"Data length ({data_length}) exceeds maximum allowed (30,000)")
