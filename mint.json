@@ -17,6 +17,10 @@
     },
     "topbarLinks": [
         {
+            "name": "Website",
+            "url": "https://www.sumtyme.ai"
+        },
+      {
             "name": "Contact",
             "url": "mailto:team@sumtyme.ai"
         }
