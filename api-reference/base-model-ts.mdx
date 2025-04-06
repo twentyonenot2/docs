@@ -1,29 +1,39 @@
 ---
-title: 'Base Model - Time Series'
+title: "Base Model - Time Series"
 description: "A base model that generalises across all asset classes and time intervals to forecast directional market trends for time series data."
 slug: "/api-ref/base-model-ts"
 ---
 
 ## Supported Markets
 
-<CardGroup cols={3}>
-  <Card title="Bonds" icon="landmark" />
-
-  <Card title="Commodities" icon="ship" />
-
-  <Card title="Cryptocurrencies" icon="bitcoin" />
-
-  <Card title="Derivatives" icon="layer-group" />
-
-  <Card title="Equities" icon="chart-line" />
-
-  <Card title="Foreign Exchange" icon="money-bill-transfer" />
-
-  <Card title="Indices" icon="chart-bar" />
-
-  <Card title="REITs" icon="house" />
-
-  <Card title="Tokenised Assets" icon="square" />
+<CardGroup cols="3">
+  <Card title="Bonds" icon="landmark">
+    
+  </Card>
+  <Card title="Commodities" icon="ship">
+    
+  </Card>
+  <Card title="Cryptocurrencies" icon="bitcoin">
+    
+  </Card>
+  <Card title="Derivatives" icon="layer-group">
+    
+  </Card>
+  <Card title="Equities" icon="chart-line">
+    
+  </Card>
+  <Card title="Foreign Exchange" icon="money-bill-transfer">
+    
+  </Card>
+  <Card title="Indices" icon="chart-bar">
+    
+  </Card>
+  <Card title="REITs" icon="house">
+    
+  </Card>
+  <Card title="Tokenised Assets" icon="square">
+    
+  </Card>
 </CardGroup>
 
 ## Base URL
@@ -40,11 +50,10 @@ POST /v1/base_model_ts
 
 ## OHLC Input Data Lengths
 
-<CardGroup cols={3}>
+<CardGroup cols="3">
   <Card title="Minimum Length">
     500 Periods
   </Card>
-
   <Card title="Maxiumum Length">
     10000 Periods
   </Card>
@@ -56,18 +65,27 @@ POST /v1/base_model_ts
   Must be set to `application/json`
 </ParamField>
 
-
 ## Request Body
 
-<ParamField body="datetime" type="list" required />
+<ParamField body="datetime" type="list" required>
+  
+</ParamField>
 
-<ParamField body="open" type="list" required />
+<ParamField body="open" type="list" required>
+  
+</ParamField>
 
-<ParamField body="high" type="list" required />
+<ParamField body="high" type="list" required>
+  
+</ParamField>
 
-<ParamField body="low" type="list" required />
+<ParamField body="low" type="list" required>
+  
+</ParamField>
 
-<ParamField body="close" type="list" required />
+<ParamField body="close" type="list" required>
+  
+</ParamField>
 
 ## Response Fields
 
@@ -80,9 +98,10 @@ POST /v1/base_model_ts
     <ResponseField name="1" type="int">
       Bullish trend
     </ResponseField>
-
     <ResponseField name="-1" type="int">
       Bearish trend
     </ResponseField>
   </Expandable>
 </ResponseField>
+
+> Important: This endpoint only returns data for datetimes where a trend is identified. If no trend is detected for a specific time period, those datapoints will be omitted from the response. Check the timestamp field in the returned objects to identify which time periods are included.

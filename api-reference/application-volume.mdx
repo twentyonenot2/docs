@@ -86,3 +86,4 @@ POST /v1/volume
   </Expandable>
 </ResponseField>
 
+> Important: This endpoint only returns data for datetimes where a trend is identified. If no trend is detected for a specific time period, those datapoints will be omitted from the response. Check the timestamp field in the returned objects to identify which time periods are included.
