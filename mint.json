@@ -33,7 +33,6 @@
                 "/api-reference/base-model-ts",
                 "/api-reference/base-model-tick",
                 "/api-reference/reasoning-model-ts",
-                "/api-reference/application-volume",
                 "/api-reference/application-correlation",
                 "/api-reference/get-results"
             ]
@@ -44,7 +43,6 @@
                 "/developer-guides/base-model-ts",
                 "/developer-guides/base-model-tick",
                 "/developer-guides/reasoning-model-ts",
-                "/developer-guides/application-volume",
                 "/developer-guides/application-correlation"
 
             ]
