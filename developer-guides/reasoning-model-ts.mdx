@@ -4,7 +4,9 @@ description: "A base model that generalises across all asset classes and time in
 slug: "/dev-guide/reasoning-model"
 ---
 
-<Note>Early Release Version</Note>
+<Note>
+  Early Release Version
+</Note>
 
 ### Step 1: Prepare Your Data
 
@@ -17,7 +19,7 @@ import json
 import time
 
 # Function to convert DataFrame to API-compatible dictionary
-def time_series_dict(df,interval,interval_unit):
+def time_series_dict(df,interval,interval_unit,reasoning_mode):
     return {
         "datetime": df['datetime'].tolist(),
         "open": df['open'].tolist(),
@@ -25,13 +27,15 @@ def time_series_dict(df,interval,interval_unit):
         "low": df['low'].tolist(),
         "close": df['close'].tolist(),
         "interval": interval,
-        "interval_unit":interval_unit
+        "interval_unit":interval_unit,
+		"reasoning_mode": reasoning_mode
     }
 
 # Sample data loading (replace with your data source)
 df = pd.read_csv("your_time_series_data.csv")
 interval = 1
 interval_unit = "minutes" # options: seconds, minutes, days 
+reasoning_mode = "reactive" # options: proactive or reactive
 
 # Ensure data has the required columns
 required_columns = ['datetime', 'open', 'high', 'low', 'close']
@@ -41,10 +45,10 @@ if not all(col in df.columns for col in required_columns):
 # Convert datetime to proper format if needed
 df['datetime'] = pd.to_datetime(df['datetime']).dt.strftime('%Y-%m-%d %H:%M:%S')
 
-# Verify data length requirements (5000-30,000 periods)
+# Verify data length requirements (5000-10,000 periods)
 data_length = len(df)
 if data_length < 5000:
-    raise ValueError(f"Data length ({data_length}) is less than minimum required (2500)")
+    raise ValueError(f"Data length ({data_length}) is less than minimum required (5000)")
 if data_length > 10000:
     raise ValueError(f"Data length ({data_length}) exceeds maximum allowed (10,000)")
 
@@ -76,7 +80,7 @@ headers = {
 }
 
 # Create payload from data
-payload = time_series_dict(df,interval,interval_unit)
+payload = time_series_dict(df,interval,interval_unit,reasoning_mode)
 
 # Send POST request to API
 response = requests.post(api_endpoint, json=payload, headers=headers)

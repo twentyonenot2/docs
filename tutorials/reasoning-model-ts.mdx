@@ -1,11 +1,15 @@
 ---
 title: "Reasoning Model Guide"
-description: "Description of your new file."
 ---
 
-### Model Methodology
+### Methodology
 
-The reasoning models identify directional trends by predicting how price movements in the selected timeframe are likely to propagate to lower-frequency timeframes, distinguishing structurally significant market moves from noise.
+The reasoning models identify directional trends by predicting how likely price action in the selected timeframe will propagate to lower-frequency timeframes, distinguishing structurally significant market moves from noise.
+
+### Value Proposition
+
+Provides strategic market intelligence by filtering out market noise and
+identifying truly significant price movements. By understanding cross-timeframe relationships,these models generate fewer but higher-conviction signals. When deployed as part of our unified system, they create an interconnected network of market intelligence that reveals the underlying structure of price propagation across different time horizons.
 
 ### The Fundamental Problem with Traditional Market Models
 
@@ -60,8 +64,6 @@ In February-March 2020, global markets experienced one of the fastest and most s
 
 This case study demonstrates how our reasoning model detected early warning signals across multiple timeframes, [[[[providing several days of advance notice before the crash intensified.]]]]
 
-
-
 #### Case Study: Acute market shock
 
 In early April 2025, global markets experienced a sharp, sudden shock as President Trump announced new tariff policies. The market reaction was almost immediate, demonstrating how quickly sentiment can shift in response to policy changes:
@@ -71,13 +73,22 @@ In early April 2025, global markets experienced a sharp, sudden shock as Preside
 
 This case study demonstrates how our base models deliver real-time directional intelligence, successfully anticipating significant price movements and providing reliable navigation through both extreme volatility and normal trading conditions.
 
-##### Step 1: Install necessary libraries
+#### Step 1: Install necessary libraries
 
-##### Step 2: Load price data
+```python
+
+# Import necessary libraries
+import pandas as pd
+import requests
+import json
+import time
+```
+
+#### Step 2: Load price data
 
 [Download price data](/data/your-filename.csv)
 
-##### Step 3: Run Walk-Forward Test
+#### Step 3: Run Walk-Forward Test
 
 > This section iterates through data periods sequentially, making API calls at the close of each period to forecast trends for the next interval.
 
@@ -97,22 +108,22 @@ This case study demonstrates how our base models deliver real-time directional i
 
 [plot the chart]
 
-##### Step 4: Quantify Insights
+#### Step 4: Quantify Insights
 
 > This section quantifies the reasoning model's effectiveness by measuring lead time — the advance warning period provided before major market movements occur. These measurements demonstrate the practical value of the model's predictive intelligence.
 
-
-| Time Series | Signal Alignment Timestamp | Lead Time |
-| -------- | ----------------------------- | ---------- |
-| 1 minute     | 2025-04-02 10:30:00  |  30 minutes    |
-| 5 minute      | 2025-04-02 10:30:00  |  20 minutes    |
-| 15 minute   | 2025-04-02 10:30:00    |    5 minutes   |
+| Time Series | Signal Alignment Timestamp | Trump Tariff Announcement Timestamp | Lead Time |
+| ----------- | -------------------------- | ----------------------------------- | --------- |
+| 1 minute    | 2025-04-02 10:30:00        | April 2nd 2025 - 4pm EST            | 5 minutes |
+| 5 minute    | 2025-04-02 10:30:00        | April 2nd 2025 - 4pm EST            | 5 minutes |
+| 15 minute   | 2025-04-02 10:30:00        | 5 minutes                           | 5 minutes |
 
 > This case study showcases how our unified system architecture detected early signals that provided precise directional intelligence, anticipating the market's intensified selling pressure a full 3 hours before the dramatic decline occurred. The system remained predictive throughout the steep decline, continuing to deliver accurate signals as the market fell.
 
-<Tip>This analysis demonstrates strong baseline performance without any fine-tuning on real-world SPY market data. Predictive accuracy can be significantly enhanced through custom multi-time-horizon fine-tuning or by incorporating proprietary datasets. </Tip>
+<Tip>
+  This analysis shows strong baseline performance without additional training on real-world SPY market data. Predictive accuracy can be improved by fine-tuning the model with custom time-horizon data or adding proprietary datasets/methodologies. 
+</Tip>
 
 #### Complete API Implementation Script
 
 > Below is a complete, ready-to-use script for our API. Copy and paste this code to immediately start generating valuable insights with minimal effort.
-

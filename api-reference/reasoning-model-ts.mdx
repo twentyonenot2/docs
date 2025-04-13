@@ -72,6 +72,17 @@ POST /v1/reasoning-model-ts
 
 <ParamField body="interval_unit" type="string" required />
 
+<ParamField body="reasoning_mode" type="string" required>
+  <Expandable title="options">
+    <ResponseField name="proactive" type="string">
+      Act early with minimal information.
+    </ResponseField>
+
+    <ResponseField name="reactive" type="string">
+      Wait for sufficient evidence before acting.
+    </ResponseField>
+  </Expandable>
+</ParamField>
 
 ## Response Fields
 
