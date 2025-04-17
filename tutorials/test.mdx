@@ -448,12 +448,6 @@ title: "Testing the Reasoning Model"
 ## Tips
 
 <AccordionGroup>
-  <Accordion title="Interpreting Trend Signals">
-    Each forecast should be interpreted within its trend context: the first signal in a consecutive trend marks the start of a trend, while consecutive forecasts in the same direction indicate the consistency of the current trend.
-  </Accordion>
-  <Accordion title="Understanding Forecast Context">
-    The reasoning model begins its analysis with as little as 10 historical data points. Your results include both the forecast (if identified) and the trend context that shaped it, all in one view. This helps you understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
-  </Accordion>
   <Accordion title="Cross-Timeframe Connectivity">
     The reasoning model operates as a unified system where predictions across multiple time horizons work together rather than independently. This integrated approach reveals how market movements propagate across timeframes, uncovering interconnected relationships that traditional single-timeframe approaches fundamentally cannot detect.
 
@@ -462,13 +456,20 @@ title: "Testing the Reasoning Model"
       src="/images/Unified System Architecture.png"
     />
   </Accordion>
+  <Accordion title="High-to-Low Frequency Propagation Assumption">
+    The reasoning model assumes that all price movements originate in high-frequency time series before cascading into lower-frequency time series. It therefore analyses price action and only returns trends that it believes will translate into lower frequency timeframes.
+  </Accordion>
+  <Accordion title="Interpreting Trend Context">
+    The reasoning model begins its analysis with as little as 10 historical data points. Your results include both the forecast (if identified) and the trend context that shaped it, all in one view. This helps you understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
+  </Accordion>
+  <Accordion title="Interpreting Trend Signals">
+    Each forecast should be interpreted within its trend context: the first signal in a consecutive trend marks the start of a trend, while consecutive forecasts in the same direction indicate the consistency of the current trend.
+  </Accordion>
   <Accordion title="Immediate Insights, Custom Optimisation">
     The reasoning model delivers immediate market insights without requiring market-specific training data. While predictive out of the box, it can be fine-tuned to optimise performance for specific time horizons through customised post-training. This flexibility allows users to incorporate multiple timeframes or any combination of traditional and alternative datasets of their choosing.
   </Accordion>
   <Accordion title="Sandbox Queue System">
     The sandbox operates on a FIFO (first-in, first-out) queue system, where each new API request joins the queue and waits for processing. During high-usage periods, wait times may increase. If you need to test in a dedicated environment without queue delays, contact us at [team@sumtyme.ai](mailto:team@sumtyme.ai).
   </Accordion>
-  <Accordion title="High-to-Low Frequency Propagation Assumption">
-    The reasoning model assumes that all price movements originate in high-frequency time series before cascading into lower-frequency time series. It therefore analyses price action and only returns trends that it believes will translate into lower frequency timeframes.
-  </Accordion>
+  
 </AccordionGroup>
