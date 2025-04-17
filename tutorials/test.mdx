@@ -1,418 +1,71 @@
 ---
-title: 'Reasoning Model API: Developer Guide'
+title: "Testing the Reasoning Model"
 ---
 
-## 🚀 Quick Start Guide
+## Select Time Series Data 
 
-Want to jump right in? Here's how to start making API calls in minutes:
+Choose a financial time series for testing, either by:
 
-```python
-import pandas as pd
+Using proprietary market data from your organization
+Downloading the curated sample dataset we've prepared
+
+### Download sample data from GitHub
 import requests
-
-# 1. Load your market data
-df = pd.read_csv("your_price_data.csv")
-
-# 2. Ensure your data has datetime, open, high, low, close columns
-df['datetime'] = pd.to_datetime(df['datetime'])
-
-# 3. Make API call with the last 5000 entries
-df_window = df.tail(5000)
-df_window['datetime'] = df_window['datetime'].dt.strftime('%Y-%m-%d %H:%M:%S')
-
-# 4. Create payload
-payload = {
-    "datetime": df_window['datetime'].tolist(),
-    "open": df_window['open'].tolist(),
-    "high": df_window['high'].tolist(),
-    "low": df_window['low'].tolist(),
-    "close": df_window['close'].tolist(),
-    "interval": 1,  # 1-minute data
-    "interval_unit": "minutes",
-    "reasoning_mode": "reactive"
-}
-
-# 5. Call API
-response = requests.post(
-    "https://www.sumtyme.com/shared/v1/reasoning-model-ts",
-    json=payload,
-    headers={"Content-Type": "application/json"}
-)
-
-# 6. Get task ID and log it
-task_id = response.json().get("task_id")
-print(f"Task ID: {task_id}")
-```
-
-## 📋 What You'll Learn
-By the end of this guide, you'll be able to:
-
-- Prepare financial time series data for the API
-- Make API calls to get market trend predictions
-- Process API responses and track prediction tasks
-- Implement walk-forward testing for historical analysis
-
-## 📚 Table of Contents
-
-- Understanding the Reasoning Model
-- Setting Up Your Environment
-- Data Preparation
-- Making API Calls
-- Tracking Results
-- Full Implementation
-- Practical Examples
-- Troubleshooting
-
-## 🧠 Understanding the Reasoning Model
-The reasoning model identifies directional trends by predicting how likely price action in the selected timeframe will propagate to lower-frequency timeframes, distinguishing structurally significant market moves from noise.
-
-Key Benefits:
-
-✅ Filters out market noise
-✅ Provides higher-conviction signals
-✅ Works across different market regimes
-✅ Anticipates significant market moves
-
-## 🛠️ Setting Up Your Environment
-
-### What You Need
-
-- Python 3.6 or higher
-- Market data with OHLC (Open, High, Low, Close) values
-- Internet connection to access the API
-
-### Installation
-Install the required packages:
-
-```python
-
-pip install pandas numpy requests
-
-```
-
-## 📊 Data Preparation
-
-### Data Format Requirements
-
-Your market data must include these columns:
-
-- datetime: Timestamp for each price point
-- open: Opening price
-- high: Highest price during the period
-- low: Lowest price during the period
-- close: Closing price
-
-### Sample Data Preparation
-
-```python 
 import pandas as pd
+import io
 
-# Load your data
-df = pd.read_csv("market_data.csv")
-
-# Ensure datetime is properly formatted
-df['datetime'] = pd.to_datetime(df['datetime'])
-
-# Check your data
-print(df.head())
-```
-
-### Creating Data Windows
-
-The API works best with windows of 5000 data points. Here's a simple utility to create these windows:
-
-```python
-def create_moving_window(data, window_size=5000, step_size=1):
-    """
-    Creates windows of data for API processing
-    
-    Parameters:
-    -----------
-    data : DataFrame
-        Your market data
-    window_size : int
-        Size of each window (default: 5000)
-    step_size : int
-        Step size between windows (default: 5000)
-    """
-    if not isinstance(data, pd.DataFrame) or data.empty:
-        raise ValueError("Data must be a non-empty DataFrame")
-    
-    # Check required columns
-    required_columns = ['datetime', 'open', 'high', 'low', 'close']
-    if not all(col in data.columns for col in required_columns):
-        missing = [col for col in required_columns if col not in data.columns]
-        raise ValueError(f"Missing required columns: {missing}")
-    
-    # Create windows
-    windows = []
-    for i in range(0, len(data) - window_size + 1, step_size):
-        windows.append(data.iloc[i:i + window_size].copy())
-    
-    return windows
-
-```
-
-## 🔌 Making API Calls
-
-### Step 1: Prepare your payload
-
-```python
-def create_payload(df, interval, interval_unit):
-    """
-    Creates API payload from DataFrame
-    
-    Parameters:
-    -----------
-    df : DataFrame
-        Window of OHLC data
-    interval : int
-        Time interval (e.g., 1 for 1 minute)
-    interval_unit : str
-        'seconds', 'minutes', or 'days'
-    """
-    # Format datetime strings for API
-    df_copy = df.copy()
-    df_copy['datetime'] = pd.to_datetime(df_copy['datetime']).dt.strftime('%Y-%m-%d %H:%M:%S')
-    
-    return {
-        "datetime": df_copy['datetime'].tolist(),
-        "open": df_copy['open'].tolist(),
-        "high": df_copy['high'].tolist(),
-        "low": df_copy['low'].tolist(),
-        "close": df_copy['close'].tolist(),
-        "interval": interval,
-        "interval_unit": interval_unit,
-        "reasoning_mode": "reactive"
-    }
-```
-
-### Step 2: Call the API
-
-```python
-
-def call_api(payload):
-    """
-    Makes API call and returns task_id
-    """
-    api_endpoint = "https://www.sumtyme.com/shared/v1/reasoning-model-ts"
-    headers = {"Content-Type": "application/json"}
-    
-    response = requests.post(api_endpoint, json=payload, headers=headers)
-    
-    if response.status_code != 200:
-        print(f"API call failed: {response.status_code} - {response.text}")
-        return None
-    
-    return response.json().get("task_id")
-```
-
-## 📝 Tracking Results
-
-Create a simple logging system to track your API calls and results:
-
-```python 
-import os
-from datetime import datetime
-
-def log_task_id(task_id, forecast_date, filename="api_calls.csv"):
-    """
-    Logs task ID to CSV file
-    """
-    # Create file with headers if it doesn't exist
-    if not os.path.exists(filename):
-        with open(filename, 'w') as f:
-            f.write("timestamp,forecast_date,task_id,checked\n")
-    
-    # Log the task ID
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    with open(filename, 'a') as f:
-        f.write(f"{current_time},{forecast_date},{task_id},blank\n")
-
-```
-
-## 💻 Full Implementation
-
-Here's how all the pieces fit together:
-
-```python
-import pandas as pd
-import numpy as np
-import requests
-import json
-import os
-from datetime import datetime
-
-def create_moving_window(data, window_size=5000, step_size=5000):
-    """Creates windows of data for API processing"""
-    if not isinstance(data, pd.DataFrame) or data.empty:
-        raise ValueError("Data must be a non-empty DataFrame")
-    
-    required_columns = ['datetime', 'open', 'high', 'low', 'close']
-    if not all(col in data.columns for col in required_columns):
-        missing = [col for col in required_columns if col not in data.columns]
-        raise ValueError(f"Missing required columns: {missing}")
-    
-    windows = []
-    for i in range(0, len(data) - window_size + 1, step_size):
-        windows.append(data.iloc[i:i + window_size].copy())
-    
-    return windows
-
-def create_payload(df, interval, interval_unit):
-    """Creates API payload from DataFrame"""
-    df_copy = df.copy()
-    df_copy['datetime'] = pd.to_datetime(df_copy['datetime']).dt.strftime('%Y-%m-%d %H:%M:%S')
-    
-    return {
-        "datetime": df_copy['datetime'].tolist(),
-        "open": df_copy['open'].tolist(),
-        "high": df_copy['high'].tolist(),
-        "low": df_copy['low'].tolist(),
-        "close": df_copy['close'].tolist(),
-        "interval": interval,
-        "interval_unit": interval_unit,
-        "reasoning_mode": "reactive"
-    }
-
-def log_task_id(task_id, forecast_date, filename="api_calls.csv"):
-    """Logs task ID to CSV file"""
-    if not os.path.exists(filename):
-        with open(filename, 'w') as f:
-            f.write("timestamp,forecast_date,task_id,checked\n")
-    
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    with open(filename, 'a') as f:
-        f.write(f"{current_time},{forecast_date},{task_id},blank\n")
-
-def process_dataset(df, interval, interval_unit, log_filename):
-    """
-    Process entire dataset in windows
-    
-    Parameters:
-    -----------
-    df : DataFrame
-        Your market data
-    interval : int
-        Time interval (e.g., 1 for 1 minute)
-    interval_unit : str
-        'seconds', 'minutes', or 'days'
-    log_filename : str
-        File to log task IDs
-    """
-    # Create windows of data
-    windows = create_moving_window(df)
-    print(f"Created {len(windows)} data windows")
-    
-    # Process each window
-    for i, window in enumerate(windows):
-        print(f"Processing window {i+1}/{len(windows)}")
-        
-        # Get forecast date (last timestamp in window)
-        forecast_date = window['datetime'].iloc[-1]
-        
-        # Create payload
-        payload = create_payload(window, interval, interval_unit)
-        
-        try:
-            # Call API
-            api_endpoint = "https://www.sumtyme.com/shared/v1/reasoning-model-ts"
-            headers = {"Content-Type": "application/json"}
-            
-            response = requests.post(api_endpoint, json=payload, headers=headers)
-            
-            if response.status_code != 200:
-                print(f"API call failed: {response.status_code} - {response.text}")
-                continue
-                
-            # Get task ID
-            task_id = response.json().get("task_id")
-            
-            # Log task ID
-            log_task_id(task_id, forecast_date, log_filename)
-            
-        except Exception as e:
-            print(f"Error processing window {i+1}: {str(e)}")
-
-# Usage example
-if __name__ == "__main__":
-    # Load your data
-    df = pd.read_csv("market_data.csv")
-    df['datetime'] = pd.to_datetime(df['datetime'])
-    
-    # Set parameters
-    interval = 1          # 1 for 1 minute data
-    interval_unit = "minutes"  # 'seconds', 'minutes', or 'days'
-    log_filename = "task_ids.csv"
-    
-    # Process dataset
-    process_dataset(df, interval, interval_unit, log_filename)
-```
-
-## 🔍 Practical Examples
-
-### Example 1: Processing 1-Second SPY Data
-
-```python 
-# Load SPY data
-df = pd.read_csv("spy_1sec_data.csv")
-df['datetime'] = pd.to_datetime(df['datetime'])
-
-# Process with 1-second intervals
-process_dataset(df, interval=1, interval_unit="seconds", log_filename="spy_1sec_task_ids.csv")
-```
-
-### Example 2: Checking Task Status
-
-After submitting your data, you can check task status:
-
-```python 
-def check_task_status(task_id):
-    """Check the status of a submitted task"""
-    api_endpoint = f"https://www.sumtyme.com/shared/v1/task/{task_id}"
-    
-    response = requests.get(api_endpoint)
+def download_github_data(url):
+    response = requests.get(url)
     if response.status_code == 200:
-        return response.json()
+        return pd.read_csv(io.StringIO(response.text))
     else:
-        print(f"Failed to retrieve task status: {response.status_code}")
-        return None
+        raise Exception(f"Failed to download data: {response.status_code}")
 
 # Example usage
-task_id = "your-task-id-here"
-status = check_task_status(task_id)
-print(status)
-```
-
-## ⚠️ Troubleshooting
-
-### Common Issues
-
-1. API Returns 4xx Error
-
-- Check your data format, especially datetime formatting
-- Ensure all required fields are present in your payload
+github_url = "https://raw.githubusercontent.com/username/repo/main/market_data.csv"
+market_data = download_github_data(github_url)
+print(f"Downloaded {len(market_data)} rows of data")
 
 
-Empty Response
+## Performance Evaluation
 
-Verify your internet connection
-Ensure the API endpoint URL is correct
+<AccordionGroup>
+  <Accordion title="FAQ without Icon">
+    You can put other components inside Accordions.
 
+    ```java HelloWorld.java
+    class HelloWorld {
+        public static void main(String[] args) {
+            System.out.println("Hello, World!");
+        }
+    }
+    ```
 
-Performance Issues
+    Check out the [Accordion](/content/components/accordions) docs for all the supported props.
+  </Accordion>
 
-Try reducing your window size if processing is slow
-Process windows in parallel for large datasets
+  <Accordion title="FAQ with Icon" icon="alien-8bit">
+    Check out the [Accordion](/content/components/accordions) docs for all the supported props.
+  </Accordion>
 
+  <Accordion title="FAQ without Icon">
+    Check out the [Accordion](/content/components/accordions) docs for all the supported props.
+  </Accordion>
+</AccordionGroup>
 
-
-## Best Practices
-
-- Data Validation: Always validate your data before sending to the API
-- Error Handling: Implement robust error handling for API calls
-- Logging: Log all API interactions for troubleshooting
-- Rate Limiting: Space out your API calls to avoid hitting rate limits
+<AccordionGroup>
+  <Accordion title="Predictive Lead Time">
+    Quantify how many minutes/hours/days before major market events the model provides reliable signals, demonstrating its ability to anticipate systemic shifts before they manifest in price action.
+  </Accordion>
+  
+  <Accordion title="Reaction Speed">
+    Measure how quickly the model adjusts after sudden market shocks, calculated as the time between a shock event and when the model's predictions align with the new reality.
+  </Accordion>
+  
+  <Accordion title="Time Horizon Alignment">
+    Verify that predictions for neighbouring time periods (e.g. 1 hour, 2 hour, 3 hour) consistently build upon each other without logical contradictions or conflicting signals.
+  </Accordion>
+</AccordionGroup>
 
 ## 📈 Case Studies
 
@@ -420,12 +73,10 @@ Process windows in parallel for large datasets
 
 The reasoning model provided early warning signals before a major market shock:
 
-| Time Series | Signal Time | Market Event | Lead Time |
-|-------------|-------------|--------------|-----------|
-| 1 minute | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
-| 5 minute | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
-| 15 minute | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
+| Time Series | Signal Time         | Market Event             | Lead Time |
+| ----------- | ------------------- | ------------------------ | --------- |
+| 1 minute    | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
+| 5 minute    | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
+| 15 minute   | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
 
 This real-world example demonstrates how the model can provide valuable advance warning of significant market moves.
-
-
