@@ -1,5 +1,6 @@
 ---
 title: "Reasoning Model - Time Series Data"
+mode: "wide"
 ---
 
 <Note>
@@ -58,8 +59,8 @@ title: "Reasoning Model - Time Series Data"
     
     # Example usage
     github_url = "https://github.com/sumtyme-ade/sample_data/tree/main/sample/spy_etf_1min.csv"
-    market_data = download_github_data(github_url)
-    print(f"Downloaded {len(market_data)} rows of data")
+    df = download_github_data(github_url)
+    print(f"Downloaded {len(df)} rows of data")
     ```
   </Accordion>
 </AccordionGroup>
@@ -199,18 +200,29 @@ title: "Reasoning Model - Time Series Data"
         
         return True
     
-    def time_series_dict(df,interval,interval_unit,reasoning_mode):
-    
-      return {
-          "datetime": df['datetime'].tolist(),
-          "open": df['open'].tolist(),
-          "high": df['high'].tolist(),
-          "low": df['low'].tolist(),
-          "close": df['close'].tolist(),
-          "interval": interval,
-          "interval_unit":interval_unit,
-          "reasoning_mode":reasoning_mode
-      }
+    def time_series_dict(df, interval, interval_unit, reasoning_mode):
+        """
+        Converts a DataFrame with OHLC price data into a dictionary format.
+        
+        Parameters:
+        df (DataFrame): DataFrame containing datetime and OHLC price columns
+        interval (int): The time interval between data points
+        interval_unit (str): The unit of time for intervals (seconds, minutes, days)
+        reasoning_mode (str): Reasoning strategy (proactive or reactive)
+        
+        Returns:
+        dict: Dictionary with lists of datetime and price data along with metadata
+        """
+        return {
+            "datetime": df['datetime'].tolist(),  # Convert datetime column to list
+            "open": df['open'].tolist(),          # Convert open prices to list
+            "high": df['high'].tolist(),          # Convert high prices to list
+            "low": df['low'].tolist(),            # Convert low prices to list
+            "close": df['close'].tolist(),        # Convert close prices to list
+            "interval": interval,                 # Time frequency value
+            "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
+            "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+        }
     
     def post_request(df,interval,interval_unit,reasoning_mode):
     
@@ -229,18 +241,25 @@ title: "Reasoning Model - Time Series Data"
       else:
         return response.json()
     
+    #Import Data
     df = pd.read_csv("filename.csv")[['datetime','open','high','low','close']].tail(5000)
     
+    # Get the last datetime as forecast date
     forecast_date = df['datetime'].iloc[-1]
     
+    # Set the time interval between data points
     interval = 1 
     
-    interval_unit = "minutes" # options: seconds,minutes,days
+    # Set the unit of time for the interval (options: seconds, minutes, days)
+    interval_unit = "minutes"
     
-    reasoning_mode = "reactive" # options: proactive or reactive
+    # Set the reasoning mode (options: proactive or reactive)
+    reasoning_mode = "reactive"
     
+    # Send request to API
     response = post_request(df,interval,interval_unit,reasoning_mode)
     
+    # Process response if successful
     if response:
     
       task_id = response.get("task_id")
@@ -249,14 +268,268 @@ title: "Reasoning Model - Time Series Data"
         
     ```
   </Accordion>
+  <Accordion title="Multiple API Calls">
+    ```python
+      import requests
+      import pandas as pd
+      import io
+      import os
+      from datetime import datetime
+      
+      def download_github_data(url):
+          # Convert GitHub repo URL to raw content URL
+          if "github.com" in url and "/blob/" not in url and "/tree/" in url:
+              # For /tree/ links, convert to raw
+              url = url.replace("github.com", "raw.githubusercontent.com")
+              url = url.replace("/tree/", "/")
+          elif "github.com" in url and "/blob/" in url:
+              # For /blob/ links, convert to raw
+              url = url.replace("github.com", "raw.githubusercontent.com")
+              url = url.replace("/blob/", "/")
+              
+          print(f"Downloading from: {url}")
+          
+          response = requests.get(url)
+          if response.status_code == 200:
+              return pd.read_csv(io.StringIO(response.text))
+          else:
+              raise Exception(f"Failed to download data: {response.status_code}")
+      
+      def time_series_dict(df, interval, interval_unit, reasoning_mode):
+          """
+          Converts a DataFrame with OHLC price data into a dictionary format.
+          
+          Parameters:
+          df (DataFrame): DataFrame containing datetime and OHLC price columns
+          interval (int): The time interval between data points
+          interval_unit (str): The unit of time for intervals (seconds, minutes, days)
+          reasoning_mode (str): Reasoning strategy (proactive or reactive)
+          
+          Returns:
+          dict: Dictionary with lists of datetime and price data along with metadata
+          """
+          return {
+              "datetime": df['datetime'].tolist(),  # Convert datetime column to list
+              "open": df['open'].tolist(),          # Convert open prices to list
+              "high": df['high'].tolist(),          # Convert high prices to list
+              "low": df['low'].tolist(),            # Convert low prices to list
+              "close": df['close'].tolist(),        # Convert close prices to list
+              "interval": interval,                 # Time frequency value
+              "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
+              "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+          }
+      
+      def create_moving_window(data, window_size, step_size=1):
+         """
+         Creates a moving window for OHLC (Open, High, Low, Close) financial data.
+         Optimized for speed using NumPy arrays.
+         
+         This function converts financial time series data into overlapping windows
+         of fixed size, useful for rolling analysis, feature engineering, or 
+         building datasets for machine learning models.
+         
+         Parameters:
+         - data (pd.DataFrame or list): Input OHLC financial data
+         - window_size (int): Number of time periods in each window
+         - step_size (int, optional): Number of periods to advance for each new window, defaults to 1
+         
+         Returns:
+         - list: List of DataFrame windows, each containing window_size rows of OHLC data
+         
+         Raises:
+         - ValueError: If input data format is invalid, window_size is out of range,
+                       step_size is not positive, or required columns are missing
+         """
+         
+         # Validate input is a proper non-empty DataFrame
+         if not isinstance(data, pd.DataFrame) or data.empty:
+             raise ValueError("Data must be a non-empty DataFrame or list of dicts.")
+         
+         # Ensure window size is valid (positive and not larger than data)
+         if window_size <= 0 or window_size > len(data):
+             raise ValueError("Window size must be between 1 and length of data.")
+         
+         # Ensure step size is positive
+         if step_size <= 0:
+             raise ValueError("Step size must be greater than 0.")
+         
+         # Check that all required OHLC columns exist
+         required_columns = ['datetime', 'open', 'high', 'low', 'close']
+         if not all(col in data.columns for col in required_columns):
+             missing = [col for col in required_columns if col not in data.columns]
+             raise ValueError(f"Missing required columns: {missing}")
+         
+         # Filter to only keep essential columns for efficiency
+         data = data[required_columns]
+         
+         # Convert to NumPy array for faster operations
+         values = data.values
+         
+         # Calculate how many windows will be generated
+         n_samples = (len(values) - window_size) // step_size + 1
+         if n_samples <= 0:
+             return []  # Return empty list if no complete windows can be formed
+         
+         # Create windows using list comprehension with fast NumPy slicing
+         # Each window is a slice of the original data converted to DataFrame
+         windows = [
+             pd.DataFrame(values[i:i + window_size], columns=required_columns)
+             for i in range(0, len(values) - window_size + 1, step_size)
+         ]
+         
+         return windows
+      
+      def post_request(df, interval, interval_unit, reasoning_mode, log_file="sumtyme_task_ids.log"):
+          """
+          Sends time series data to API using a walk-forward approach with 5000-row chunks.
+          
+          Parameters:
+          - df (DataFrame): Time series data with datetime and OHLC columns
+          - interval (int): Time interval between data points
+          - interval_unit (str): Unit of time interval (seconds, minutes, days)
+          - reasoning_mode (str): Model reasoning mode (proactive, reactive)
+          - filename (str): Base filename for logging results (without extension)
+          
+          Returns:
+          - list: Collection of task IDs from successful API calls
+          """
+          
+          # Check if file exists, if not create it with headers
+          if not os.path.exists(log_file):
+              with open(log_file, 'w') as f:
+                  f.write("timestamp,forecast_date,task_id,trend_identified\n")
+      
+          # Define base API configuration
+          BASE_URL = "https://www.sumtyme.com/shared"
+          api_endpoint = f"{BASE_URL}/v1/reasoning-model-ts"
+          headers = {"Content-Type": "application/json"}
+      
+          # Split data into 5000 row chunks
+          df_chunks = create_moving_window(df, window_size=5000)
+          
+          task_ids = []  # Collect task IDs for return
+      
+          # Process each chunk with API calls
+          for chunk in df_chunks:
+      
+              # Date to forecast for (last timestamp in chunk)
+              forecast_date = chunk['datetime'].iloc[-1]
+             
+              # Convert datetime to proper format if needed
+              chunk['datetime'] = pd.to_datetime(chunk['datetime']).dt.strftime('%Y-%m-%d %H:%M:%S')
+      
+              # Create payload from data
+              payload = time_series_dict(chunk, interval, interval_unit, reasoning_mode)
+      
+              try:
+                  # Send POST request to API
+                  response = requests.post(api_endpoint, json=payload, headers=headers)
+      
+                  # Check for successful request
+                  if response.status_code != 200:
+                      print(f"API request failed for {forecast_date} with status code {response.status_code}: {response.text}")
+                      continue
+      
+                  # Parse response
+                  result = response.json()
+                  task_id = result.get("task_id")
+                  
+                  if task_id:
+                      task_ids.append(task_id)
+            
+                      # Get current timestamp for logging
+                      current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                      
+                      # Write to log file
+                      with open(log_file, 'a') as f:
+                          f.write(f"{current_time},{forecast_date},{task_id},0\n")
+                          
+                      print(f"Successfully processed forecast date {forecast_date}, task_id: {task_id}")
+                  else:
+                      print(f"Warning: No task ID returned for forecast date {forecast_date}")
+                 
+              except Exception as e:
+                  # Log errors too
+                  current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                  with open(log_file, 'a') as f:
+                      f.write(f"{current_time},{forecast_date},ERROR: {str(e)},0\n")
+                  print(f"Error processing forecast_date={forecast_date}: {str(e)}")
+          
+          return task_ids
+      
+      def check_task_status(task_id):
+      
+        """Check the status of a submitted task"""
+      
+        api_endpoint = f"https://www.sumtyme.com/results/{task_id}"
+        
+        # Make the API request
+        response = requests.get(api_endpoint)
+        
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            result_data = response.json()
+            
+            # Check if processing is complete
+            if "status" in result_data and result_data["status"] == "complete":
+                return result_data
+      
+            elif "status" in result_data and result_data["status"] == "processing":
+                 print(f"{task_id}: Still processing") 
+                 return None
+        
+        # If we get here, either the request failed or status wasn't complete
+        print(f"Failed to retrieve task status for {task_id}: {response.status_code}")
+        return None
+      
+      def dict_to_dataframe(response_dict):
+        """
+        Transform response dictionary to dataframe more efficiently
+        """
+        # Extract the result dictionary
+        result_dict = response_dict['result']
+        
+        # Create the DataFrame directly from the dictionary
+        df = pd.DataFrame([
+            {'datetime': timestamp, 'trend_identified': data['trend_identified']}
+            for timestamp, data in result_dict.items()
+        ])
+        
+        # Convert datetime strings to pandas datetime objects
+        df['datetime'] = pd.to_datetime(df['datetime'])
+        
+        # Sort by datetime
+        return df.sort_values('datetime').reset_index(drop=True)
+      
+      # Example usage
+      github_url = "https://github.com/sumtyme-ade/sample_data/tree/main/sample/spy_etf_1min.csv"
+      df = download_github_data(github_url).tail(5003)
+      
+      # Get the last datetime as forecast date
+      forecast_date = df['datetime'].iloc[-1]
+      
+      # Set the time interval between data points
+      interval = 1 
+      
+      # Set the unit of time for the interval (options: seconds, minutes, days)
+      interval_unit = "minutes"
+      
+      # Set the reasoning mode (options: proactive or reactive)
+      reasoning_mode = "reactive"
+      
+      # Send request to API
+      task_ids = post_request(df, interval, interval_unit, reasoning_mode)
+        
+    ```
+  </Accordion>
 </AccordionGroup>
 
 ## Sandbox API Response
 
 <AccordionGroup>
-  <Accordion title="Get Task ID">
+  <Accordion title="Response">
     ```python
-    
+      {'task_id': 'task_id_6ed2f11b761d4eb589b1a223efb802d5', 'status': 'processing', 'tasks_ahead': 12}
         
     ```
   </Accordion>
@@ -419,9 +692,9 @@ title: "Reasoning Model - Time Series Data"
     
     task_id = ""
     
-    result = check_task_status(task_id)
+    response_dict = check_task_status(task_id)
     
-    if result is not None:
+    if response_dict is not None:
     
       final = dict_to_dataframe(response_dict)
     
@@ -627,7 +900,187 @@ title: "Reasoning Model - Time Series Data"
 <AccordionGroup>
   <Accordion title="Single API Call">
     ```python
-    
+      import requests
+      import pandas as pd
+      import io
+      import os
+      from datetime import datetime
+      
+      def download_github_data(url):
+          # Convert GitHub repo URL to raw content URL
+          if "github.com" in url and "/blob/" not in url and "/tree/" in url:
+              # For /tree/ links, convert to raw
+              url = url.replace("github.com", "raw.githubusercontent.com")
+              url = url.replace("/tree/", "/")
+          elif "github.com" in url and "/blob/" in url:
+              # For /blob/ links, convert to raw
+              url = url.replace("github.com", "raw.githubusercontent.com")
+              url = url.replace("/blob/", "/")
+              
+          print(f"Downloading from: {url}")
+          
+          response = requests.get(url)
+          if response.status_code == 200:
+              return pd.read_csv(io.StringIO(response.text))
+          else:
+              raise Exception(f"Failed to download data: {response.status_code}")
+      
+      def time_series_dict(df, interval, interval_unit, reasoning_mode):
+          """
+          Converts a DataFrame with OHLC price data into a dictionary format.
+          
+          Parameters:
+          df (DataFrame): DataFrame containing datetime and OHLC price columns
+          interval (int): The time interval between data points
+          interval_unit (str): The unit of time for intervals (seconds, minutes, days)
+          reasoning_mode (str): Reasoning strategy (proactive or reactive)
+          
+          Returns:
+          dict: Dictionary with lists of datetime and price data along with metadata
+          """
+          return {
+              "datetime": df['datetime'].tolist(),  # Convert datetime column to list
+              "open": df['open'].tolist(),          # Convert open prices to list
+              "high": df['high'].tolist(),          # Convert high prices to list
+              "low": df['low'].tolist(),            # Convert low prices to list
+              "close": df['close'].tolist(),        # Convert close prices to list
+              "interval": interval,                 # Time frequency value
+              "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
+              "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+          }
+      
+      def log_forecast_check(task_id, forecast_date, log_file="sumtyme_task_ids.log"):
+          """
+          Logs a forecast check to a CSV file.
+          
+          Parameters:
+          - task_id (str): The ID of the task 
+          - forecast_date (str): The date of the forecast
+          - log_file (str): Path to the log file, defaults to "sumtyme_task_ids.log"
+          """
+          current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+          
+          # Create log file with header if it doesn't exist
+          if not os.path.exists(log_file):
+              with open(log_file, 'w') as f:
+                  f.write("timestamp,forecast_date,task_id,checked\n")
+      
+          # Write to log file
+          with open(log_file, 'a') as f:
+              f.write(f"{current_time},{forecast_date},{task_id},blank\n")
+          
+          return True
+      
+      def time_series_dict(df, interval, interval_unit, reasoning_mode):
+              """
+              Converts a DataFrame with OHLC price data into a dictionary format.
+              
+              Parameters:
+              df (DataFrame): DataFrame containing datetime and OHLC price columns
+              interval (int): The time interval between data points
+              interval_unit (str): The unit of time for intervals (seconds, minutes, days)
+              reasoning_mode (str): Reasoning strategy (proactive or reactive)
+              
+              Returns:
+              dict: Dictionary with lists of datetime and price data along with metadata
+              """
+              return {
+                  "datetime": df['datetime'].tolist(),  # Convert datetime column to list
+                  "open": df['open'].tolist(),          # Convert open prices to list
+                  "high": df['high'].tolist(),          # Convert high prices to list
+                  "low": df['low'].tolist(),            # Convert low prices to list
+                  "close": df['close'].tolist(),        # Convert close prices to list
+                  "interval": interval,                 # Time frequency value
+                  "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
+                  "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+              }
+      
+      def post_request(df,interval,interval_unit,reasoning_mode):
+      
+        # Prepare request
+        api_endpoint = f"https://www.sumtyme.com/shared/v1/reasoning-model-ts"
+        headers = {"Content-Type": "application/json"}
+        
+        # Create payload from data
+        payload = time_series_dict(df,interval,interval_unit,reasoning_mode)
+        
+        # Send POST request to API
+        response = requests.post(api_endpoint, json=payload, headers=headers)
+      
+        if response.status_code != 200:
+                  print(f"API request failed for {forecast_date} with status code {response.status_code}: {response.text}")
+        else:
+          return response.json()
+      
+      def check_task_status(task_id):
+      
+        """Check the status of a submitted task"""
+      
+        api_endpoint = f"https://www.sumtyme.com/results/{task_id}"
+        
+        # Make the API request
+        response = requests.get(api_endpoint)
+        
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            result_data = response.json()
+            
+            # Check if processing is complete
+            if "status" in result_data and result_data["status"] == "complete":
+                return result_data
+      
+            elif "status" in result_data and result_data["status"] == "processing":
+                 print(f"{task_id}: Still processing") 
+                 return None
+        
+        # If we get here, either the request failed or status wasn't complete
+        print(f"Failed to retrieve task status for {task_id}: {response.status_code}")
+        return None
+      
+      def dict_to_dataframe(response_dict):
+        """
+        Transform response dictionary to dataframe more efficiently
+        """
+        # Extract the result dictionary
+        result_dict = response_dict['result']
+        
+        # Create the DataFrame directly from the dictionary
+        df = pd.DataFrame([
+            {'datetime': timestamp, 'trend_identified': data['trend_identified']}
+            for timestamp, data in result_dict.items()
+        ])
+        
+        # Convert datetime strings to pandas datetime objects
+        df['datetime'] = pd.to_datetime(df['datetime'])
+        
+        # Sort by datetime
+        return df.sort_values('datetime').reset_index(drop=True)
+      
+      # Example usage
+      github_url = "https://github.com/sumtyme-ade/sample_data/tree/main/sample/spy_etf_1min.csv"
+      df = download_github_data(github_url).tail(5000)
+      
+      # Get the last datetime as forecast date
+      forecast_date = df['datetime'].iloc[-1]
+      
+      # Set the time interval between data points
+      interval = 1 
+      
+      # Set the unit of time for the interval (options: seconds, minutes, days)
+      interval_unit = "minutes"
+      
+      # Set the reasoning mode (options: proactive or reactive)
+      reasoning_mode = "reactive"
+      
+      # Send request to API
+      response = post_request(df,interval,interval_unit,reasoning_mode)
+      
+      # Process response if successful
+      if response:
+          print(response)
+          task_id = response.get("task_id")
+      
+          log_forecast_check(task_id,forecast_date)
         
     ```
   </Accordion>
