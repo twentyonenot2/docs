@@ -2,6 +2,14 @@
 title: "Testing the Reasoning Model"
 ---
 
+<Note>
+  This model identifies directional trends by predicting how likely price action in the selected timeframe will propagate to lower-frequency timeframes, distinguishing structurally significant market moves from noise.
+</Note>
+
+<Tip>
+  We recommend using higher frequency data compared to your target forecast horizon, as this leverages the model's propagation methodology effectively (e.g., use 15 or 30 min data to predict daily moves).
+</Tip>
+
 ## Select Time Series Data
 
 <AccordionGroup>
@@ -128,7 +136,7 @@ title: "Testing the Reasoning Model"
     import json
     import os
     from datetime import datetime
-
+    
     def log_forecast_check(task_id, forecast_date, log_file="sumtyme_task_ids.log"):
         """
         Logs a forecast check to a CSV file.
@@ -163,7 +171,7 @@ title: "Testing the Reasoning Model"
           "interval_unit":interval_unit,
           "reasoning_mode":reasoning_mode
       }
-
+    
     def post_request(df,interval,interval_unit,reasoning_mode):
     
       # Prepare request
@@ -175,14 +183,14 @@ title: "Testing the Reasoning Model"
       
       # Send POST request to API
       response = requests.post(api_endpoint, json=payload, headers=headers)
-
+    
       if response.status_code != 200:
                 print(f"API request failed for {forecast_date} with status code {response.status_code}: {response.text}")
       else:
         return response.json()
     
     df = pd.read_csv("filename.csv")[['datetime','open','high','low','close']]
-
+    
     forecast_date = df['datetime'].iloc[-1]
     
     interval = 1 
@@ -192,11 +200,11 @@ title: "Testing the Reasoning Model"
     reasoning_mode = "reactive" # options: proactive or reactive
     
     response = post_request(df,interval,interval_unit,reasoning_mode)
-
+    
     if response:
     
       task_id = response.get("task_id")
-  
+    
       log_forecast_check(task_id,forecast_date)
         
     ```
@@ -212,24 +220,200 @@ title: "Testing the Reasoning Model"
         
     ```
   </Accordion>
-  
 </AccordionGroup>
 
-## Result Endpoint Response
+## Retrieve Analysis
 
 <AccordionGroup>
-  <Accordion title="Status: Processing">
+  <Accordion title="Using Log File">
+    ```python
+    
+    
+    import pandas as pd
+    import requests
+    
+    def check_task_status(task_id):
+      """Check the status of a submitted task"""
+      api_endpoint = f"https://www.sumtyme.com/results/{task_id}"
+      
+      # Make the API request
+      response = requests.get(api_endpoint)
+      
+      # Check if the request was successful (status code 200)
+      if response.status_code == 200:
+          result_data = response.json()
+          
+          # Check if processing is complete
+          if "status" in result_data and result_data["status"] == "complete":
+              return result_data
+      
+      # If we get here, either the request failed or status wasn't complete
+      print(f"Failed to retrieve task status for {task_id}: {response.status_code}")
+      return None
+    
+    def dict_to_dataframe(response_dict):
+      """Transform response dictionary to dataframe more efficiently"""
+      # Extract the result dictionary
+      result_dict = response_dict['result']
+      
+      # Create the DataFrame directly from the dictionary
+      df = pd.DataFrame([
+          {'datetime': timestamp, 'trend_identified': data['trend_identified']}
+          for timestamp, data in result_dict.items()
+      ])
+      
+      # Convert datetime strings to pandas datetime objects
+      df['datetime'] = pd.to_datetime(df['datetime'])
+      
+      # Sort by datetime
+      return df.sort_values('datetime').reset_index(drop=True)
+    
+    def get_analysis(dataset, save_filename):
+      """Process the dataset and check task statuses"""
+      # Create a copy of the dataset to update
+      updated_dataset = dataset.copy()
+      
+      # Pre-allocate the 'checked' column with default value
+      updated_dataset['checked'] = 'Not processed'
+      
+      # Process each row in the dataset
+      for i in dataset.index:
+          try:
+              # Extract data for current row
+              task_id = str(dataset.loc[i, 'task_id'])
+              forecast_date = pd.to_datetime(dataset.loc[i, 'forecast_date'])
+              
+              # Get analysis results
+              analysis_results = check_task_status(task_id)
+              
+              # Process results if available
+              if analysis_results is not None and 'result' in analysis_results:
+                  # Convert results to DataFrame
+                  df_results = dict_to_dataframe(analysis_results)
+                  
+                  # Check if dataframe has data
+                  if not df_results.empty:
+                      # Get the last datetime and trend in the results
+                      last_datetime = df_results['datetime'].iloc[-1]
+                      trend = df_results['trend_identified'].iloc[-1]
+                      
+                      # Update the 'checked' column based on datetime match
+                      if last_datetime == forecast_date:
+                          updated_dataset.loc[i, 'checked'] = trend
+                      else:
+                          updated_dataset.loc[i, 'checked'] = 'No'
+                  else:
+                      updated_dataset.loc[i, 'checked'] = 'Empty results'
+              else:
+                  updated_dataset.loc[i, 'checked'] = 'No results'
+                  
+          except Exception as e:
+              # Improved error handling with exception details
+              print(f"Error processing task_id {task_id}: {str(e)}")
+              updated_dataset.loc[i, 'checked'] = 'Error'
+      
+      # Save the updated dataset
+      updated_dataset.to_csv(save_filename, index=False)
+      print(f"Processing complete. Results saved to {save_filename}")
+    
+    filename = "spy_1_min_task_ids"
+    input_file = f"{filename}.csv"
+    save_filename = f"{filename}_checked.csv"
+        
+    # Load the dataset
+    dataset = pd.read_csv(input_file)
+    
+    get_analysis(dataset, save_filename)
+      
+        
+    ```
+  </Accordion>
+  <Accordion title="Using Task ID">
+    ```python
+    
+    
+    import pandas as pd
+    import requests
+    
+    def check_task_status(task_id):
+      """Check the status of a submitted task"""
+      api_endpoint = f"https://www.sumtyme.com/results/{task_id}"
+      
+      # Make the API request
+      response = requests.get(api_endpoint)
+      
+      # Check if the request was successful (status code 200)
+      if response.status_code == 200:
+          result_data = response.json()
+          
+          # Check if processing is complete
+          if "status" in result_data and result_data["status"] == "complete":
+              return result_data
+    
+          elif "status" in result_data and result_data["status"] == "processing":
+               print(f"{task_id}: Still processing") 
+               return None
+      
+      # If we get here, either the request failed or status wasn't complete
+      print(f"Failed to retrieve task status for {task_id}: {response.status_code}")
+      return None
+    
+    def dict_to_dataframe(response_dict):
+      """Transform response dictionary to dataframe more efficiently"""
+      # Extract the result dictionary
+      result_dict = response_dict['result']
+      
+      # Create the DataFrame directly from the dictionary
+      df = pd.DataFrame([
+          {'datetime': timestamp, 'trend_identified': data['trend_identified']}
+          for timestamp, data in result_dict.items()
+      ])
+      
+      # Convert datetime strings to pandas datetime objects
+      df['datetime'] = pd.to_datetime(df['datetime'])
+      
+      # Sort by datetime
+      return df.sort_values('datetime').reset_index(drop=True)
+    
+              
+    
+    task_id = ""
+    
+    result = check_task_status(task_id)
+    
+    if result is not None:
+    
+      final = dict_to_dataframe(response_dict)
+    
+      final.to_csv("sumtyme_analysis.csv",index=False)
+    
+        
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Plot Forecasts
+
+<AccordionGroup>
+  <Accordion title="Merge Price Data and Log File/Saved DataFrame">
+    ```python
+    
+        
+    ```
+
     ```python
     
         
     ```
   </Accordion>
-  <Accordion title="Status: Complete">
+
+  <Accordion title="Plot Data">
     ```python
     
         
     ```
   </Accordion>
+ 
 </AccordionGroup>
 
 ## Full Script
@@ -263,16 +447,17 @@ title: "Testing the Reasoning Model"
   </Accordion>
 </AccordionGroup>
 
-## 📈 Case Studies
+## Tips
 
-### Trump Tariff Market Shock (April 2025)
-
-The reasoning model provided early warning signals before a major market shock:
-
-| Time Series | Signal Time         | Market Event             | Lead Time |
-| ----------- | ------------------- | ------------------------ | --------- |
-| 1 minute    | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
-| 5 minute    | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
-| 15 minute   | 2025-04-02 10:30:00 | April 2nd 2025 - 4pm EST | 5.5 hours |
-
-This real-world example demonstrates how the model can provide valuable advance warning of significant market moves.
+<AccordionGroup>
+  <Accordion title="Forecast Context">
+    
+    
+  </Accordion>
+  <Accordion title="Reaction Speed">
+    
+  </Accordion>
+  <Accordion title="Long Processing Queue">
+    
+  </Accordion>
+</AccordionGroup>
