@@ -10,10 +10,10 @@ title: "Reasoning Model - Time Series Data"
   We recommend using higher frequency data compared to your target forecast horizon, as this leverages the model's propagation methodology effectively (e.g., use 15 or 30 min data to predict daily moves).
 </Tip>
 
-## Select Time Series Data
+## Time Series Data
 
 <AccordionGroup>
-  <Accordion title="Upload Data">
+  <Accordion title="Import CSV Data">
     ```python
     import pandas as pd
     
@@ -30,14 +30,34 @@ title: "Reasoning Model - Time Series Data"
     import io
     
     def download_github_data(url):
+    
+        # Convert GitHub repo URL to raw content URL
+        if "github.com" in url and "/blob/" not in url and "/tree/" in url:
+        
+            # For /tree/ links, convert to raw
+            url = url.replace("github.com", "raw.githubusercontent.com")
+            url = url.replace("/tree/", "/")
+            
+        elif "github.com" in url and "/blob/" in url:
+        
+            # For /blob/ links, convert to raw
+            url = url.replace("github.com", "raw.githubusercontent.com")
+            url = url.replace("/blob/", "/")
+            
+        print(f"Downloading from: {url}")
+        
         response = requests.get(url)
+        
         if response.status_code == 200:
+        
             return pd.read_csv(io.StringIO(response.text))
+        
         else:
+        
             raise Exception(f"Failed to download data: {response.status_code}")
     
     # Example usage
-    github_url = "https://raw.githubusercontent.com/username/repo/main/market_data.csv"
+    github_url = "https://github.com/sumtyme-ade/sample_data/tree/main/sample/spy_etf_1min.csv"
     market_data = download_github_data(github_url)
     print(f"Downloaded {len(market_data)} rows of data")
     ```
@@ -49,79 +69,99 @@ title: "Reasoning Model - Time Series Data"
 <AccordionGroup>
   <Accordion title="Create JSON Payload - 1 API Call">
     ```python
+    # Import required libraries
     import pandas as pd
     import json
     
-    def time_series_dict(df,interval,interval_unit,reasoning_mode):
+    def time_series_dict(df, interval, interval_unit, reasoning_mode):
+        """
+        Converts a DataFrame with OHLC price data into a dictionary format.
+        
+        Parameters:
+        df (DataFrame): DataFrame containing datetime and OHLC price columns
+        interval (int): The time interval between data points
+        interval_unit (str): The unit of time for intervals (seconds, minutes, days)
+        reasoning_mode (str): Reasoning strategy (proactive or reactive)
+        
+        Returns:
+        dict: Dictionary with lists of datetime and price data along with metadata
+        """
+        return {
+            "datetime": df['datetime'].tolist(),  # Convert datetime column to list
+            "open": df['open'].tolist(),          # Convert open prices to list
+            "high": df['high'].tolist(),          # Convert high prices to list
+            "low": df['low'].tolist(),            # Convert low prices to list
+            "close": df['close'].tolist(),        # Convert close prices to list
+            "interval": interval,                 # Time frequency value
+            "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
+            "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+        }
     
-      return {
-          "datetime": df['datetime'].tolist(),
-          "open": df['open'].tolist(),
-          "high": df['high'].tolist(),
-          "low": df['low'].tolist(),
-          "close": df['close'].tolist(),
-          "interval": interval,
-          "interval_unit":interval_unit,
-          "reasoning_mode":reasoning_mode
-      }
+    # Read the CSV file and select only the required columns
+    df = pd.read_csv("filename.csv")[['datetime', 'open', 'high', 'low', 'close']]
     
-    df = pd.read_csv("filename.csv")[['datetime','open','high','low','close']]
-    
+    # Set the time interval between data points
     interval = 1 
     
-    interval_unit = "minutes" # options: seconds,minutes,days
+    # Set the unit of time for the interval (options: seconds, minutes, days)
+    interval_unit = "minutes"
     
-    reasoning_mode = "reactive" # options: proactive or reactive
+    # Set the reasoning mode (options: proactive or reactive)
+    reasoning_mode = "reactive"
     
-    json_payload = time_series_dict(df,interval,interval_unit,reasoning_mode)
+    # Create the JSON-compatible dictionary from the DataFrame and parameters
+    json_payload = time_series_dict(df, interval, interval_unit, reasoning_mode)
     
     ```
   </Accordion>
   <Accordion title="Create JSON Payload - Multiple API Calls">
     ```python
+    # Import required libraries
     import pandas as pd
-    import numpy as np
     import json
     
     def time_series_dict(df, interval, interval_unit, reasoning_mode):
-       """
-       Converts financial time series data to a dictionary format suitable for API submission.
-       
-       Parameters:
-       - df: DataFrame containing OHLC price data with datetime column
-       - interval: Integer representing the time interval size
-       - interval_unit: String specifying the unit of time (seconds, minutes, days)
-       - reasoning_mode: String indicating model behavior (proactive or reactive)
-       
-       Returns:
-       - Dictionary with time series data and configuration parameters
-       """
-       return {
-           "datetime": df['datetime'].tolist(),
-           "open": df['open'].tolist(),
-           "high": df['high'].tolist(),
-           "low": df['low'].tolist(),
-           "close": df['close'].tolist(),
-           "interval": interval,
-           "interval_unit": interval_unit,
-           "reasoning_mode": reasoning_mode
-       }
+        """
+        Converts a DataFrame with OHLC price data into a dictionary format.
+        
+        Parameters:
+        df (DataFrame): DataFrame containing datetime and OHLC price columns
+        interval (int): The time interval between data points
+        interval_unit (str): The unit of time for intervals (seconds, minutes, days)
+        reasoning_mode (str): Reasoning strategy (proactive or reactive)
+        
+        Returns:
+        dict: Dictionary with lists of datetime and price data along with metadata
+        """
+        return {
+            "datetime": df['datetime'].tolist(),  # Convert datetime column to list
+            "open": df['open'].tolist(),          # Convert open prices to list
+            "high": df['high'].tolist(),          # Convert high prices to list
+            "low": df['low'].tolist(),            # Convert low prices to list
+            "close": df['close'].tolist(),        # Convert close prices to list
+            "interval": interval,                 # Time frequency value
+            "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
+            "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+        }
     
-    # Load the financial dataset with only the required columns for efficiency
+    # Read the CSV file and select only the required columns
     df = pd.read_csv("filename.csv")[['datetime', 'open', 'high', 'low', 'close']]
     
-    # Configure time series parameters
+    # Set the time interval between data points
     interval = 1 
-    interval_unit = "minutes"  # options: seconds, minutes, days
-    reasoning_mode = "reactive"  # options: proactive or reactive
+    
+    # Set the unit of time for the interval (options: seconds, minutes, days)
+    interval_unit = "minutes"
+    
+    # Set the reasoning mode (options: proactive or reactive)
+    reasoning_mode = "reactive"
     
     # Split data for efficient submission
     chunk_size = 5000
     df_list = [df.iloc[i:i+chunk_size] for i in range(0, len(df), chunk_size)]
     
     # Create API-ready payloads for each data chunk
-    json_payloads = [time_series_dict(chunk, interval, interval_unit, reasoning_mode) 
-                   for chunk in df_list]
+    json_payloads = [time_series_dict(chunk, interval, interval_unit, reasoning_mode) for chunk in df_list]
     
     ```
   </Accordion>
@@ -185,11 +225,11 @@ title: "Reasoning Model - Time Series Data"
       response = requests.post(api_endpoint, json=payload, headers=headers)
     
       if response.status_code != 200:
-                print(f"API request failed for {forecast_date} with status code {response.status_code}: {response.text}")
+        print(f"API request failed for {forecast_date} with status code {response.status_code}: {response.text}")
       else:
         return response.json()
     
-    df = pd.read_csv("filename.csv")[['datetime','open','high','low','close']]
+    df = pd.read_csv("filename.csv")[['datetime','open','high','low','close']].tail(5000)
     
     forecast_date = df['datetime'].iloc[-1]
     
@@ -603,10 +643,10 @@ title: "Reasoning Model - Time Series Data"
 
 <AccordionGroup>
   <Accordion title="Predictive Lead Time">
-    Quantify how many minutes/hours/days before major market events the model provides reliable signals, demonstrating its ability to anticipate systemic shifts before they manifest in price action.
+    Quantify how many minutes/hours/days before major market events the model provides reliable signals, demonstrating its ability to anticipate systemic shifts before they fully develop in the market.
   </Accordion>
   <Accordion title="Reaction Speed">
-    Measure how quickly the model adjusts after sudden market shocks, calculated as the time between a shock event and when the model's predictions align with the new reality.
+    Measure how quickly the model adjusts after sudden market shocks, calculated as the time between a shock event and when the model's predictions catch up to the new reality.
   </Accordion>
   <Accordion title="Time Horizon Alignment">
     Verify that predictions for neighbouring time periods (e.g. 1 hour, 2 hour, 3 hour) consistently build upon each other without logical contradictions or conflicting signals.
