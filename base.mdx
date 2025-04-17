@@ -1,14 +1,14 @@
 ---
-title: "Reasoning Model - Time Series Data"
+title: "Base Model - Time Series Data"
 mode: "wide"
 ---
 
 <Note>
-  This model identifies directional trends by predicting how likely price action in the selected timeframe will propagate to lower-frequency timeframes, distinguishing structurally significant market moves from noise.
+  This model identifies directional trends by analysing price action within the selected timeframe in isolation, responding quickly to timeframe specific movements and generating frequent trend signals without broader context.
 </Note>
 
 <Tip>
-  We recommend using higher frequency data compared to your target forecast horizon, as this leverages the model's propagation methodology effectively (e.g., use 15 or 30 min data to predict daily moves).
+  Due to this model's reliance on isolated timeframe analysis, analyse multiple time horizons simultaneously for a holistic understanding of market behaviour.
 </Tip>
 
 ## Time Series Data
@@ -74,15 +74,12 @@ mode: "wide"
     import pandas as pd
     import json
     
-    def time_series_dict(df, interval, interval_unit, reasoning_mode):
+    def time_series_dict(df):
         """
         Converts a DataFrame with OHLC price data into a dictionary format.
         
         Parameters:
         df (DataFrame): DataFrame containing datetime and OHLC price columns
-        interval (int): The time interval between data points
-        interval_unit (str): The unit of time for intervals (seconds, minutes, days)
-        reasoning_mode (str): Reasoning strategy (proactive or reactive)
         
         Returns:
         dict: Dictionary with lists of datetime and price data along with metadata
@@ -92,26 +89,14 @@ mode: "wide"
             "open": df['open'].tolist(),          # Convert open prices to list
             "high": df['high'].tolist(),          # Convert high prices to list
             "low": df['low'].tolist(),            # Convert low prices to list
-            "close": df['close'].tolist(),        # Convert close prices to list
-            "interval": interval,                 # Time frequency value
-            "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
-            "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+            "close": df['close'].tolist()         # Convert close prices to list
         }
     
     # Read the CSV file and select only the required columns
     df = pd.read_csv("filename.csv")[['datetime', 'open', 'high', 'low', 'close']]
     
-    # Set the time interval between data points
-    interval = 1 
-    
-    # Set the unit of time for the interval (options: seconds, minutes, days)
-    interval_unit = "minutes"
-    
-    # Set the reasoning mode (options: proactive or reactive)
-    reasoning_mode = "reactive"
-    
     # Create the JSON-compatible dictionary from the DataFrame and parameters
-    json_payload = time_series_dict(df, interval, interval_unit, reasoning_mode)
+    json_payload = time_series_dict(df)
     
     ```
   </Accordion>
@@ -127,42 +112,27 @@ mode: "wide"
         
         Parameters:
         df (DataFrame): DataFrame containing datetime and OHLC price columns
-        interval (int): The time interval between data points
-        interval_unit (str): The unit of time for intervals (seconds, minutes, days)
-        reasoning_mode (str): Reasoning strategy (proactive or reactive)
         
         Returns:
-        dict: Dictionary with lists of datetime and price data along with metadata
+        dict: Dictionary with lists of datetime and price data
         """
         return {
             "datetime": df['datetime'].tolist(),  # Convert datetime column to list
             "open": df['open'].tolist(),          # Convert open prices to list
             "high": df['high'].tolist(),          # Convert high prices to list
             "low": df['low'].tolist(),            # Convert low prices to list
-            "close": df['close'].tolist(),        # Convert close prices to list
-            "interval": interval,                 # Time frequency value
-            "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
-            "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+            "close": df['close'].tolist()         # Convert close prices to list
         }
     
     # Read the CSV file and select only the required columns
     df = pd.read_csv("filename.csv")[['datetime', 'open', 'high', 'low', 'close']]
-    
-    # Set the time interval between data points
-    interval = 1 
-    
-    # Set the unit of time for the interval (options: seconds, minutes, days)
-    interval_unit = "minutes"
-    
-    # Set the reasoning mode (options: proactive or reactive)
-    reasoning_mode = "reactive"
     
     # Split data for efficient submission
     chunk_size = 5000
     df_list = [df.iloc[i:i+chunk_size] for i in range(0, len(df), chunk_size)]
     
     # Create API-ready payloads for each data chunk
-    json_payloads = [time_series_dict(chunk, interval, interval_unit, reasoning_mode) for chunk in df_list]
+    json_payloads = [time_series_dict(chunk) for chunk in df_list]
     
     ```
   </Accordion>
@@ -198,28 +168,24 @@ mode: "wide"
           else:
               raise Exception(f"Failed to download data: {response.status_code}")
       
-      def time_series_dict(df, interval, interval_unit, reasoning_mode):
+      def time_series_dict(df):
           """
           Converts a DataFrame with OHLC price data into a dictionary format.
           
           Parameters:
           df (DataFrame): DataFrame containing datetime and OHLC price columns
-          interval (int): The time interval between data points
-          interval_unit (str): The unit of time for intervals (seconds, minutes, days)
-          reasoning_mode (str): Reasoning strategy (proactive or reactive)
+
           
           Returns:
-          dict: Dictionary with lists of datetime and price data along with metadata
+          dict: Dictionary with lists of datetime and price data
           """
           return {
               "datetime": df['datetime'].tolist(),  # Convert datetime column to list
               "open": df['open'].tolist(),          # Convert open prices to list
               "high": df['high'].tolist(),          # Convert high prices to list
               "low": df['low'].tolist(),            # Convert low prices to list
-              "close": df['close'].tolist(),        # Convert close prices to list
-              "interval": interval,                 # Time frequency value
-              "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
-              "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+              "close": df['close'].tolist()         # Convert close prices to list
+
           }
       
       def log_forecast_check(task_id, forecast_date, log_file="sumtyme_task_ids.log"):
@@ -244,8 +210,27 @@ mode: "wide"
           
           return True
       
+      def time_series_dict(df):
+          """
+          Converts a DataFrame with OHLC price data into a dictionary format.
+          
+          Parameters:
+          df (DataFrame): DataFrame containing datetime and OHLC price columns
+
+          
+          Returns:
+          dict: Dictionary with lists of datetime and price data 
+          """
+          return {
+              "datetime": df['datetime'].tolist(),  # Convert datetime column to list
+              "open": df['open'].tolist(),          # Convert open prices to list
+              "high": df['high'].tolist(),          # Convert high prices to list
+              "low": df['low'].tolist(),            # Convert low prices to list
+              "close": df['close'].tolist()        # Convert close prices to list
+
+          }
       
-      def post_request(df,interval,interval_unit,reasoning_mode):
+      def post_request(df):
       
         # Prepare request
         api_endpoint = f"https://www.sumtyme.com/shared/v1/reasoning-model-ts"
@@ -262,27 +247,6 @@ mode: "wide"
         else:
           return response.json()
     
-      def log_forecast_check(task_id, forecast_date, log_file="sumtyme_task_ids.log"):
-            """
-            Logs a forecast check to a CSV file.
-            
-            Parameters:
-            - task_id (str): The ID of the task 
-            - forecast_date (str): The date of the forecast
-            - log_file (str): Path to the log file, defaults to "sumtyme_task_ids.log"
-            """
-            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            
-            # Create log file with header if it doesn't exist
-            if not os.path.exists(log_file):
-                with open(log_file, 'w') as f:
-                    f.write("timestamp,forecast_date,task_id,checked\n")
-        
-            # Write to log file
-            with open(log_file, 'a') as f:
-                f.write(f"{current_time},{forecast_date},{task_id},0\n")
-            
-            return True
       
       # Example usage
       github_url = "https://github.com/sumtyme-ade/sample_data/tree/main/sample/spy_etf_1min.csv"
@@ -291,17 +255,8 @@ mode: "wide"
       # Get the last datetime as forecast date
       forecast_date = df['datetime'].iloc[-1]
       
-      # Set the time interval between data points
-      interval = 1 
-      
-      # Set the unit of time for the interval (options: seconds, minutes, days)
-      interval_unit = "minutes"
-      
-      # Set the reasoning mode (options: proactive or reactive)
-      reasoning_mode = "reactive"
-      
       # Send request to API
-      response = post_request(df,interval,interval_unit,reasoning_mode)
+      response = post_request(df)
       
       # Process response if successful
       if response:
@@ -339,28 +294,23 @@ mode: "wide"
           else:
               raise Exception(f"Failed to download data: {response.status_code}")
       
-      def time_series_dict(df, interval, interval_unit, reasoning_mode):
+      def time_series_dict(df):
           """
           Converts a DataFrame with OHLC price data into a dictionary format.
           
           Parameters:
           df (DataFrame): DataFrame containing datetime and OHLC price columns
-          interval (int): The time interval between data points
-          interval_unit (str): The unit of time for intervals (seconds, minutes, days)
-          reasoning_mode (str): Reasoning strategy (proactive or reactive)
           
           Returns:
-          dict: Dictionary with lists of datetime and price data along with metadata
+          dict: Dictionary with lists of datetime and price data
           """
           return {
               "datetime": df['datetime'].tolist(),  # Convert datetime column to list
               "open": df['open'].tolist(),          # Convert open prices to list
               "high": df['high'].tolist(),          # Convert high prices to list
               "low": df['low'].tolist(),            # Convert low prices to list
-              "close": df['close'].tolist(),        # Convert close prices to list
-              "interval": interval,                 # Time frequency value
-              "interval_unit": interval_unit,       # Time unit (seconds, minutes, days)
-              "reasoning_mode": reasoning_mode      # Reasoning approach (proactive/reactive)
+              "close": df['close'].tolist()         # Convert close prices to list
+
           }
       
       def create_moving_window(data, window_size, step_size=1):
@@ -423,16 +373,12 @@ mode: "wide"
          
          return windows
       
-      def post_request(df, interval, interval_unit, reasoning_mode, log_file="sumtyme_task_ids.log"):
+      def post_request(df, log_file="sumtyme_task_ids.log"):
           """
           Sends time series data to API using a walk-forward approach with 5000-row chunks.
           
           Parameters:
           - df (DataFrame): Time series data with datetime and OHLC columns
-          - interval (int): Time interval between data points
-          - interval_unit (str): Unit of time interval (seconds, minutes, days)
-          - reasoning_mode (str): Model reasoning mode (proactive, reactive)
-          - filename (str): Base filename for logging results (without extension)
           
           Returns:
           - list: Collection of task IDs from successful API calls
@@ -508,17 +454,8 @@ mode: "wide"
       # Get the last datetime as forecast date
       forecast_date = df['datetime'].iloc[-1]
       
-      # Set the time interval between data points
-      interval = 1 
-      
-      # Set the unit of time for the interval (options: seconds, minutes, days)
-      interval_unit = "minutes"
-      
-      # Set the reasoning mode (options: proactive or reactive)
-      reasoning_mode = "reactive"
-      
       # Send request to API
-      task_ids = post_request(df, interval, interval_unit, reasoning_mode)
+      task_ids = post_request(df)
         
     ```
   </Accordion>
@@ -813,7 +750,7 @@ mode: "wide"
 
 <AccordionGroup>
   <Accordion title="Cross-Timeframe Connectivity">
-    The reasoning model operates as a unified system where predictions across multiple time horizons work together rather than independently. This integrated approach reveals how market movements propagate across timeframes, uncovering interconnected relationships that traditional single-timeframe approaches fundamentally cannot detect.
+    The base model operates as a unified system where predictions across multiple time horizons work together rather than independently. This integrated approach reveals how market movements propagate across timeframes, uncovering interconnected relationships that traditional single-timeframe approaches fundamentally cannot detect.
 
     <img
       height="200"
@@ -821,16 +758,16 @@ mode: "wide"
     />
   </Accordion>
   <Accordion title="High-to-Low Frequency Propagation Assumption">
-    The reasoning model assumes that all price movements originate in high-frequency time series before cascading into lower-frequency time series. Therefore, the model analyses price action and only returns trends that it believes will translate into lower frequency timeframes.
+    The base model assumes that all price movements originate in high-frequency time series before cascading into lower-frequency time series. Therefore, the model analyses the selected timeframe in isolation with the assumption that it will be combined with other time horizons to capture these interconnected effects. 
   </Accordion>
   <Accordion title="Interpreting Trend Context">
-    The reasoning model begins its analysis with as little as 10 historical data points. Your results include both the forecast (if identified) and the trend context that shaped it, all in one view. This helps users understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
+    The base model begins its analysis with as little as 10 historical data points. Your results include both the forecast (if identified) and the trend context that shaped it, all in one view. This helps users understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
   </Accordion>
   <Accordion title="Interpreting Trend Signals">
     Each forecast should be interpreted within its trend context: the first signal in a consecutive trend marks the start of a trend, while consecutive forecasts in the same direction indicate the consistency of the current trend.
   </Accordion>
   <Accordion title="Immediate Insights, Custom Optimisation">
-    The reasoning model delivers immediate market insights without requiring market-specific training data. While predictive out of the box, it can be fine-tuned to optimise performance for specific time horizons through customised post-training. This flexibility allows users to incorporate multiple timeframes or any combination of traditional and alternative datasets of their choosing.
+    The base model delivers immediate market insights without requiring market-specific training data. While predictive out of the box, it can be fine-tuned to optimise performance for specific time horizons through customised post-training. This flexibility allows users to incorporate multiple timeframes or any combination of traditional and alternative datasets of their choosing.
   </Accordion>
   <Accordion title="Sandbox Queue System">
     The sandbox processes API requests in a FIFO (first-in, first-out) queue, with each request taking approximately 5 seconds to complete. Wait times may extend during high-usage periods. For testing without queue delays, contact us at [team@sumtyme.ai](mailto:team@sumtyme.ai) to arrange a dedicated environment.
