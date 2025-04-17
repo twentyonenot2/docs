@@ -1,15 +1,12 @@
 ---
-title: "Base Model - Time Series Data"
+title: "Base Model - Tick Data"
 mode: "wide"
 ---
 
 <Note>
-  This model identifies directional trends by analysing price action within the selected timeframe in isolation, responding quickly to timeframe specific movements and generating frequent trend signals without broader context.
+  This model identifies directional trends by analysing consecutive tick-by-tick price movements in isolation, detecting micro-shifts in real-time and generating high-frequency signals without aggregation or smoothing context.
 </Note>
 
-<Tip>
-  Due to this model's reliance on isolated timeframe analysis, analyse multiple time horizons simultaneously for a holistic understanding of market behaviour.
-</Tip>
 
 ## Time Series Data
 
@@ -174,7 +171,7 @@ mode: "wide"
           
           Parameters:
           df (DataFrame): DataFrame containing datetime and OHLC price columns
-
+    
           
           Returns:
           dict: Dictionary with lists of datetime and price data
@@ -185,7 +182,7 @@ mode: "wide"
               "high": df['high'].tolist(),          # Convert high prices to list
               "low": df['low'].tolist(),            # Convert low prices to list
               "close": df['close'].tolist()         # Convert close prices to list
-
+    
           }
       
       def log_forecast_check(task_id, forecast_date, log_file="sumtyme_task_ids.log"):
@@ -216,7 +213,7 @@ mode: "wide"
           
           Parameters:
           df (DataFrame): DataFrame containing datetime and OHLC price columns
-
+    
           
           Returns:
           dict: Dictionary with lists of datetime and price data 
@@ -227,13 +224,13 @@ mode: "wide"
               "high": df['high'].tolist(),          # Convert high prices to list
               "low": df['low'].tolist(),            # Convert low prices to list
               "close": df['close'].tolist()        # Convert close prices to list
-
+    
           }
       
       def post_request(df):
       
         # Prepare request
-        api_endpoint = f"https://www.sumtyme.com/shared/v1/reasoning-model-ts"
+        api_endpoint = f"https://www.sumtyme.com/shared/v1/base-model-ts"
         headers = {"Content-Type": "application/json"}
         
         # Create payload from data
@@ -310,7 +307,7 @@ mode: "wide"
               "high": df['high'].tolist(),          # Convert high prices to list
               "low": df['low'].tolist(),            # Convert low prices to list
               "close": df['close'].tolist()         # Convert close prices to list
-
+    
           }
       
       def create_moving_window(data, window_size, step_size=1):
@@ -391,7 +388,7 @@ mode: "wide"
       
           # Define base API configuration
           BASE_URL = "https://www.sumtyme.com/shared"
-          api_endpoint = f"{BASE_URL}/v1/reasoning-model-ts"
+          api_endpoint = f"{BASE_URL}/v1/base-model-ts"
           headers = {"Content-Type": "application/json"}
       
           # Split data into 5000 row chunks
@@ -450,9 +447,6 @@ mode: "wide"
       # Example usage
       github_url = "https://github.com/sumtyme-ade/sample_data/tree/main/sample/spy_etf_1min.csv"
       df = download_github_data(github_url).tail(5003)
-      
-      # Get the last datetime as forecast date
-      forecast_date = df['datetime'].iloc[-1]
       
       # Send request to API
       task_ids = post_request(df)
@@ -758,7 +752,7 @@ mode: "wide"
     />
   </Accordion>
   <Accordion title="High-to-Low Frequency Propagation Assumption">
-    The base model assumes that all price movements originate in high-frequency time series before cascading into lower-frequency time series. Therefore, the model analyses the selected timeframe in isolation with the assumption that it will be combined with other time horizons to capture these interconnected effects. 
+    The base model assumes that all price movements originate in high-frequency time series before cascading into lower-frequency time series. Therefore, the model analyses the selected timeframe in isolation with the assumption that it will be combined with other time horizons to capture these interconnected effects.
   </Accordion>
   <Accordion title="Interpreting Trend Context">
     The base model begins its analysis with as little as 10 historical data points. Your results include both the forecast (if identified) and the trend context that shaped it, all in one view. This helps users understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
