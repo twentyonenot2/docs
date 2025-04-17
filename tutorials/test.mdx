@@ -2,66 +2,262 @@
 title: "Testing the Reasoning Model"
 ---
 
-## Select Time Series Data 
-
-Choose a financial time series for testing, either by:
-
-Using proprietary market data from your organization
-Downloading the curated sample dataset we've prepared
-
-### Download sample data from GitHub
-import requests
-import pandas as pd
-import io
-
-def download_github_data(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        return pd.read_csv(io.StringIO(response.text))
-    else:
-        raise Exception(f"Failed to download data: {response.status_code}")
-
-# Example usage
-github_url = "https://raw.githubusercontent.com/username/repo/main/market_data.csv"
-market_data = download_github_data(github_url)
-print(f"Downloaded {len(market_data)} rows of data")
-
-
-## Performance Evaluation
+## Select Time Series Data
 
 <AccordionGroup>
-  <Accordion title="FAQ without Icon">
-    You can put other components inside Accordions.
-
-    ```java HelloWorld.java
-    class HelloWorld {
-        public static void main(String[] args) {
-            System.out.println("Hello, World!");
-        }
-    }
+  <Accordion title="Upload Data">
+    ```python
+    import pandas as pd
+    
+    df = pd.read_csv("filename.csv")[['datetime','open','high','low','close']]
+    
+    print(df)
+    
     ```
-
-    Check out the [Accordion](/content/components/accordions) docs for all the supported props.
   </Accordion>
-
-  <Accordion title="FAQ with Icon" icon="alien-8bit">
-    Check out the [Accordion](/content/components/accordions) docs for all the supported props.
-  </Accordion>
-
-  <Accordion title="FAQ without Icon">
-    Check out the [Accordion](/content/components/accordions) docs for all the supported props.
+  <Accordion title="Download Sample Data">
+    ```python
+    import requests
+    import pandas as pd
+    import io
+    
+    def download_github_data(url):
+        response = requests.get(url)
+        if response.status_code == 200:
+            return pd.read_csv(io.StringIO(response.text))
+        else:
+            raise Exception(f"Failed to download data: {response.status_code}")
+    
+    # Example usage
+    github_url = "https://raw.githubusercontent.com/username/repo/main/market_data.csv"
+    market_data = download_github_data(github_url)
+    print(f"Downloaded {len(market_data)} rows of data")
+    ```
   </Accordion>
 </AccordionGroup>
+
+## Data Preparation
+
+<AccordionGroup>
+  <Accordion title="Create JSON Payload - 1 API Call">
+    ```python
+    import pandas as pd
+    import json
+    
+    def time_series_dict(df,interval,interval_unit,reasoning_mode):
+    
+      return {
+          "datetime": df['datetime'].tolist(),
+          "open": df['open'].tolist(),
+          "high": df['high'].tolist(),
+          "low": df['low'].tolist(),
+          "close": df['close'].tolist(),
+          "interval": interval,
+          "interval_unit":interval_unit,
+          "reasoning_mode":reasoning_mode
+      }
+    
+    df = pd.read_csv("filename.csv")[['datetime','open','high','low','close']]
+    
+    interval = 1 
+    
+    interval_unit = "minutes" # options: seconds,minutes,days
+    
+    reasoning_mode = "reactive" # options: proactive or reactive
+    
+    json_payload = time_series_dict(df,interval,interval_unit,reasoning_mode)
+    
+    ```
+  </Accordion>
+  <Accordion title="Create JSON Payload - Multiple API Calls">
+    ```python
+    import pandas as pd
+    import numpy as np
+    import json
+    
+    def time_series_dict(df, interval, interval_unit, reasoning_mode):
+       """
+       Converts financial time series data to a dictionary format suitable for API submission.
+       
+       Parameters:
+       - df: DataFrame containing OHLC price data with datetime column
+       - interval: Integer representing the time interval size
+       - interval_unit: String specifying the unit of time (seconds, minutes, days)
+       - reasoning_mode: String indicating model behavior (proactive or reactive)
+       
+       Returns:
+       - Dictionary with time series data and configuration parameters
+       """
+       return {
+           "datetime": df['datetime'].tolist(),
+           "open": df['open'].tolist(),
+           "high": df['high'].tolist(),
+           "low": df['low'].tolist(),
+           "close": df['close'].tolist(),
+           "interval": interval,
+           "interval_unit": interval_unit,
+           "reasoning_mode": reasoning_mode
+       }
+    
+    # Load the financial dataset with only the required columns for efficiency
+    df = pd.read_csv("filename.csv")[['datetime', 'open', 'high', 'low', 'close']]
+    
+    # Configure time series parameters
+    interval = 1 
+    interval_unit = "minutes"  # options: seconds, minutes, days
+    reasoning_mode = "reactive"  # options: proactive or reactive
+    
+    # Split data for efficient submission
+    chunk_size = 5000
+    df_list = [df.iloc[i:i+chunk_size] for i in range(0, len(df), chunk_size)]
+    
+    # Create API-ready payloads for each data chunk
+    json_payloads = [time_series_dict(chunk, interval, interval_unit, reasoning_mode) 
+                   for chunk in df_list]
+    
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Leverage API endpoint
+
+<AccordionGroup>
+  <Accordion title="Submit Data to API - 1 API Call">
+    ```python
+    import pandas as pd
+    import json
+    import os
+    from datetime import datetime
+
+    def log_forecast_check(task_id, forecast_date, log_file="sumtyme_task_ids.log"):
+        """
+        Logs a forecast check to a CSV file.
+        
+        Parameters:
+        - task_id (str): The ID of the task 
+        - forecast_date (str): The date of the forecast
+        - log_file (str): Path to the log file, defaults to "sumtyme_task_ids.log"
+        """
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Create log file with header if it doesn't exist
+        if not os.path.exists(log_file):
+            with open(log_file, 'w') as f:
+                f.write("timestamp,forecast_date,task_id,checked\n")
+    
+        # Write to log file
+        with open(log_file, 'a') as f:
+            f.write(f"{current_time},{forecast_date},{task_id},blank\n")
+        
+        return True
+    
+    def time_series_dict(df,interval,interval_unit,reasoning_mode):
+    
+      return {
+          "datetime": df['datetime'].tolist(),
+          "open": df['open'].tolist(),
+          "high": df['high'].tolist(),
+          "low": df['low'].tolist(),
+          "close": df['close'].tolist(),
+          "interval": interval,
+          "interval_unit":interval_unit,
+          "reasoning_mode":reasoning_mode
+      }
+
+    def post_request(df,interval,interval_unit,reasoning_mode):
+    
+      # Prepare request
+      api_endpoint = f"https://www.sumtyme.com/shared/v1/reasoning-model-ts"
+      headers = {"Content-Type": "application/json"}
+      
+      # Create payload from data
+      payload = time_series_dict(df,interval,interval_unit,reasoning_mode)
+      
+      # Send POST request to API
+      response = requests.post(api_endpoint, json=payload, headers=headers)
+
+      if response.status_code != 200:
+                print(f"API request failed for {forecast_date} with status code {response.status_code}: {response.text}")
+      else:
+        return response.json()
+    
+    df = pd.read_csv("filename.csv")[['datetime','open','high','low','close']]
+
+    forecast_date = df['datetime'].iloc[-1]
+    
+    interval = 1 
+    
+    interval_unit = "minutes" # options: seconds,minutes,days
+    
+    reasoning_mode = "reactive" # options: proactive or reactive
+    
+    response = post_request(df,interval,interval_unit,reasoning_mode)
+
+    if response:
+    
+      task_id = response.get("task_id")
+  
+      log_forecast_check(task_id,forecast_date)
+        
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Initial API Response
+
+<AccordionGroup>
+  <Accordion title="Get Task ID">
+    ```python
+    
+        
+    ```
+  </Accordion>
+  
+</AccordionGroup>
+
+## Result Endpoint Response
+
+<AccordionGroup>
+  <Accordion title="Status: Processing">
+    ```python
+    
+        
+    ```
+  </Accordion>
+  <Accordion title="Status: Complete">
+    ```python
+    
+        
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Full Script
+
+<AccordionGroup>
+  <Accordion title="Single API Call">
+    ```python
+    
+        
+    ```
+  </Accordion>
+  <Accordion title="Multiple API Call">
+    ```python
+    
+        
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Performance Evaluation
 
 <AccordionGroup>
   <Accordion title="Predictive Lead Time">
     Quantify how many minutes/hours/days before major market events the model provides reliable signals, demonstrating its ability to anticipate systemic shifts before they manifest in price action.
   </Accordion>
-  
   <Accordion title="Reaction Speed">
     Measure how quickly the model adjusts after sudden market shocks, calculated as the time between a shock event and when the model's predictions align with the new reality.
   </Accordion>
-  
   <Accordion title="Time Horizon Alignment">
     Verify that predictions for neighbouring time periods (e.g. 1 hour, 2 hour, 3 hour) consistently build upon each other without logical contradictions or conflicting signals.
   </Accordion>
