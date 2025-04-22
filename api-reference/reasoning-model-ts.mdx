@@ -6,24 +6,34 @@ slug: "/api-ref/reasoning-model"
 
 ## Supported Markets
 
-<CardGroup cols={3}>
-  <Card title="Bonds" icon="landmark" />
-
-  <Card title="Commodities" icon="ship" />
-
-  <Card title="Cryptocurrencies" icon="bitcoin" />
-
-  <Card title="Derivatives" icon="layer-group" />
-
-  <Card title="Equities" icon="chart-line" />
-
-  <Card title="Foreign Exchange" icon="money-bill-transfer" />
-
-  <Card title="Indices" icon="chart-bar" />
-
-  <Card title="REITs" icon="house" />
-
-  <Card title="Tokenised Assets" icon="square" />
+<CardGroup cols="3">
+  <Card title="Bonds" icon="landmark">
+    
+  </Card>
+  <Card title="Commodities" icon="ship">
+    
+  </Card>
+  <Card title="Cryptocurrencies" icon="bitcoin">
+    
+  </Card>
+  <Card title="Derivatives" icon="layer-group">
+    
+  </Card>
+  <Card title="Equities" icon="chart-line">
+    
+  </Card>
+  <Card title="Foreign Exchange" icon="money-bill-transfer">
+    
+  </Card>
+  <Card title="Indices" icon="chart-bar">
+    
+  </Card>
+  <Card title="REITs" icon="house">
+    
+  </Card>
+  <Card title="Tokenised Assets" icon="square">
+    
+  </Card>
 </CardGroup>
 
 ## Base URL
@@ -40,11 +50,10 @@ POST /v1/reasoning-model-ts
 
 ## OHLC Input Data Lengths
 
-<CardGroup cols={3}>
+<CardGroup cols="3">
   <Card title="Minimum Length">
     5000 Periods
   </Card>
-
   <Card title="Maxiumum Length">
     10000 Periods
   </Card>
@@ -58,26 +67,49 @@ POST /v1/reasoning-model-ts
 
 ## Request Body
 
-<ParamField body="datetime" type="list" required />
+<ParamField body="datetime" type="list" required>
+  
+</ParamField>
 
-<ParamField body="open" type="list" required />
+<ParamField body="open" type="list" required>
+  
+</ParamField>
 
-<ParamField body="high" type="list" required />
+<ParamField body="high" type="list" required>
+  
+</ParamField>
 
-<ParamField body="low" type="list" required />
+<ParamField body="low" type="list" required>
+  
+</ParamField>
 
-<ParamField body="close" type="list" required />
+<ParamField body="close" type="list" required>
+  
+</ParamField>
 
-<ParamField body="interval" type="int" required />
+<ParamField body="interval" type="int" required>
+  
+</ParamField>
 
-<ParamField body="interval_unit" type="string" required />
+<ParamField body="interval_unit" type="string" required>
+  <Expandable title="options">
+    <ResponseField name="seconds" type="string">
+      For second-by-second time series data (e.g. 1-second or 5-second intervals).
+    </ResponseField>
+    <ResponseField name="minutes" type="string">
+      For minute-by-minute time series data (e.g. 1-minute or 5-minute intervals).
+    </ResponseField>
+    <ResponseField name="days" type="string">
+      For day-by-day time series data (e.g. 1-day or 5-day intervals).
+    </ResponseField>
+  </Expandable>
+</ParamField>
 
 <ParamField body="reasoning_mode" type="string" required>
   <Expandable title="options">
     <ResponseField name="proactive" type="string">
       Act early with minimal information.
     </ResponseField>
-
     <ResponseField name="reactive" type="string">
       Wait for sufficient evidence before acting.
     </ResponseField>
@@ -95,7 +127,6 @@ POST /v1/reasoning-model-ts
     <ResponseField name="1" type="int">
       Bullish trend
     </ResponseField>
-
     <ResponseField name="-1" type="int">
       Bearish trend
     </ResponseField>
