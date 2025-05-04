@@ -258,7 +258,7 @@ mode: "wide"
         response = requests.post(api_endpoint, json=payload, headers=headers)
       
         if response.status_code != 200:
-          print(f"API request failed for {forecast_date} with status code {response.status_code}: {response.text}")
+          print(f"API request failed with status code {response.status_code}: {response.text}")
         else:
           return response.json()
     
@@ -423,7 +423,7 @@ mode: "wide"
          
          return windows
       
-      def post_request(df, interval, interval_unit, reasoning_mode, log_file="sumtyme_task_ids.log"):
+      def post_request(df, interval, interval_unit, reasoning_mode,forecast_date, log_file="sumtyme_task_ids.log"):
           """
           Sends time series data to API using a walk-forward approach with 5000-row chunks.
           
@@ -432,6 +432,7 @@ mode: "wide"
           - interval (int): Time interval between data points
           - interval_unit (str): Unit of time interval (seconds, minutes, days)
           - reasoning_mode (str): Model reasoning mode (proactive, reactive)
+    	  - forecast_date (str): Forecast date
           - filename (str): Base filename for logging results (without extension)
           
           Returns:
@@ -518,7 +519,7 @@ mode: "wide"
       reasoning_mode = "reactive"
       
       # Send request to API
-      task_ids = post_request(df, interval, interval_unit, reasoning_mode)
+      task_ids = post_request(df, interval, interval_unit, reasoning_mode, forecast_date)
         
     ```
   </Accordion>
