@@ -236,7 +236,7 @@ mode: "wide"
           # Create log file with header if it doesn't exist
           if not os.path.exists(log_file):
               with open(log_file, 'w') as f:
-                  f.write("timestamp,forecast_date,task_id,checked\n")
+                  f.write("timestamp,forecast_date,task_id,trend_identified\n")
       
           # Write to log file
           with open(log_file, 'a') as f:
@@ -276,7 +276,7 @@ mode: "wide"
             # Create log file with header if it doesn't exist
             if not os.path.exists(log_file):
                 with open(log_file, 'w') as f:
-                    f.write("timestamp,forecast_date,task_id,checked\n")
+                    f.write("timestamp,forecast_date,task_id,trend_identified\n")
         
             # Write to log file
             with open(log_file, 'a') as f:
