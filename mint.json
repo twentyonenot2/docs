@@ -32,7 +32,6 @@
             "pages": [
                 "/api-reference/base-model-ts",
                 "/api-reference/reasoning-model-ts",
-                "/api-reference/application-correlation",
                 "/api-reference/get-results"
             ]
         },
@@ -40,8 +39,7 @@
             "group": "Developer Guide",
             "pages": [
                 "/developer-guides/base-model-ts",
-                "/developer-guides/reasoning-model-ts",
-                "/developer-guides/application-correlation"
+                "/developer-guides/reasoning-model-ts"
             ]
         },
         {
