@@ -36,13 +36,6 @@
             ]
         },
         {
-            "group": "Developer Guide",
-            "pages": [
-                "/developer-guides/base-model-ts",
-                "/developer-guides/reasoning-model-ts"
-            ]
-        },
-        {
             "group": "Legal",
             "pages": [
                 "terms-of-use",
