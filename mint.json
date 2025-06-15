@@ -30,7 +30,6 @@
         {
             "group": "API Reference",
             "pages": [
-                "/api-reference/base-model-ts",
                 "/api-reference/reasoning-model-ts",
                 "/api-reference/get-results"
             ]
