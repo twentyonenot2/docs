@@ -1,0 +1,47 @@
+---
+title: "New API Key"
+slug: "/api-ref/regenerate-api-key"
+description: "Use this endpoint to request a new API key."
+---
+
+## Base URL
+
+```python
+ https://www.sumtyme.com
+```
+
+## Request Endpoint
+
+```python
+POST /regenerate-api-key"
+```
+
+## Request Header
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+<ParamField header="X-API-Key" type="string" required>
+  Your API key is a unique, one-time generated credential that authenticates your requests to our API.
+</ParamField>
+
+## Response Fields
+
+<ResponseField name="message" type="string">
+  API key regenerated successfully.
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  
+</ResponseField>
+
+<ResponseField name="old_api_key" type="string">
+
+</ResponseField>
+
+<ResponseField name="new_api_key" type="string">
+
+</ResponseField>
+
+> Important: Your API key is generated securely and we do not store or have access to it after its creation. For your security, it's crucial to save it immediately in a safe place like a password manager or environment variable, as you won't be able to retrieve it again if lost.
