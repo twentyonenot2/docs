@@ -1,0 +1,57 @@
+---
+title: "Sign Up"
+slug: "/api-ref/sign-up"
+description: "Use this endpoint to register for API access and receive your unique API key."
+---
+
+## Base URL
+
+```python
+ https://www.sumtyme.com
+```
+
+## Request Endpoint
+
+```python
+POST /signup
+```
+
+## Request Header
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+## Request Body
+
+<ParamField body="company_id" type="string">
+  
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  
+</ParamField>
+
+<ParamField body="confirm_password" type="string" required>
+  
+</ParamField>
+
+## Response Fields
+
+<ResponseField name="message" type="string">
+  Your API key has been generated. This is the only time you will see it. Please copy it now and store it in a secure place (e.g., a password manager, an environment variable).
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  
+</ResponseField>
+
+<ResponseField name="api_key" type="string">
+
+</ResponseField>
+
+> Important: Your API key is generated securely and we do not store or have access to it after its creation. For your security, it's crucial to save it immediately in a safe place like a password manager or environment variable, as you won't be able to retrieve it again if lost.
