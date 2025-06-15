@@ -1,56 +1,24 @@
 ---
-title: "Reasoning Model - Time Series"
+title: "Reasoning Model - Financial Time Series"
 description: "This model identifies directional trends by predicting how likely price action in the selected timeframe will propagate to lower-frequency timeframes, distinguishing structurally significant market moves from noise."
-slug: "/api-ref/reasoning-model"
+slug: "/api-ref/reasoning-model-ts"
 ---
-
-## Supported Markets
-
-<CardGroup cols="3">
-  <Card title="Bonds" icon="landmark">
-    
-  </Card>
-  <Card title="Commodities" icon="ship">
-    
-  </Card>
-  <Card title="Cryptocurrencies" icon="bitcoin">
-    
-  </Card>
-  <Card title="Derivatives" icon="layer-group">
-    
-  </Card>
-  <Card title="Equities" icon="chart-line">
-    
-  </Card>
-  <Card title="Foreign Exchange" icon="money-bill-transfer">
-    
-  </Card>
-  <Card title="Indices" icon="chart-bar">
-    
-  </Card>
-  <Card title="REITs" icon="house">
-    
-  </Card>
-  <Card title="Tokenised Assets" icon="square">
-    
-  </Card>
-</CardGroup>
 
 ## Base URL
 
 ```python
- https://www.sumtyme.com/shared
+ https://www.sumtyme.com
 ```
 
 ## Request Endpoint
 
 ```python
-POST /v1/reasoning-model-ts 
+POST /agn-reasoning/ts
 ```
 
 ## OHLC Input Data Lengths
 
-<CardGroup cols="3">
+<CardGroup cols="2">
   <Card title="Minimum Length">
     5000 Periods
   </Card>
@@ -63,6 +31,10 @@ POST /v1/reasoning-model-ts
 
 <ParamField header="Content-Type" type="string" required>
   Must be set to `application/json`
+</ParamField>
+
+<ParamField header="X-API-Key" type="string" required>
+  Your API key is a unique, one-time generated credential that authenticates your requests to our API.
 </ParamField>
 
 ## Request Body
