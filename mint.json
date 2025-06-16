@@ -31,7 +31,8 @@
             "group": "API Reference",
             "pages": [
                 "/api-reference/reasoning-model-ts",
-                "/api-reference/get-results"
+                "/api-reference/reasoning-model-tick"
+
             ]
         },
         {
