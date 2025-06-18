@@ -38,6 +38,13 @@
             ]
         },
         {
+            "group": "Developer Guides",
+            "pages": [
+                "/developer-guides/reasoning-model-ts"
+
+            ]
+        },
+        {
             "group": "Legal",
             "pages": [
                 "terms-of-use",
