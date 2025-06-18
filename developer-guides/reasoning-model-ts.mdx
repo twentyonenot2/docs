@@ -164,6 +164,9 @@ mode: "wide"
   </Accordion>
   <Accordion title="Make POST request">
     ```python
+
+    # Import Price Data
+    price_data = pd.read_csv('AAPL_Daily.csv')
     
     # Select Last 5001 rows
     last_5001_rows = price_data.tail(5001)
