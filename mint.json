@@ -30,6 +30,8 @@
         {
             "group": "API Reference",
             "pages": [
+                "api-reference/signup",
+                "/api-reference/new-api-key",
                 "/api-reference/reasoning-model-ts",
                 "/api-reference/reasoning-model-tick"
 
