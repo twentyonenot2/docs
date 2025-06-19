@@ -275,7 +275,7 @@ mode: "wide"
     period = "max"
     price_data = daily(ticker_name, period)
     
-    # For this example, predict the last row
+    # For this example, predict if a trend has been identified for the last period
     price_data.loc[price_data.index[-1], ['open', 'high', 'low', 'close']] = 0
     print(price_data)
 
@@ -508,7 +508,7 @@ mode: "wide"
     period = "max"
     price_data = daily(ticker_name, period)
     
-    # For this example, predict if a trend exists for the last period
+    # For this example, predict if a trend has been identified for the last period
     price_data.loc[price_data.index[-1], ['open', 'high', 'low', 'close']] = 0
     
     # Select Last 5001 rows
