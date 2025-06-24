@@ -160,71 +160,6 @@ mode: "wide"
 ## Yahoo Finance Example
 
 <AccordionGroup>
-  <Accordion title="Signup">
-    ```python
-    import pandas as pd
-    import requests 
-    import json
-    
-    def signup_user(endpoint_url: str, email: str, password: str, confirm_password: str):
-      """
-      Calls the /signup endpoint, handles the response, and saves the API key to a .txt file.
-    
-      Args:
-          endpoint_url (str): The URL of your /signup endpoint.
-          company_id (str): The company ID for the new user.
-          email (str): The email address for the new user.
-          password (str): The password for the new user.
-          confirm_password (str): The password confirmation for the new user.
-      """
-    
-      payload = {
-          "email": email,
-          "password": password,
-          "confirm_password": confirm_password
-      }
-      headers = {
-          "Content-Type": "application/json"
-      }
-    
-      # Make the POST request to the signup endpoint
-      response = requests.post(endpoint_url, data=json.dumps(payload), headers=headers)
-      response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
-    
-      response_data = response.json()
-    
-      if response.status_code == 200:
-          api_key = response_data.get("api_key")
-          user_email = response_data.get("email")
-          message = response_data.get("message")
-    
-          if api_key:
-              # Define the filename for the API key
-              filename = f"api_key_{user_email.replace('@', '_').replace('.', '_')}.txt"
-              with open(filename, "w") as f:
-                  f.write(api_key)
-              print(f"Success: {message}")
-              print(f"API Key for {user_email} saved to {filename}")
-              return {"success": True, "api_key": api_key, "filename": filename}
-          else:
-              print(f"Error: Signup successful but no API key found in response. Response: {response_data}")
-              return {"success": False, "message": "API key not found in response"}
-      else:
-          # Handle other success status codes if necessary
-          print(f"Unexpected successful response status code: {response.status_code}. Response: {response_data}")
-          return {"success": False, "message": "Unexpected successful response"}
-    
-    signup_endpoint = "https://www.sumtyme.tech/signup"
-    
-    # Example signup data
-    user_email = ""
-    user_password = ""
-    confirm_user_password = ""
-    
-    result = signup_user(signup_endpoint, user_email, user_password, confirm_user_password)
-    
-    ```
-  </Accordion>
   <Accordion title="Download AAPL Daily Price Data">
     ```python
     
@@ -338,55 +273,7 @@ mode: "wide"
     from dotenv import load_dotenv
     
     load_dotenv()
-    
-    
-    def signup_user(endpoint_url: str, email: str, password: str, confirm_password: str):
-      """
-      Calls the /signup endpoint, handles the response, and saves the API key to a .txt file.
-      
-      Args:
-          endpoint_url (str): The URL of your /signup endpoint.
-          company_id (str): The company ID for the new user.
-          email (str): The email address for the new user.
-          password (str): The password for the new user.
-          confirm_password (str): The password confirmation for the new user.
-      """
-      
-      payload = {
-          "email": email,
-          "password": password,
-          "confirm_password": confirm_password
-      }
-      headers = {
-          "Content-Type": "application/json"
-      }
-      
-      # Make the POST request to the signup endpoint
-      response = requests.post(endpoint_url, data=json.dumps(payload), headers=headers)
-      # response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
-      
-      response_data = response.json()
-      
-      if response.status_code == 200:
-          api_key = response_data.get("api_key")
-          user_email = response_data.get("email")
-          message = response_data.get("message")
-      
-          if api_key:
-              # Define the filename for the API key
-              filename = f"api_key_{user_email.replace('@', '_').replace('.', '_')}.txt"
-              with open(filename, "w") as f:
-                  f.write(api_key)
-              print(f"Success: {message}")
-              print(f"API Key for {user_email} saved to {filename}")
-              return {"success": True, "api_key": api_key, "filename": filename}
-          else:
-              return {"success": False, "message": "API key not found in response"}
-      else:
-          # Handle other success status codes if necessary
-          return {"success": False, "message": "Unexpected successful response", "Response": response_data}
-    
-    
+        
     def daily(ticker_name, period):
       """
       Fetches historical stock data for a given ticker, period, and interval,
@@ -490,16 +377,6 @@ mode: "wide"
       df = df.sort_values('datetime')
 
       return df
-    
-    
-    signup_endpoint = "https://www.sumtyme.tech/signup"
-    
-    # Example signup data
-    user_email = ""
-    user_password = ""
-    confirm_user_password = ""
-    
-    result = signup_user(signup_endpoint, user_email, user_password, confirm_user_password)
     
     ticker_name = "AAPL"
     period = "max"
