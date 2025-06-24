@@ -157,10 +157,10 @@ mode: "wide"
 
 
 
-## Yahoo Finance Example
+## Price Data Download Example
 
 <AccordionGroup>
-  <Accordion title="Download AAPL Daily Price Data">
+  <Accordion title="Download AAPL Daily Price Data from Yahoo Finance">
     ```python
     
     import yfinance as yf
@@ -216,41 +216,126 @@ mode: "wide"
     
     ```
   </Accordion>
-  <Accordion title="Make POST request">
+  <Accordion title="Download BTCUSDT 1 Second Data from Binance">
     ```python
 
-    # Import Price Data
-    price_data = pd.read_csv('AAPL_Daily.csv')
+    import requests
+    import pandas as pd
+    import time
+    from datetime import datetime
     
-    # Select Last 5001 rows
-    last_5001_rows = price_data.tail(5001)
-    
-    print(f"Forecasting whether a trend has been identified for {last_5001_rows['datetime'].iloc[-1]}...")
-    
-    # Define Analysis Parameters
-    interval = 1
-    interval_unit = 'days'
-    reasoning_mode = 'reactive'
-    
-    # Payload Construction
-    payload = time_series_dict(last_5001_rows, interval, interval_unit, reasoning_mode)
-    
-    # Financial Time Series API Endpoint
-    url = "https://www.sumtyme.tech/agn-reasoning/ts"
-    
-    # Send API Request
-    response = requests.post(url, json=payload,headers={"Content-Type": "application/json","X-API-Key":userdata.get('apikey')})
-    
-    # Processing the API Response
-    response_dict = response.json()
-    
-    # Convert Response to DataFrame
-    analysis = dict_to_dataframe(response_dict)
-    print(analysis)
-    
-    # Save Analysis to .csv file
-    analysis.to_csv('returned_analysis.csv',index=False)
+    def download_binance_historical_klines(symbol, interval, start_time, end_time, output_file=None):
+        """
+        Download historical klines (candlestick data) from Binance between two dates.
         
+        Parameters:
+        symbol (str): Trading pair symbol (e.g., 'BTCUSDT')
+        interval (str): Kline interval (e.g., '15m', '1h', '1d')
+        start_time (str): Start date in format 'YYYY-MM-DD HH:MM:SS'
+        end_time (str): End date in format 'YYYY-MM-DD HH:MM:SS'
+        output_file (str): Output file name (CSV)
+        
+        Returns:
+        pandas.DataFrame: DataFrame with the historical klines data
+        """
+        # Convert time strings to timestamps in milliseconds
+        start_ts = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp() * 1000)
+        end_ts = int(datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S').timestamp() * 1000)
+        
+        # Base endpoint
+        base_url = "https://api.binance.com/api/v3/klines"
+        
+        # Initialize empty list to store all klines
+        all_klines = []
+        
+        # Binance limit is 1000 candles per request, so we need to make multiple requests
+        # if the requested time period contains more than 1000 candles
+        current_start = start_ts
+        
+        print(f"Downloading {symbol} {interval} data from {start_time} to {end_time}")
+        
+        while current_start < end_ts:
+            # Parameters for the API request
+            params = {
+                'symbol': symbol,
+                'interval': interval,
+                'startTime': current_start,
+                'endTime': end_ts,
+                'limit': 1000  # Maximum limit allowed by Binance
+            }
+            
+            # Make the request
+            response = requests.get(base_url, params=params)
+            
+            # If the request was successful
+            if response.status_code == 200:
+                # Parse the response JSON
+                klines = response.json()
+                
+                if not klines:
+                    break
+                    
+                # Add klines to the list
+                all_klines.extend(klines)
+                
+                # Update the start time for the next request
+                # Use the timestamp of the last kline + 1 millisecond
+                current_start = klines[-1][0] + 1
+                
+                # Print progress
+                last_date = datetime.fromtimestamp(klines[-1][0]/1000).strftime('%Y-%m-%d %H:%M:%S')
+                print(f"Downloaded up to {last_date}, {len(all_klines)} records so far")
+                
+                # Respect rate limits (1200 requests per minute)
+                time.sleep(0.05)
+            else:
+                print(f"Error: {response.status_code}, {response.text}")
+                break
+        
+        # Create a DataFrame from the klines data
+        columns = [
+            'datetime', 'open', 'high', 'low', 'close', 'volume',
+            'close_time', 'quote_asset_volume', 'number_of_trades',
+            'taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume', 'ignore'
+        ]
+        df = pd.DataFrame(all_klines, columns=columns)
+        
+        # Convert timestamp columns to datetime
+        df['datetime'] = pd.to_datetime(df['datetime'], unit='ms')
+        df['close_time'] = pd.to_datetime(df['close_time'], unit='ms')
+        
+        # Convert price and volume columns to float
+        numeric_columns = ['open', 'high', 'low', 'close', 'volume', 
+                           'quote_asset_volume', 'taker_buy_base_asset_volume', 
+                           'taker_buy_quote_asset_volume']
+        df[numeric_columns] = df[numeric_columns].astype(float)
+        
+        # Convert number_of_trades to int
+        df['number_of_trades'] = df['number_of_trades'].astype(int)
+        
+        # Sort by timestamp
+        df.sort_values('datetime', inplace=True)
+        
+        # Save to CSV if output_file is specified
+        if output_file:
+            df.to_csv(output_file, index=False)
+            print(f"Data saved to {output_file}")
+        
+        return df
+    
+    # Define parameters
+    symbol = 'BTCUSDT'
+    interval = '1s'  # 1 second
+    
+    # Set your desired start and end dates here
+    start_time = '2025-06-01 00:00:00'
+    end_time = '2025-06-07 00:00:00'
+    
+    # Download the data
+    price_data = download_binance_historical_klines(symbol, interval, start_time, end_time)
+
+    price_data.to_csv('BTCUSDT_1s.csv',index=False)
+            
     
     ```
   </Accordion>
@@ -274,44 +359,6 @@ mode: "wide"
     
     load_dotenv()
         
-    def daily(ticker_name, period):
-      """
-      Fetches historical stock data for a given ticker, period, and interval,
-      then processes and renames the columns for consistency.
-    
-      Args:
-          ticker_name (str): The stock ticker symbol (e.g., "AAPL").
-          period (str): The period for which to fetch data (e.g., "1d", "5d", "1mo", "1y", "max").
-    
-      Returns:
-          pd.DataFrame: A DataFrame containing the processed historical price data
-                        with 'datetime', 'open', 'high', 'low', 'close' columns.
-      """
-      # Create a Ticker object for the given ticker symbol
-      ticker = yf.Ticker(ticker_name)
-    
-      # Fetch historical data using the specified period and interval
-      data = ticker.history(period=period, interval="1d")
-    
-      # Reset the index of the DataFrame. 'Date' will become a regular column instead of the index.
-      data = data.reset_index(drop=False)
-    
-      # Select only the relevant columns: 'Date', 'Open', 'High', 'Low', 'Close'
-      data = data[['Date', 'Open', 'High', 'Low', 'Close']]
-    
-      # Remove timezone information from the 'Date' column to simplify datetime handling.
-      data['Date'] = data['Date'].dt.tz_localize(None)
-    
-      # Rename columns to a more consistent, lowercase format
-      data.rename(columns={'Date': 'datetime', 'Open': 'open', 'High': 'high', 'Low': 'low', 'Close': 'close'}, inplace=True)
-    
-      # Convert the 'datetime' column to a standardised string format "%Y-%m-%d %H:%M:%S"
-      data['datetime'] = pd.to_datetime(data['datetime'], format="%Y-%m-%d").dt.strftime("%Y-%m-%d %H:%M:%S")
-    
-      # Return the processed DataFrame
-      return data
-    
-    
     def time_series_dict(df, interval, interval_unit, reasoning_mode):
       """
       Converts a DataFrame with OHLC price data into a dictionary format.
@@ -378,9 +425,7 @@ mode: "wide"
 
       return df
     
-    ticker_name = "AAPL"
-    period = "max"
-    price_data = daily(ticker_name, period)
+    price_data = pd.read_csv('AAPL_Daily.csv')
     
     # For this example, predict if a trend has been identified for the last period
     price_data.loc[price_data.index[-1], ['open', 'high', 'low', 'close']] = 0
