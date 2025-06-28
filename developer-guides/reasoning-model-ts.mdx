@@ -339,6 +339,99 @@ mode: "wide"
     
     ```
   </Accordion>
+  <Accordion title="Binance Websocket - BTC/USDT 1 Minute Data">
+    ```python
+
+    import websocket
+    import json
+    import threading
+    import time
+    
+    # Binance WebSocket API endpoint for BTCUSDT 1-minute candlesticks
+    
+    BINANCE_WS_URL = "wss://stream.binance.com:9443/ws/btcusdt@kline_1m"
+    
+    def on_message(ws, message):
+        """
+        Callback function executed when a message is received from the WebSocket.
+        It parses the JSON message and prints the new 1-minute candlestick data.
+        """
+        try:
+            json_message = json.loads(message)
+    
+          
+            kline = json_message['k']
+ 
+            data = {'symbol': kline['s'],
+                    'interval': kline['i'],
+                    'open_time': time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(kline['t'] / 1000)),
+                    'close_time': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(kline['T'] / 1000)),
+                    'open': kline['o'],
+                    'high': kline['h'],
+                    'low': kline['l'],
+                    'close': kline['c'],
+                    'volume': kline['v'],
+                    'number of trades': kline['n'],
+                    'closed': kline['x']}
+                    
+            # Prints ticker info from Binance websocket
+            print(data)
+    
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON message: {e}")
+        except KeyError as e:
+            print(f"Missing key in message: {e}")
+            print(f"Message: {message}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+    
+    def on_error(ws, error):
+        """
+        Callback function executed when a WebSocket error occurs.
+        """
+        print(f"Error: {error}")
+    
+    def on_close(ws, close_status_code, close_msg):
+        """
+        Callback function executed when the WebSocket connection is closed.
+        """
+        print(f"Closed - Code: {close_status_code}, Message: {close_msg}")
+        print("Attempting to reconnect in 5 seconds...")
+        time.sleep(5)
+        
+        try:
+            run_websocket()
+        except Exception as e:
+            print(f"Failed to reconnect: {e}")
+    
+    def on_open(ws):
+        """
+        Callback function executed when the WebSocket connection is successfully opened.
+        """
+        print('Connection opened...")
+       
+    def run_websocket():
+        """
+        Initialises and runs the WebSocket client.
+        """
+        # Create a WebSocketApp instance
+        ws_app = websocket.WebSocketApp(
+            BINANCE_WS_URL,
+            on_open=on_open,
+            on_message=on_message,
+            on_error=on_error,
+            on_close=on_close
+        )
+    
+        print(f"Connecting to Binance WebSocket at: {BINANCE_WS_URL}")
+        ws_app.run_forever()
+    
+    if __name__ == "__main__":
+       
+        # For a simple script, just run it directly
+        run_websocket()
+   ``` 
+  </Accordion>
 </AccordionGroup>
 
 
@@ -457,11 +550,9 @@ mode: "wide"
     
     # Save Analysis to .csv file
     analysis.to_csv('returned_analysis.csv',index=False)
-    
-    
-    
-    
+      
     
     ```
   </Accordion>
 </AccordionGroup>
+
