@@ -4,7 +4,7 @@ mode: "wide"
 ---
 
 <Note>
-  This reasoning model identifies directional trends by predicting how likely price action in the selected timeframe will propagate to lower-frequency timeframes, distinguishing structurally significant market moves from noise.
+  AGNs can model how directional changes across multiple timeframes evolve into sustained trends, distinguishing structurally significant market moves from noise.
 </Note>
 
 <Tip>
@@ -15,16 +15,16 @@ mode: "wide"
 
 <AccordionGroup>
   <Accordion title="Constructing a Multi-Timeframe Network">
-      AGNs function as a multi-timeframe network, using insights from each selected timeframe to model market dynamics and understand directional changes for the chosen security.
+AGNs are designed as a multi-timeframe network, using insights from multiple timeframes to create directional forecasts that form a holistic picture of market dynamics for the chosen security.
   </Accordion>
   <Accordion title="High-to-Low Frequency Propagation Assumption">
     The reasoning API assumes that all price movements originate in high-frequency time series before propagating into lower-frequency time series. Therefore, the API will only return directional insights that it believes will propagate into lower frequency timeframes.
   </Accordion>
   <Accordion title="Interpreting Trend Context">
-    The reasoning API begins its analysis with as little as 10 data periods. Your results include both the forecast (if identified) and the context that shaped it, all in one view. This helps users understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
+    The API response includes both the forecast (if identified) and the context that shaped it, all in one view. This helps users understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
   </Accordion>
   <Accordion title="Interpreting Trend Signals">
-    Each forecast should be interpreted within its trend context: the first signal in a consecutive trend marks the start of a trend, while consecutive forecasts in the same direction indicate the consistency of the current trend.
+    Each directional signal should be interpreted within its trend context: the first signal in a consecutive trend marks the start of a trend, while consecutive forecasts in the same direction indicate the consistency of the current trend.
   </Accordion>
   <Accordion title="Request Processing">
     API requests are processed in a FIFO (first-in, first-out) on a shared server, with each request taking approximately 1-2 seconds to complete. Wait times may extend during high-usage periods. For usage without queue delays, contact us at [team@sumtyme.ai](mailto:team@sumtyme.ai) to arrange a dedicated environment.
