@@ -8,7 +8,7 @@ mode: "wide"
 </Note>
 
 <Tip>
-  We recommend using higher frequency data compared to your target forecast horizon, as this leverages the model's propagation methodology effectively (e.g., use 15 or 30 min data to predict daily moves).
+  We recommend using higher frequency data compared to your target forecast horizon, as this leverages the architecture's propagation methodology effectively (e.g., use 15 or 30 min data to model daily moves).
 </Tip>
 
 ## Key Concepts
@@ -18,7 +18,7 @@ mode: "wide"
 AGNs are designed as a multi-timeframe network, using directional insights from multiple timeframes to form a holistic picture of market dynamics for the chosen security.
   </Accordion>
   <Accordion title="High-to-Low Frequency Propagation Assumption">
-    The reasoning API assumes that all price movements originate in high-frequency time series before propagating into lower-frequency time series. Therefore, the API will only return directional insights that it believes will propagate into lower frequency timeframes.
+    The API assumes that all price movements originate in high-frequency time series before propagating into lower-frequency time series. Therefore, the API will only return directional insights that it believes will propagate into lower frequency timeframes.
   </Accordion>
   <Accordion title="Interpreting Trend Context">
     The API response includes both the forecast (if identified) and the context that shaped it, all in one view. This helps users understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
