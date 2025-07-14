@@ -1,0 +1,37 @@
+---
+title: "Abstract Generalised Networks (AGNs)"
+---
+
+**What are AGNs?**
+
+AGNs are a proprietary AI architecture that functions as a world model. They provide AI systems with a dynamic internal representation of how a real-world environment evolves over time. This is achieved by modelling how information flows across different time frequencies.
+
+AGNs infer the structure of an environment from the very first piece of information it receives, removing the traditional reliance on training data or fine-tuning. AGNs autonomously manipulate their underlying mathematical structure to anticipate directional change with respect to time and environment state. This makes AGNs an ideal foundational layer for building adaptive, intelligent systems.
+
+**Architectural Design**
+
+The architecture is built on a single principle: in any dynamic system, change begins at the highest observable time frequency before propagating to lower frequencies. 
+
+AGNs are designed as a web of interconnected networks, where each observable timeframe is modelled by its own distinct AGN, and these individual networks interconnect to form the complete system. This graph design provides users the flexibility to isolate a single AGN for granular analysis or observe how information propagates across the entire network.
+
+**Network Construction**
+
+To effectively model a system's evolution, multiple timeframes are structured into two key networks:
+
+- The Initiation Network, composed of higher-frequency AGNs, identifies the earliest signs of a new directional change.
+- The Confirmation Network uses lower-frequency AGNs to validate these initial signals, confirming that the change is persisting and developing into a sustained trend.
+
+**Interpreting the Speed of Propagation**
+
+The speed at which information propagates across timeframes is a key indicator of the underlying change's strength.
+
+- Strong Change: A fast information propagation implies the start of a directional change starting from the highest frequency in the constructed network.
+- Weak/Late Change: A slow information propagation implies either a weak change or a missed opportunity. The latter is a diagnostic sign that the latency between chosen timeframes is too high, requiring a higher-frequency network for earlier detection of similar events.
+
+**Magnitude Within a Timeframe**
+
+The magnitude of a change is determined by indicator consistency. A lone \+1 indicator suggests a weak change, while a sustained series of \+1 indicators confirms a strong, persistent change, growing in strength as the chain lengthens.
+
+**Non-Propagating Information**
+
+An indicator that appears briefly on one timeframe but fails to propagate to a lower frequency typically indicates the exhaustion or end of a directional change.

@@ -15,10 +15,7 @@ mode: "wide"
 
 <AccordionGroup>
   <Accordion title="Constructing a Multi-Timeframe Network">
-AGNs are designed as a multi-timeframe network, using directional insights from multiple timeframes to form a holistic picture of market dynamics for the chosen security.
-  </Accordion>
-  <Accordion title="High-to-Low Frequency Propagation Assumption">
-    The API assumes that all price movements originate in high-frequency time series before propagating into lower-frequency time series. Therefore, the API will only return directional insights that it believes will propagate into lower frequency timeframes.
+    AGNs are designed as a multi-timeframe network, using directional insights from multiple timeframes to form a holistic picture of market dynamics for the chosen security.
   </Accordion>
   <Accordion title="Interpreting Trend Context">
     The API response includes both the forecast (if identified) and the context that shaped it, all in one view. This helps users understand if predictions occur at the beginning, middle, or end of broader trends, making forecasts easier to understand and increasing your confidence in decisions.
@@ -36,7 +33,7 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
 <AccordionGroup>
   <Accordion title="Input">
     ```json
-
+    
     {
     "datetime": [
         "2005-08-30 00:00:00",
@@ -106,7 +103,7 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
     "interval": 1,
     "interval_unit": "days",
     "reasoning_mode": "reactive"
-}
+    }
     
     ```
   </Accordion>
@@ -150,8 +147,6 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
     ```
   </Accordion>
 </AccordionGroup>
-
-
 
 ## Quick Start: Download Price Data
 
@@ -206,7 +201,7 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
     # For this example, predict if a trend has been identified for the last period
     price_data.loc[price_data.index[-1], ['open', 'high', 'low', 'close']] = 0
     print(price_data)
-
+    
     # Save APPL data to csv file
     price_data.to_csv('AAPL_Daily.csv',index=False)
     
@@ -214,7 +209,7 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
   </Accordion>
   <Accordion title="Binance - BTC/USDT 1 Second Data">
     ```python
-
+    
     import requests
     import pandas as pd
     import time
@@ -329,7 +324,7 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
     
     # Download the data
     price_data = download_binance_historical_klines(symbol, interval, start_time, end_time)
-
+    
     price_data.to_csv('BTCUSDT_1s.csv',index=False)
             
     
@@ -337,7 +332,7 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
   </Accordion>
   <Accordion title="Binance Websocket - BTC/USDT 1 Minute Data">
     ```python
-
+    
     import websocket
     import json
     import threading
@@ -357,7 +352,7 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
     
           
             kline = json_message['k']
- 
+    
             data = {'symbol': kline['s'],
                     'interval': kline['i'],
                     'open_time': time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(kline['t'] / 1000)),
@@ -426,10 +421,9 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
        
         # For a simple script, just run it directly
         run_websocket()
-   ``` 
+    ```
   </Accordion>
 </AccordionGroup>
-
 
 ## Code Examples
 
@@ -510,7 +504,7 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
       
       # Sort by datetime
       df = df.sort_values('datetime')
-
+    
       return df
     
     price_data = pd.read_csv('AAPL_Daily.csv')
@@ -551,4 +545,3 @@ AGNs are designed as a multi-timeframe network, using directional insights from 
     ```
   </Accordion>
 </AccordionGroup>
-
