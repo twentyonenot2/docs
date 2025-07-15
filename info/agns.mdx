@@ -31,12 +31,24 @@ To effectively model a system's evolution, multiple timeframes are structured in
 
 <div style={{ textAlign:"center" }} />
 
+**Data Processing**
+
+While autoregressive models predict data point by point, an AGN processes an entire time window at once to infer its structure. This simultaneous analysis allows it to detect a fundamental structural shift the moment it appears, even if the time window only shifts by a single second (e.g., 16:14:00 to 16:14:01).
+
+**Eliminating Analytical Blindspots**
+
+A 1 step moving window is essential to the AGN's processing method. Since the architecture analyses the entire data window simultaneously, any jump larger than one step, such as a 5 step window, creates a blind spot where the exact moment of a directional change could be missed.
+
+**Pinpointing the Directional Shift**
+
+The first critical step is to identify the earliest directional change, which is the moment the indicator shifts from `-1` to `1` (or vice versa). While this shift often appears first on higher frequencies (e.g. on a 14 minute series before a 15 minute one), the key is finding the right balance. Overly high frequencies, such as 1 second, risk focusing on smaller fluctuations that don't reflect the broader, underlying change.
+
 **Interpreting the Speed of Propagation**
 
 The speed at which information propagates across timeframes is a key indicator of the underlying change's strength.
 
-- Strong Change: A fast information propagation implies the start of a directional change starting from the highest frequency in the constructed network.
-- Weak Change: A slow information propagation implies a missed opportunity. This is a diagnostic sign that the latency between the chosen timeframes is too high, requiring a higher-frequency network for earlier detection of similar events.
+- Fast Propagation (Strong Change): A fast information propagation implies the start of a directional change starting from the highest frequency in the constructed network.
+- Slow Propagation (Weak Change): A slow information propagation implies a missed opportunity. This is a diagnostic sign that the latency between the chosen timeframes is too high, requiring a higher-frequency network for earlier detection of similar events.
 
 <img
   src="/logo/propagation_type.png"
@@ -50,7 +62,7 @@ The speed at which information propagates across timeframes is a key indicator o
 
 **Magnitude Within a Timeframe**
 
-The magnitude of a change is determined by indicator consistency. A lone \+1 indicator suggests a weak change, while a sustained series of \+1 indicators confirms a strong, persistent change, growing in strength as the chain lengthens.
+The magnitude of a change is determined by indicator consistency. A lone `1` indicator suggests a weak change, while a sustained series of `1`  indicators confirms a strong, persistent change, growing in strength as the chain lengthens.
 
 **Non-Propagating Information**
 
