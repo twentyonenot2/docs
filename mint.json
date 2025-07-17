@@ -46,7 +46,7 @@
             "group": "Developer Guides",
             "pages": [
                 "/developer-guides/signup",
-                "/developer-guides/reasoning-model-ts"
+                "/developer-guides/financial-time-series"
 
             ]
         }
