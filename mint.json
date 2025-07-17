@@ -49,13 +49,6 @@
                 "/developer-guides/reasoning-model-ts"
 
             ]
-        },
-        {
-            "group": "Legal",
-            "pages": [
-                "terms-of-use",
-                "privacy-policy"
-            ]
         }
         
     ]
