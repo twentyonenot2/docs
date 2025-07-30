@@ -1,0 +1,107 @@
+---
+title: "Financial Time Series"
+description: "This model identifies directional trends by predicting how likely price action in the selected timeframe will propagate to lower-frequency timeframes, distinguishing structurally significant market moves from noise."
+slug: "/api-ref/reasoning-model-ts"
+---
+
+## Base URL
+
+```python
+ https://www.sumtyme.tech
+```
+
+## Request Endpoint
+
+```python
+POST /agn-reasoning/ts
+```
+
+## Recommended Moving Window
+
+<CardGroup cols="2">
+  <Card title="Input Length">
+    5001 Periods
+  </Card>
+</CardGroup>
+
+## Request Header
+
+<ParamField header="Content-Type" type="string" required>
+  Must be set to `application/json`
+</ParamField>
+
+<ParamField header="X-API-Key" type="string" required>
+  Your API key is a unique, one-time generated credential that authenticates your requests to our API.
+</ParamField>
+
+## Request Body
+
+<ParamField body="datetime" type="list" required>
+  
+</ParamField>
+
+<ParamField body="open" type="list" required>
+  
+</ParamField>
+
+<ParamField body="high" type="list" required>
+  
+</ParamField>
+
+<ParamField body="low" type="list" required>
+  
+</ParamField>
+
+<ParamField body="close" type="list" required>
+  
+</ParamField>
+
+<ParamField body="interval" type="int" required>
+  
+</ParamField>
+
+<ParamField body="interval_unit" type="string" required>
+  <Expandable title="options">
+    <ResponseField name="seconds" type="string">
+      For second-by-second time series data (e.g. 1-second or 5-second intervals).
+    </ResponseField>
+    <ResponseField name="minutes" type="string">
+      For minute-by-minute time series data (e.g. 1-minute or 5-minute intervals).
+    </ResponseField>
+    <ResponseField name="days" type="string">
+      For day-by-day time series data (e.g. 1-day or 5-day intervals).
+    </ResponseField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="reasoning_mode" type="string" required>
+  <Expandable title="options">
+    <ResponseField name="proactive" type="string">
+      Act early with minimal information.
+    </ResponseField>
+    <ResponseField name="reactive" type="string">
+      Wait for sufficient evidence before acting.
+    </ResponseField>
+  </Expandable>
+</ParamField>
+
+## Response Fields
+
+<ResponseField name="datetime" type="string">
+  Trend timestamp
+</ResponseField>
+
+<ResponseField name="trend_identified" type="string">
+  <Expandable title="Options">
+    <ResponseField name="1" type="int">
+      Bullish trend
+    </ResponseField>
+    <ResponseField name="-1" type="int">
+      Bearish trend
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Tip>
+  This endpoint only returns data for datetimes where a trend is identified. If no trend is detected for a specific time period, those datapoints will be omitted from the response. Check the timestamp field in the returned objects to identify which time periods are included.
+</Tip>
