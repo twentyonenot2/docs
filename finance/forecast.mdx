@@ -1,0 +1,46 @@
+---
+title: "Forecast Directional Change"
+description: "Financial Time Series"
+---
+
+`identify_timeseries_directional_change`
+
+This function determines if a directional change is forecasted for the final period.
+
+---
+
+#### Function Parameters
+
+| Parameter        | Type     | Required | Description                                                                                                                                                                                           |
+| :--------------- | :------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data_input`     | `object` | `True`   | The financial time series data to be analysed. This can be a file path (e.g., 'folder/ohlc_data.csv') or a pandas DataFrame. Supported file formats include CSV, TSV, Parquet, Excel, JSON, and HTML. |
+| `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                       |
+| `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                              |
+| `reasoning_mode` | `string` | `True`   | The reasoning strategy the architecture uses to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                         |
+
+### Data Columns
+
+Your input data (file or DataFrame) must contain the following columns:
+
+- datetime (string): A timestamp for each data point.
+- open (float): The opening price for the interval.
+- high (float): The highest price reached during the interval.
+- low (float): The lowest price reached during the interval.
+- close (float): The closing price for the interval.
+
+---
+
+#### Python Code Example
+
+```python
+# Performs a rolling window analysis on the observed data
+
+rolling_trends = client.get_timeseries_rolling_directional_changes(
+    data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
+    interval=1,
+    interval_unit='days',
+    reasoning_mode='proactive',
+    window_size=5001,
+    output_file='saved_output'
+)
+```
