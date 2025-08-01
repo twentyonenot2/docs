@@ -27,7 +27,7 @@
     ],
     "navigation": [
         {
-            "group": "Introduction",
+            "group": "sumtyme.ai",
             "pages": [
                 "info/dev-hub"
             ]
