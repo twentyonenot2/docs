@@ -43,4 +43,8 @@ entire_model = client.model_timeseries_environment(
     reasoning_mode='reactive',
     output_file='saved_output'
 )
+
+# Returns a dataframe with columns: [datetime, trend_identified]
+# Trend values: 1 (positive change), -1 (negative change), 0 (no clear change)
+
 ```
