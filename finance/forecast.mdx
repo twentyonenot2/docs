@@ -33,7 +33,7 @@ Your input data (file or DataFrame) must contain the following columns:
 #### Python Code Example
 
 ```python
-# Performs a rolling window analysis on the observed data
+# Identify if a directional change exists at the last data period
 
 latest_change = client.identify_timeseries_directional_change(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
