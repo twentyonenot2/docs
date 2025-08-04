@@ -25,15 +25,24 @@ pip install sumtyme
     AGNs are not autoregressive and analyse the entire data window simultaneously. Therefore, any outputs observed before the last data period of a window should be used for context and not as a prediction. The recommended window size is 5001 data periods.
   </Accordion>
   <Accordion title="Information Propagation ">
-    Abstract Generalised Networks (AGNs) operate on the theory of information propagation across timeframes. When a directional change is identified on a high-frequency timeframe, it creates an early indicator. As this move evolves, that indicator propagates to lower-frequency timeframes reinforcing the earlier indicator. This propagation continues until the move is fully developed and the indicator dissipates. This provides a deeper understanding of a system's evolution that moves beyond a simple next-step prediction.
+    Abstract Generalised Networks (AGNs) operate on the theory of information propagation across timeframes. When a directional change is identified on a shorter timeframe, it creates an early indicator. As this move evolves, that indicator propagates to longer timeframes reinforcing the earlier indicator. This propagation continues until the move is fully developed and the indicator dissipates. This provides a deeper understanding of a system's evolution that moves beyond a simple next-step prediction.
   </Accordion>
 </AccordionGroup>
 
 ### Demonstrations
 
-![](/images/MDC.png)
+<Accordion title="SPY ETF - Early 2020">
+  The SPY ETF saw a significant decline from mid-February to March as investors reacted to the spread of COVID-19 and the potential for a global economic shutdown.
+  
+  By analysing the SPY's mathematical structure using AGNs, an initial negative indicator was identified in late January. This indicator first appeared on the 5-minute time series and then propagated to progressively longer timeframes, reaching the 160-minute time series in this example.
+  
+  ![](/images/MDC.png)
+  
+  With no fine-tuning or retraining, AGNs are able to identify directional changes at different time resolutions providing a holistic understanding of directional change across an entire system.
+  
+  ![](/images/MDU.png)
 
-![](/images/MDU.png)
+</Accordion>
 
 ### Python Quickstart - Finance
 
