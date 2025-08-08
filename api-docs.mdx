@@ -20,7 +20,7 @@ pip install sumtyme
   <Accordion title="AGNs vs. Traditional  Architectures">
     Traditional AI architectures often struggle to model complex, dynamic systems because they're limited to predicting the next step in a sequence using fixed, linear patterns.
 
-  Abstract Generalised Networks (AGNs) use category theory to model the underlying structure of a time series. This provides a holistic view, enabling them to understand the complex forces that drive changes in a system.
+    Abstract Generalised Networks (AGNs) use category theory to model the underlying structure of a time series. This provides a holistic view, enabling them to understand the complex forces that drive changes in a system.
 
     AGNs are not autoregressive and analyse the entire data window simultaneously. Therefore, any outputs observed before the last data period of a window should be used for context and not as a prediction. The recommended window size is 5001 data periods.
   </Accordion>
@@ -31,18 +31,9 @@ pip install sumtyme
 
 ### Demonstrations
 
-<Accordion title="SPY ETF - Early 2020">
-  The SPY ETF saw a significant decline from mid-February to March as investors reacted to the spread of COVID-19 and the potential for a global economic shutdown.
-  
-  By analysing the SPY's mathematical structure using AGNs, an initial negative indicator was identified in late January. This indicator first appeared on the 5-minute time series and then propagated to progressively longer timeframes, reaching the 160-minute time series in this example.
-  
-  ![](/images/MDC.png)
-  
-  With no fine-tuning or retraining, AGNs are able to identify directional changes at different time resolutions providing a holistic understanding of directional change across an entire system.
-  
-  ![](/images/MDU.png)
-
-</Accordion>
+- Long Term Directional Change - [Visual Example](https://datawrapper.dwcdn.net/cfxxB/14/)
+- Short Term Directional Change - [Visual Example](https://datawrapper.dwcdn.net/5cPh1/5/)
+- Intraday Changes - [Visual Example](https://datawrapper.dwcdn.net/I5anr/10/)
 
 ### Python Quickstart - Finance
 
