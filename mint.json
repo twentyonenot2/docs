@@ -39,6 +39,7 @@
                 "/info/signup",
                 "/finance/model",
                 "/finance/forecast",
+                "/finance/propagation",
                 "/finance/rolling"
 
             ]
