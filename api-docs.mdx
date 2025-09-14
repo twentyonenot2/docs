@@ -1,10 +1,12 @@
 ---
-title: "Developer Hub"
+title: "Embedded Intelligence Platform (EIP)"
 ---
 
-A Python interface for interacting with the Embedded Intelligence Platform (EIP). The EIP uses a proprietary AI architecture called Abstract Generalised Networks (AGNs) to model how complex systems evolve.
+Our Embedded Intelligence Platform (EIP) offers a Python interface to our proprietary learning algorithms designed to model cause and effect in complex systems. We believe that understanding a system's behaviour requires more than just modelling the relationships between variables. Instead, our technology observes the system directly through its time series data, modelling its causal evolution from an initial state shift to a resulting directional change.
 
-Unlike traditional machine learning, AGNs do not require training data, fine-tuning, or retraining. Instead, they autonomously rewrite their underlying algorithms as they observe new data, allowing them to holistically understand how directional shifts influence a system. This approach is ideal for analysing dynamic domains like financial markets and weather patterns, focusing on the structure of change rather than just predicting the next step.
+Imagine a still pond as a complex system. A pebble's initial impact is the cause, creating a ripple that then expands into larger waves, representing the effect. By analysing the system's own data, our algorithms can identify the initial shift and trace its progression without needing external context.
+
+This approach allows today's model building to go beyond simple correlation and truly understand the underlying behaviour of a system. Our autonomous and parameter-free algorithms require no training data or continuous retraining, making our technology robust and ready for real-world applications across diverse domains, from financial markets to weather patterns.
 
 ### Python Package
 
@@ -14,26 +16,10 @@ To install the `sumtyme` Python package, you'll use `pip`, Python's standard pac
 pip install sumtyme
 ```
 
-### Explainers
-
-<AccordionGroup>
-  <Accordion title="AGNs vs. Traditional  Architectures">
-    Traditional AI architectures often struggle to model complex, dynamic systems because they're limited to predicting the next step in a sequence using fixed, linear patterns.
-
-    Abstract Generalised Networks (AGNs) use category theory to model the underlying structure of a time series. This provides a holistic view, enabling them to understand the complex forces that drive changes in a system.
-
-    AGNs are not autoregressive and analyse the entire data window simultaneously. Therefore, any outputs observed before the last data period of a window should be used for context and not as a prediction. The recommended window size is 5001 data periods.
-  </Accordion>
-  <Accordion title="Information Propagation ">
-    Abstract Generalised Networks (AGNs) model a system's evolution by observing how information propagates across timeframes. This process begins when a directional change on a shorter timeframe creates an early indicator. As the move develops, this indicator propagates to longer timeframes, reinforcing the initial indicator much like a relay system. This propagation continues until the move is fully developed and the indicator dissipates, providing a deeper understanding of a system's evolution that moves beyond simple next-step prediction.
-  </Accordion>
-</AccordionGroup>
-
-### Demonstrations
+### Finance Demonstrations
 
 - Long Term Directional Change - [Visual Example](https://datawrapper.dwcdn.net/cfxxB/14/)
 - Short Term Directional Change - [Visual Example](https://datawrapper.dwcdn.net/5cPh1/5/)
-- Intraday Changes - [Visual Example](https://datawrapper.dwcdn.net/I5anr/10/)
 
 ### Python Quickstart - Finance
 
@@ -47,4 +33,8 @@ pip install sumtyme
 
 <Card title="Rolling Forecast" href="/finance/rolling">
   Performs a rolling analysis to identify evolving trends.
+</Card>
+
+<Card title="Identify Causal Chains" href="/finance/propagation">
+  Analyses different timeframes to identify causal chains.
 </Card>
