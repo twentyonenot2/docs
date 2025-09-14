@@ -1,0 +1,44 @@
+---
+title: "Identify Causal Chain"
+description: "Financial Time Series"
+---
+
+`track_propagations`
+
+This function analyses the propagation of directional changes across different timeframes to model the casual evolution.
+
+---
+
+#### Function Parameters
+
+| Parameter           | Type     | Required | Description                                                                                                                                                                    |
+| :------------------ | :------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `df_list`           | `object` | `True`   | A list of dataframes including 'datetime' and 'trend_identified' columns ordered from shortest to longest to track propagations across multiple timeframes.                    |
+| `propagation_level` | `int`    | `True`   | Set the propagation level to track for analysis e.g. propagation_level = 2 will reveal only the directional changes which propagate at least twice from the initial indicator. |
+
+---
+
+#### Python Code Example
+
+```python
+from sumtyme import EIPClient
+
+# Replace 'your-subdomain' with your assigned EIP subdomain.
+client = EIPClient(subdomain='your-subdomain',apikey_path='config.txt')
+
+# Download sample API output data from Github
+data_1m_output = pd.read_csv('https://raw.githubusercontent.com/sumteam/data_store/main/api_output/btcusdt_1m_proactive_outputs.csv') # 1 minute time series
+data_2m_output = pd.read_csv('https://raw.githubusercontent.com/sumteam/data_store/main/api_output/btcusdt_2m_proactive_outputs.csv') # 2 minute time series
+data_3m_output = pd.read_csv('https://raw.githubusercontent.com/sumteam/data_store/main/api_output/btcusdt_3m_proactive_outputs.csv') # 3 minute time series
+
+# List of timeframes to analyse in order of timeframe: 1m --> 3m 
+time_series_to_track = [data_1m_output, data_2m_output, data_3m_output]
+
+# Track directional changes which propagate at least twice (from 1m to 3m)
+latest_change = client.identify_timeseries_directional_change(
+    df_list= time_series_to_track
+    propagation_level=2
+)
+
+# Returns a dataframe with columns: [datetime, trend_identified, propagation_level]
+```
