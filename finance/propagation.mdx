@@ -35,7 +35,7 @@ data_3m_output = pd.read_csv('https://raw.githubusercontent.com/sumteam/data_sto
 time_series_to_track = [data_1m_output, data_2m_output, data_3m_output]
 
 # Track directional changes which propagate at least twice (from 1m to 3m)
-latest_change = client.identify_timeseries_directional_change(
+latest_change = client.track_propagations(
     df_list= time_series_to_track
     propagation_level=2
 )
