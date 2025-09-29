@@ -46,7 +46,7 @@ rolling_trends = client.get_timeseries_rolling_directional_changes(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
     interval=1,
     interval_unit='days',
-    reasoning_mode='proactive',
+    reasoning_mode='reactive',
     window_size=5001,
     output_file='saved_output'
 )

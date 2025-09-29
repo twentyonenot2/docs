@@ -45,7 +45,7 @@ latest_change = client.identify_timeseries_directional_change(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
     interval=1,
     interval_unit='days',
-    reasoning_mode='proactive'
+    reasoning_mode='reactive'
 )
 
 # Returns a list: [datetime_string, trend_value]
