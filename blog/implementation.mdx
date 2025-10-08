@@ -37,7 +37,7 @@ Example Data Format for Univariate Time Series
 |---|---|---|
 | 1 | 2025-01-23 09:00:00 | 100 | 
 | 2 | 2025-01-23 10:00:00 | 95 | 
-| ... | ... | ... | ... | ... | ... |
+| ... | ... | ... |
 | 5001 | 2025-08-19 17:00:00 | 0 | 
 
 Example Format for Financial Time Series
@@ -46,7 +46,7 @@ Example Format for Financial Time Series
 |---|---|---|---|---|---|
 | 1 | 2025-01-23 09:00:00 | 100 | 110 | 90 | 95 |
 | 2 | 2025-01-23 10:00:00 | 95 | 98 | 86 | 88 |
-| ... | ... | ... | ... | ... | ... |
+| ... | ... | ... | 
 | 5001 | 2025-08-19 17:00:00 | 0 | 0 | 0 | 0 |
 
 <Note> The final row's values are placeholders for the period you're forecasting. The API will return the forecasted data for this row. </Note>
@@ -83,5 +83,6 @@ A fading causal chain begins to evolve but then loses its momentum before it can
 The chain begins with a positive indicator:
 - At 2025-08-19 09:01:00, the 1 minute timeframe shows a +1, initial positive indicator.
 - At 2025-08-19 10:03:00, the 3 minute timeframe shows a +1, positive causal chain detected.
-- At 2025-08-19 11:21:00, before the change can fully evolve to the 15 minute timeframe, the 3 minute timeframe shows a -1, negative causal chain detected. 
+- At 2025-08-19 11:21:00, before the change can fully evolve to the 15 minute timeframe, the 3 minute timeframe shows a -1, negative causal chain detected.
+  
 This opposing signal indicates that the initial directional shift didn't maintain its strength, causing the chain to fade rather than continue to build.
