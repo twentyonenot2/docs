@@ -4,7 +4,7 @@ slug: "/blog/implementation"
 
 ---
 
-Current AI learning approaches for complex systems are reactive, relying on statistical correlations to identify what is happening but not why. Our framework autonomously identifies the root cause by pinpointing the first subtle shift in time series data that precedes and evolves into a larger directional change, allowing us to identify the why. 
+Current AI learning approaches for complex systems are reactive, relying on statistical correlations to identify what is happening but not why. Our framework autonomously identifies the root cause by pinpointing the first subtle shift in time series data that precedes and evolves innto a larger directional change, allowing us to identify the why. 
 
 Traditional causal analysis assumes an external factor drives change. Our framework, in contrast, directly observes the system's time series data, identifying the observable cause as the initial internal shift (the subtle shift) and the observable effect as the resulting directional change in the system's own dynamics.
 
@@ -86,3 +86,15 @@ The chain begins with a positive indicator:
 - At 2025-08-19 11:21:00, before the change can fully evolve to the 15 minute timeframe, the 3 minute timeframe shows a -1, negative causal chain detected.
   
 This opposing signal indicates that the initial directional shift didn't maintain its strength, causing the chain to fade rather than continue to build.
+
+## Tracking Causal Chains: A Visual Guide to Market Dynamics
+
+By tracking causal chains from short timeframes to longer ones, we can illustrate how significant directional changes unfold in complex systems with no human involvement.
+
+### Tracking a Positive Directional Change
+
+This example demonstrates how our framework autonomously identified a [fully evolved positive causal chain in BTCUSDT](https://datawrapper.dwcdn.net/cfxxB/15/) with no training data or fine-tuning. The initial indicator began on the 1 second timeframe and propagated across multiple timeframes, leading to a significant price increase from $75,000 to over $100,000 between April and May 2025.
+
+### Identifying and Navigating Temporary Market Reversals
+
+Our framework autonomously understands and navigates market dynamics. During a [temporary price reversal in BTCUSDT](https://datawrapper.dwcdn.net/5cPh1/6/), our framework identified a short-term negative chain before successfully realigning with the larger, underlying positive chain. This ability to distinguish between minor fluctuations and significant directional changes showcases our framework's unique insight into both micro and macro-level system dynamics.
