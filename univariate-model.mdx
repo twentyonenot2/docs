@@ -6,18 +6,17 @@ title: "Univariate Time Series - Show Internal Model"
 
 `Recommended number of data periods: 5001`
 
-This function provides the internal roadmap detailing the directional evolution of the chosen timeframe as part of the larger causal chain.
----
+## This function provides the internal roadmap detailing the directional evolution of the chosen timeframe as part of the larger causal chain.
 
 #### Function Parameters
 
-| Parameter        | Type     | Required | Description                                                                                                                                                                                           |
-| :--------------- | :------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data_input`     | `object` | `True`   | The financial time series data to be analysed. This can be a file path (e.g., 'folder/ohlc_data.csv') or a pandas DataFrame. Supported file formats include CSV, TSV, Parquet, Excel, JSON, and HTML. |
-| `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                       |
-| `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                              |
-| `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                            |
-| `output_file`    | `string` | `False`  | The name of the file where the output will be saved. The output is a CSV file. For example, 'saved_output' will create saved_output.csv.                                                              |
+| Parameter        | Type     | Required | Description                                                                                                                                                                                            |
+| :--------------- | :------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data_input`     | `object` | `True`   | The univariate time series data to be analysed. This can be a file path (e.g., 'folder/ohlc_data.csv') or a pandas DataFrame. Supported file formats include CSV, TSV, Parquet, Excel, JSON, and HTML. |
+| `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                        |
+| `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                               |
+| `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                             |
+| `output_file`    | `string` | `False`  | The name of the file where the output will be saved. The output is a CSV file. For example, 'saved_output' will create saved_output.csv.                                                               |
 
 ### Data Columns
 
@@ -25,7 +24,6 @@ Your input data (file or DataFrame) must contain the following columns:
 
 - datetime (string): A timestamp for each data point.
 - value (float): The numerical value for the interval.
-
 
 ---
 
@@ -49,6 +47,3 @@ entire_model = client.univariate_model(
 # Returns a dataframe with columns: [datetime, chain_detected]
 # chain_detected values: 1 (positive chain), -1 (negative chain), 0 (no chain detected)
 ```
-
-
-
