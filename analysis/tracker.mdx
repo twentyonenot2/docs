@@ -43,7 +43,7 @@ result = client.check_chain_propagation(
 # Returns a tuple: (propagation confirmed [bool], propagation timestamp [datetime or None], chain value [int or None])
 has_propagated, propagation_datetime, chain_value = result
 
-if is_propagated:
+if has_propagated:
     print(f"Chain value {chain_value} successfully propagated at {propagation_datetime}.")
 else:
     print("No propagation detected between the timeframes.")
