@@ -1,12 +1,12 @@
 ---
-title: "Fiancial Time Series - Forecast"
+title: "Univariate Time Series"
 ---
 
-`ohlc_forecast`
+`univariate_rolling_forecast`
 
-`Recommended number of data periods: 5001`
+`Maximum number of data periods: 10000`
 
-This function determines if a directional change is forecasted based on the detected initial subtle shift in the analysed time series. 
+This function generates a rolling forecast that predicts the continuation of the current directional change over the selected timeframe, based on the subtle initial shift.
 
 ---
 
@@ -24,10 +24,8 @@ This function determines if a directional change is forecasted based on the dete
 Your input data (file or DataFrame) must contain the following columns:
 
 - datetime (string): A timestamp for each data point.
-- open (float): The opening price for the interval.
-- high (float): The highest price reached during the interval.
-- low (float): The lowest price reached during the interval.
-- close (float): The closing price for the interval.
+- value (float): The numerical value for the interval.
+
 
 ---
 
@@ -36,17 +34,17 @@ Your input data (file or DataFrame) must contain the following columns:
 ```python
 from sumtyme import EIPClient
 
-# Initialise the EIPClient, loading the required API key from the local configuration file.
-client = EIPClient(apikey_path='config.txt')
+# Initialise the EIPClient with the provided API key
+client = EIPClient(apikey='your-api-key-here')
 
-# Identify if a directional change is forecasted for the last data period
-forecast = client.ohlc_forecast(
+forecast = client.univariate_rolling_forecast(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
     interval=1,
-    interval_unit='days',
+    interval_unit='minutes',
     reasoning_mode='reactive'
 )
 
-# Returns a list: [datetime_string, chain_detected]
-# chain_detected values: 1 (positive chain), -1 (negative chain), 0 (no chain detected)
+# Automatically saves the rolling forecast to a .csv file 
 ```
+
+

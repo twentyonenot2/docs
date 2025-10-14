@@ -1,12 +1,13 @@
 ---
-title: "Financial Time Series - Show Internal Model"
+title: "Financial Time Series"
 ---
 
 `ohlc_model`
 
 `Recommended number of data periods: 5001`
 
-This function provides the internal roadmap detailing the directional evolution of the chosen timeframe as part of the larger causal chain.
+This function maps the directional evolution of the selected timeframe within the larger causal chain. This function serves to verify the platform's understanding of the time series structure. It is not autoregressive and does not rely on the time series' own past values for prediction.
+
 ---
 
 #### Function Parameters
@@ -36,19 +37,17 @@ Your input data (file or DataFrame) must contain the following columns:
 ```python
 from sumtyme import EIPClient
 
-# Initialise the EIPClient, loading the required API key from the local configuration file.
-client = EIPClient(apikey_path='config.txt')
+# Initialise the EIPClient with the provided API key
+client = EIPClient(apikey='your-api-key-here')
 
-# See our technology's understanding of the submitted time series data
 model = client.ohlc_model(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
     interval=1,
     interval_unit='days',
-    reasoning_mode='reactive',
+    reasoning_mode='minutes',
     output_file='saved_output'
 )
 
 # Returns a dataframe with columns: [datetime, chain_detected]
 # chain_detected values: 1 (positive chain), -1 (negative chain), 0 (no chain detected)
 ```
-

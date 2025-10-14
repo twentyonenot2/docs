@@ -1,12 +1,12 @@
 ---
-title: "Univariate Time Series - Show Internal Model"
+title: "Univariate Time Series"
 ---
 
-`univariate_model`
+`univariate_forecast`
 
 `Recommended number of data periods: 5001`
 
-## This function provides the internal roadmap detailing the directional evolution of the chosen timeframe as part of the larger causal chain.
+This function forecasts the continuation of the current directional change over the selected timeframe, based on the subtle initial shift.
 
 #### Function Parameters
 
@@ -16,7 +16,6 @@ title: "Univariate Time Series - Show Internal Model"
 | `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                        |
 | `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                               |
 | `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                             |
-| `output_file`    | `string` | `False`  | The name of the file where the output will be saved. The output is a CSV file. For example, 'saved_output' will create saved_output.csv.                                                               |
 
 ### Data Columns
 
@@ -32,18 +31,16 @@ Your input data (file or DataFrame) must contain the following columns:
 ```python
 from sumtyme import EIPClient
 
-# Initialise the EIPClient, loading the required API key from the local configuration file.
-client = EIPClient(apikey_path='config.txt')
+# Initialise the EIPClient with the provided API key
+client = EIPClient(apikey='your-api-key-here')
 
-# See our technology's understanding of the submitted time series data
-entire_model = client.univariate_model(
+forecast = client.univariate_forecast(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
     interval=1,
-    interval_unit='days',
-    reasoning_mode='reactive',
-    output_file='saved_output'
+    interval_unit='minutes',
+    reasoning_mode='reactive'
 )
 
-# Returns a dataframe with columns: [datetime, chain_detected]
+# Returns a dictionary: {datetime_string:chain_detected}
 # chain_detected values: 1 (positive chain), -1 (negative chain), 0 (no chain detected)
 ```

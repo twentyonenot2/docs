@@ -3,11 +3,9 @@ title: "Sign Up"
 description: "Generate API Key"
 ---
 
-`user_signup`
 
-This function will send a sign-up request to the EIP, return your API key and automatically save it to a local `config.txt` file for future use.
-
-After signing up, email [team@sumtyme.ai](mailto:team@sumtyme.ai) for account activation.
+1. Automated Setup: Use this function `user_signup`to send your sign-up request. It will **immediately return your API key** and automatically save it to a local `config.txt` file. After signing up, email [team@sumtyme.ai](mailto:team@sumtyme.ai) for account activation.
+2. Manual Sign-up: Alternatively, you can use **this form**[https://tally.so/r/wAMyky]. We will then contact you via email with your API key and setup instructions.
 
 ---
 
@@ -24,7 +22,7 @@ pip install sumtyme
 from sumtyme import EIPClient
 
 # Replace 'your-subdomain' with your assigned EIP subdomain.
-client = EIPClient(subdomain='your-subdomain',apikey_path=None)
+client = EIPClient(apikey=None)
 
 # Register a new user and get your API key
 signup_result = client.user_signup(payload={

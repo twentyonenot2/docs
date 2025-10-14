@@ -1,12 +1,14 @@
 ---
-title: "Univariate Time Series - Forecast"
+title: "Univariate Time Series"
 ---
 
-`univariate_forecast`
+`univariate_model`
 
 `Recommended number of data periods: 5001`
 
-## This function determines if a directional change is forecasted based on the detected initial subtle shift in the analysed time series.
+This function maps the directional evolution of the selected timeframe within the larger causal chain. This function serves to verify the platform's understanding of the time series structure. It is not autoregressive and does not rely on the time series' own past values for prediction.
+
+---
 
 #### Function Parameters
 
@@ -16,6 +18,7 @@ title: "Univariate Time Series - Forecast"
 | `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                        |
 | `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                               |
 | `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                             |
+| `output_file`    | `string` | `False`  | The name of the file where the output will be saved. The output is a CSV file. For example, 'saved_output' will create saved_output.csv.                                                               |
 
 ### Data Columns
 
@@ -31,17 +34,17 @@ Your input data (file or DataFrame) must contain the following columns:
 ```python
 from sumtyme import EIPClient
 
-# Initialise the EIPClient, loading the required API key from the local configuration file.
-client = EIPClient(apikey_path='config.txt')
+# Initialise the EIPClient with the provided API key
+client = EIPClient(apikey='your-api-key-here')
 
-# Identify if a directional change is forecasted for the last data period
-forecast = client.univariate_forecast(
+entire_model = client.univariate_model(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
     interval=1,
-    interval_unit='days',
-    reasoning_mode='reactive'
+    interval_unit='minutes',
+    reasoning_mode='reactive',
+    output_file='saved_output'
 )
 
-# Returns a list: [datetime_string, chain_detected]
+# Returns a dataframe with columns: [datetime, chain_detected]
 # chain_detected values: 1 (positive chain), -1 (negative chain), 0 (no chain detected)
 ```

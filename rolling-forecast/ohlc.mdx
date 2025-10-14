@@ -1,0 +1,51 @@
+---
+title: "Financial Time Series"
+---
+
+`ohlc_rolling_forecast`
+
+`Maximum number of data periods: 10000`
+
+This function generates a rolling forecast that predicts the continuation of the current directional change over the selected timeframe, based on the subtle initial shift.
+
+---
+
+#### Function Parameters
+
+| Parameter        | Type     | Required | Description                                                                                                                                                                                           |
+| :--------------- | :------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data_input`     | `object` | `True`   | The financial time series data to be analysed. This can be a file path (e.g., 'folder/ohlc_data.csv') or a pandas DataFrame. Supported file formats include CSV, TSV, Parquet, Excel, JSON, and HTML. |
+| `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                       |
+| `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                              |
+| `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                            |
+
+### Data Columns
+
+Your input data (file or DataFrame) must contain the following columns:
+
+- datetime (string): A timestamp for each data point.
+- open (float): The opening price for the interval.
+- high (float): The highest price reached during the interval.
+- low (float): The lowest price reached during the interval.
+- close (float): The closing price for the interval.
+
+---
+
+#### Python Code Example
+
+```python
+from sumtyme import EIPClient
+
+# Initialise the EIPClient with the provided API key
+client = EIPClient(apikey='your-api-key-here')
+
+forecast = client.ohlc_rolling_forecast(
+    data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
+    interval=1,
+    interval_unit='minutes',
+    reasoning_mode='reactive'
+)
+
+# Automatically saves the rolling forecast to a .csv file 
+```
+

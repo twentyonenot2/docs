@@ -34,13 +34,30 @@
         },
 
         {
-            "group": "Developer Guides",
+            "group": "Get Started",
             "pages": [
-                "/info/signup",
-                "/finance/model",
-                "/finance/forecast",
-                "/finance/propagation"
-
+                "/info/signup"
+            ]
+        },
+        {
+            "group": "Forecast",
+            "pages": [
+                "/forecast/ohlc",
+                "/forecast/univariate"
+            ]
+        },
+        {
+            "group": "Model",
+            "pages": [
+                "/model/ohlc",
+                "/model/univariate"
+            ]
+        },
+        {
+            "group": "Rolling Forecast",
+            "pages": [
+                "/rolling-forecast/ohlc",
+                "/rolling-forecast/univariate"
             ]
         }
         
