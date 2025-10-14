@@ -1,10 +1,9 @@
 ---
 title: "Technology Implementation"
 slug: "/blog/implementation"
-
 ---
 
-Current AI learning approaches for complex systems are reactive, relying on statistical correlations to identify what is happening but not why. Our framework autonomously identifies the root cause by pinpointing the first subtle shift in time series data that precedes and evolves innto a larger directional change, allowing us to identify the why. 
+Current AI learning approaches for complex systems are reactive, relying on statistical correlations to identify what is happening but not why. Our framework autonomously identifies the root cause by pinpointing the first subtle shift in time series data that precedes and evolves into a larger directional change, allowing us to identify the why. 
 
 Traditional causal analysis assumes an external factor drives change. Our framework, in contrast, directly observes the system's time series data, identifying the observable cause as the initial internal shift (the subtle shift) and the observable effect as the resulting directional change in the system's own dynamics.
 
@@ -27,30 +26,28 @@ Alternatively, you can choose sequential timeframes for a more granular analysis
 - 3 second
 - 4 second
 
-## Step 2: Data Processing 
+## Step 2: Data Processing
 
 You will need to send time series data for your selected timeframes to the API. Use a window size of 5001 data periods, where the most recent point (the 5001st) is the one you want to forecast. In the example below, 2025-08-19 at 17:00 is the forecast date.
 
 **Example Data Format for Univariate Time Series**
 
-| # | datetime | value | 
-|---|---|---|
-| 1 | 2025-01-23 09:00:00 | 100 | 
-| 2 | 2025-01-23 10:00:00 | 95 | 
-| ... | ... | ... |
-| 5001 | 2025-08-19 17:00:00 | 0 | 
+| #    | datetime            | value |
+| ---- | ------------------- | ----- |
+| 1    | 2025-01-23 09:00:00 | 100   |
+| 2    | 2025-01-23 10:00:00 | 95    |
+| ...  | ...                 | ...   |
+| 5001 | 2025-08-19 17:00:00 | 0     |
 
 **Example Format for Financial Time Series**
 
-| # | datetime | open | high | low | close |
-|---|---|---|---|---|---|
-| 1 | 2025-01-23 09:00:00 | 100 | 110 | 90 | 95 |
-| 2 | 2025-01-23 10:00:00 | 95 | 98 | 86 | 88 |
-| ... | ... | ... | 
-| 5001 | 2025-08-19 17:00:00 | 0 | 0 | 0 | 0 |
+<table style="min-width: 150px">
+<colgroup><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"></colgroup><tbody><tr><th colspan="1" rowspan="1"><p>#</p></th><th colspan="1" rowspan="1"><p>datetime</p></th><th colspan="1" rowspan="1"><p>open</p></th><th colspan="1" rowspan="1"><p>high</p></th><th colspan="1" rowspan="1"><p>low</p></th><th colspan="1" rowspan="1"><p>close</p></th></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>2025-01-23 09:00:00</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>110</p></td><td colspan="1" rowspan="1"><p>90</p></td><td colspan="1" rowspan="1"><p>95</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>2025-01-23 10:00:00</p></td><td colspan="1" rowspan="1"><p>95</p></td><td colspan="1" rowspan="1"><p>98</p></td><td colspan="1" rowspan="1"><p>86</p></td><td colspan="1" rowspan="1"><p>88</p></td></tr><tr><td colspan="1" rowspan="1"><p>...</p></td><td colspan="1" rowspan="1"><p>...</p></td><td colspan="1" rowspan="1"><p>...</p></td></tr><tr><td colspan="1" rowspan="1"><p>5001</p></td><td colspan="1" rowspan="1"><p>2025-08-19 17:00:00</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody>
+</table>
 
-<Note> The final row's values are placeholders for the period you're forecasting. The API will return the forecasted data for this row. </Note>
-
+<Note>
+   The final row's values are placeholders for the period you're forecasting. The API will return the forecasted data for this row. 
+</Note>
 
 ## Step 3: Interpreting API outputs
 
@@ -73,7 +70,7 @@ We can demonstrate this principle by using the 1 minute (highest observable freq
 - At 2025-08-19 09:01:00, the 1 minute timeframe shows a +1, initial positive indicator.
 - At 2025-08-19 10:03:00, the 3 minute timeframe shows a +1 positive causal chain detected.
 - At 2025-08-19 12:15:00, the 15 minute timeframe shows a +1 positive causal chain detected.
-  
+
 This sequence indicates that a positive causal chain has fully evolved across the chosen three timeframes.
 
 ### Example: A Fading Causal Chain
@@ -81,10 +78,11 @@ This sequence indicates that a positive causal chain has fully evolved across th
 A fading causal chain begins to evolve but then loses its momentum before it can fully propagate across all selected timeframes.
 
 The chain begins with a positive indicator:
+
 - At 2025-08-19 09:01:00, the 1 minute timeframe shows a +1, initial positive indicator.
 - At 2025-08-19 10:03:00, the 3 minute timeframe shows a +1, positive causal chain detected.
 - At 2025-08-19 11:21:00, before the change can fully evolve to the 15 minute timeframe, the 3 minute timeframe shows a -1, negative causal chain detected.
-  
+
 This opposing signal indicates that the initial directional shift didn't maintain its strength, causing the chain to fade rather than continue to build.
 
 ## Tracking Causal Chains: A Visual Guide to Market Dynamics
