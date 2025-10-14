@@ -1,0 +1,50 @@
+---
+title: "Propagation Tracker"
+---
+
+`check_chain_propagation`
+
+This function confirms the propagation of a detected chain from the current to the subsequent timeframe, returning the propagation's details if found.
+
+---
+
+#### Function Parameters
+
+| Parameter  | Type     | Required | Description                                                                                                                                 |
+| :--------- | :------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| current_df | `object` | True     | A DataFrame representing the current timeframe, which holds the detected chain that the function checks for propagation into the `next_df`. |
+| next_df    | `object` | True     | A DataFrame representing the subsequent timeframe being monitored to confirm the propagation of the detected change.                        |
+
+### Data Columns
+
+Both dataframes must contain the following columns:
+
+- datetime (string): A timestamp for each data point.
+- chain_detected (float): The detected chain value for the interval.
+
+---
+
+#### Python Code Example
+
+```python
+from sumtyme import EIPClient
+
+# Initialise the EIPClient with the provided API key
+client = EIPClient(apikey='your-api-key-here')
+
+current_timeframe_df = 1min_outputs  # Example: DataFrame for the 1 minute api outputs
+next_timeframe_df = 2min_outputs    # Example: DataFrame for the 2 minute api outputs
+
+result = client.check_chain_propagation(
+    current_tf=current_timeframe_df,
+    next_tf=next_timeframe_df
+)
+
+# Returns a tuple: (propagation confirmed [bool], propagation timestamp [datetime or None], chain value [int or None])
+is_propagated, propagation_datetime, chain_value = result
+
+if is_propagated:
+    print(f"Chain value {chain_value} successfully propagated at {propagation_datetime}.")
+else:
+    print("No propagation detected between the timeframes.")
+```

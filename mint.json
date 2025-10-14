@@ -59,6 +59,12 @@
                 "/rolling-forecast/ohlc",
                 "/rolling-forecast/univariate"
             ]
+        },
+        {
+            "group": "Analysis",
+            "pages": [
+                "/analysis/tracker"
+            ]
         }
         
     ]
