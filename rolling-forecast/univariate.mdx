@@ -12,12 +12,12 @@ This function generates a rolling forecast that predicts the continuation of the
 
 #### Function Parameters
 
-| Parameter        | Type     | Required | Description                                                                                                                                                                                           |
-| :--------------- | :------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data_input`     | `object` | `True`   | The financial time series data to be analysed. This can be a file path (e.g., 'folder/ohlc_data.csv') or a pandas DataFrame. Supported file formats include CSV, TSV, Parquet, Excel, JSON, and HTML. |
-| `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                       |
-| `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                              |
-| `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                            |
+| Parameter        | Type     | Required | Description                                                                                                                                                                                            |
+| :--------------- | :------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data_input`     | `object` | `True`   | The univariate time series data to be analysed. This can be a file path (e.g., 'folder/ohlc_data.csv') or a pandas DataFrame. Supported file formats include CSV, TSV, Parquet, Excel, JSON, and HTML. |
+| `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                        |
+| `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                               |
+| `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                             |
 
 ### Data Columns
 
@@ -25,7 +25,6 @@ Your input data (file or DataFrame) must contain the following columns:
 
 - datetime (string): A timestamp for each data point.
 - value (float): The numerical value for the interval.
-
 
 ---
 
@@ -46,5 +45,3 @@ forecast = client.univariate_rolling_forecast(
 
 # Automatically saves the rolling forecast to a .csv file 
 ```
-
-
