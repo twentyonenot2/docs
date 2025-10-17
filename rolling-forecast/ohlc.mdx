@@ -46,6 +46,8 @@ forecast = client.ohlc_rolling_forecast(
     reasoning_mode='reactive'
 )
 
-# Automatically saves the rolling forecast to a .csv file 
+"""
+Automatically saves each time step's rolling forecast, appending the results to a single .csv file (e.g., './17102025.csv').
+"""
 ```
 
