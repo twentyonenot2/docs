@@ -36,7 +36,7 @@ from sumtyme import EIPClient
 # Initialise the EIPClient with the provided API key
 client = EIPClient(apikey='your-api-key-here')
 
-forecast = client.univariate_rolling_forecast(
+client.univariate_rolling_forecast(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
     interval=1,
     interval_unit='minutes',
@@ -44,6 +44,6 @@ forecast = client.univariate_rolling_forecast(
 )
 
 """
-Automatically saves each time step's rolling forecast, appending the results to a single .csv file (e.g., './17102025.csv') using a 5000 period moving window.
+Automatically saves each time step's rolling forecast, appending the results to a single .csv file (e.g., './2025-01-01.csv') using a 5000 period moving window.
 """
 ```
