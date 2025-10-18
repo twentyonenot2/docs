@@ -47,13 +47,6 @@
             ]
         },
         {
-            "group": "Model",
-            "pages": [
-                "/model/ohlc",
-                "/model/univariate"
-            ]
-        },
-        {
             "group": "Rolling Forecast",
             "pages": [
                 "/rolling-forecast/ohlc",
