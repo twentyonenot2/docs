@@ -40,7 +40,7 @@
             ]
         },
         {
-            "group": "Forecast",
+            "group": "Single Forecast",
             "pages": [
                 "/forecast/ohlc",
                 "/forecast/univariate"
