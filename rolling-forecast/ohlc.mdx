@@ -18,6 +18,7 @@ This function generates a rolling forecast that predicts the continuation of the
 | `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                       |
 | `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                              |
 | `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                            |
+| `output_file`    | `string` | `False`  | The base name for the output file. For example, 'saved_output' will create a csv file 'saved_output.csv'.                                                         |
 
 ### Data Columns
 
@@ -43,11 +44,11 @@ client.ohlc_rolling_forecast(
     data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
     interval=1,
     interval_unit='minutes',
-    reasoning_mode='reactive'
+    reasoning_mode='reactive',
+    output_file = 'api_outputs'
 )
 
 """
-Automatically saves each time step's rolling forecast, appending the results to a single .csv file (e.g., './2025-01-01.csv') using a 5000 period moving window.
+Automatically saves each time step's rolling forecast, appending the results to a single .csv file (e.g., './api_outputs.csv') using a 5000 period moving window.
 """
 ```
-
