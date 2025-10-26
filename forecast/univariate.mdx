@@ -28,6 +28,17 @@ Your input data (file or DataFrame) must contain the following columns:
 
 ---
 
+## Example Data Format for Univariate Time Series
+
+A placeholder value of 0 is required in the input fields for the forecasted period (e.g. 2025-08-19 at 17:00 in the example below).
+
+| #    | datetime            | value |
+| ---- | ------------------- | ----- |
+| 1    | 2025-01-23 09:00:00 | 100   |
+| 2    | 2025-01-23 10:00:00 | 95    |
+| ...  | ...                 | ...   |
+| 5001 | 2025-08-19 17:00:00 | 0     |
+
 #### Python Code Example
 
 ```python
