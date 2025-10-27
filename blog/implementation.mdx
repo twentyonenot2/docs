@@ -28,7 +28,7 @@ Alternatively, you can choose sequential timeframes for a more granular analysis
 
 ## Step 2: Data Processing
 
-You will need to send time series data for your selected timeframes to the API. Use a window size of 5001 data periods, where the most recent point (the 5001st) is the one you want to forecast. In the example below, 2025-08-19 at 17:00 is the forecast date.
+You will need to send time series data for your selected timeframes to the API. Use a window size of 5001 data periods, where the most recent point (the 5001st) is the one you want to forecast. In the below examples, 2025-08-19 at 17:00 is the forecast date.
 
 **Example Data Format for Univariate Time Series**
 
@@ -45,13 +45,10 @@ You will need to send time series data for your selected timeframes to the API. 
 <colgroup><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"></colgroup><tbody><tr><th colspan="1" rowspan="1"><p>#</p></th><th colspan="1" rowspan="1"><p>datetime</p></th><th colspan="1" rowspan="1"><p>open</p></th><th colspan="1" rowspan="1"><p>high</p></th><th colspan="1" rowspan="1"><p>low</p></th><th colspan="1" rowspan="1"><p>close</p></th></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>2025-01-23 09:00:00</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>110</p></td><td colspan="1" rowspan="1"><p>90</p></td><td colspan="1" rowspan="1"><p>95</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>2025-01-23 10:00:00</p></td><td colspan="1" rowspan="1"><p>95</p></td><td colspan="1" rowspan="1"><p>98</p></td><td colspan="1" rowspan="1"><p>86</p></td><td colspan="1" rowspan="1"><p>88</p></td></tr><tr><td colspan="1" rowspan="1"><p>...</p></td><td colspan="1" rowspan="1"><p>...</p></td><td colspan="1" rowspan="1"><p>...</p></td></tr><tr><td colspan="1" rowspan="1"><p>5001</p></td><td colspan="1" rowspan="1"><p>2025-08-19 17:00:00</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody>
 </table>
 
-<Note>
-   The final row's values are placeholders for the period you're forecasting. The API will return the forecasted data for this row. 
-</Note>
 
 ## Step 3: Interpreting API outputs
 
-The API's response will include a datetime and a causal_chain value for the period you've forecasted. The causal_chain value is an integer indicating the type of chain detected:
+The API's response will include a datetime and a causal chain value for the period you've forecasted. The causal_chain value is an integer indicating the type of chain detected:
 
 - 1: Positive causal chain detected.
 - -1: Negative causal chain detected.
