@@ -28,7 +28,6 @@
         {
             "group": "Blog",
             "pages": [
-                "/blog/introduction",
                 "/blog/implementation"
             ]
         },
