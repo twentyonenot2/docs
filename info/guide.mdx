@@ -1,6 +1,5 @@
 ---
-title: "Technology Implementation"
-slug: "/blog/implementation"
+title: 'Technology Guide'
 ---
 
 **tl;dr A parameter-free, memoryless AI architecture layer for complex systems, that autonomously maps real-time causal structure to identify and track emergent shifts, enabling machines to understand and anticipate systemic change.**
@@ -40,9 +39,12 @@ You will need to send time series data for your selected timeframes to the API. 
 
 **Example Format for Financial Time Series**
 
-<table style="min-width: 150px">
-<colgroup><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"></colgroup><tbody><tr><th colspan="1" rowspan="1"><p>#</p></th><th colspan="1" rowspan="1"><p>datetime</p></th><th colspan="1" rowspan="1"><p>open</p></th><th colspan="1" rowspan="1"><p>high</p></th><th colspan="1" rowspan="1"><p>low</p></th><th colspan="1" rowspan="1"><p>close</p></th></tr><tr><td colspan="1" rowspan="1"><p>1</p></td><td colspan="1" rowspan="1"><p>2025-01-23 09:00:00</p></td><td colspan="1" rowspan="1"><p>100</p></td><td colspan="1" rowspan="1"><p>110</p></td><td colspan="1" rowspan="1"><p>90</p></td><td colspan="1" rowspan="1"><p>95</p></td></tr><tr><td colspan="1" rowspan="1"><p>2</p></td><td colspan="1" rowspan="1"><p>2025-01-23 10:00:00</p></td><td colspan="1" rowspan="1"><p>95</p></td><td colspan="1" rowspan="1"><p>98</p></td><td colspan="1" rowspan="1"><p>86</p></td><td colspan="1" rowspan="1"><p>88</p></td></tr><tr><td colspan="1" rowspan="1"><p>...</p></td><td colspan="1" rowspan="1"><p>...</p></td><td colspan="1" rowspan="1"><p>...</p></td></tr><tr><td colspan="1" rowspan="1"><p>5001</p></td><td colspan="1" rowspan="1"><p>2025-08-19 17:00:00</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td><td colspan="1" rowspan="1"><p>0</p></td></tr></tbody>
-</table>
+| #    | datetime            | value | value | value | value |
+| ---- | ------------------- | ----- | ----- | ----- | ----- |
+| 1    | 2025-01-23 09:00:00 | 100   | 110 | 90 | 85 |
+| 2    | 2025-01-23 10:00:00 | 95    | 98 | 86 | 88 |
+| ...  | ...                 | ...   | ... | ... | ... |
+| 5001 | 2025-08-19 17:00:00 | 0     | 0 | 0 | 0 |
 
 
 ## Step 3: Interpreting API outputs
@@ -83,7 +85,7 @@ This opposing signal indicates that the initial directional shift didn't maintai
 
 ## Tracking Causal Chains: A Visual Guide to Market Dynamics
 
-By tracking causal chains from short timeframes to longer ones, we can illustrate how significant directional changes unfold in complex systems with no human involvement.
+By tracking causal chains from short timeframes to longer ones, we can illustrate how significant directional changes unfold in complex systems by observing casual structure.
 
 ### Tracking a Positive Directional Change
 

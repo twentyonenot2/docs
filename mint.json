@@ -28,14 +28,14 @@
         {
             "group": "Blog",
             "pages": [
-                "/info/manifesto",
-                "/blog/implementation"
+                "/info/manifesto"
             ]
         },
 
         {
             "group": "Get Started",
             "pages": [
+                "/info/guide",
                 "/info/signup"
             ]
         },
