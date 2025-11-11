@@ -35,6 +35,7 @@
         {
             "group": "Get Started",
             "pages": [
+                "/info/manifesto",
                 "/info/signup"
             ]
         },
