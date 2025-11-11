@@ -3,15 +3,12 @@ title: "Technology Implementation"
 slug: "/blog/implementation"
 ---
 
-**tl;dr A parameter-free, memoryless AI architecture for real-world complex systems, that autonomously maps real-time causal structure to identify and track emergent shifts, enabling machines to understand and anticipate systemic change.**
+**tl;dr A parameter-free, memoryless AI architecture layer for complex systems, that autonomously maps real-time causal structure to identify and track emergent shifts, enabling machines to understand and anticipate systemic change.**
 
-Current AI learning approaches for complex systems are reactive, relying on statistical correlations to identify what is happening but not why. Our framework autonomously identifies the root cause by pinpointing the first subtle shift in time series data that precedes and evolves into a larger directional change, allowing us to identify the why. 
-
-Traditional causal analysis assumes an external factor drives change. Our framework, in contrast, directly observes the system's time series data, identifying the observable cause as the initial internal shift (the subtle shift) and the observable effect as the resulting directional change in the system's own dynamics.
 
 ## Step 1: Choose time intervals to monitor
 
-Our framwework identifies the start of a causal chain by analysing time series data across multiple timeframes, from shortest to longest. First detecting a subtle, initial change at the highest frequency (e.g. seconds). This small directional change then propagates to lower frequencies (minutes, hours, days), leading to a larger, observable directional change.
+The Casual Intelligence Layer (CIL) identifies the start of a causal chain by analysing time series data across multiple timeframes, from shortest to longest. First detecting a subtle, initial change at the highest frequency (e.g. milliseconds, seconds). This small directional change then propagates to lower frequencies (minutes, hours, days), leading to a larger, observable directional change.
 
 While we suggest a resolution jump between timeframes of 3-5x the length of the previous timeframe, you can adjust this interval based on your specific needs. For example, a set of timeframes could be:
 
@@ -60,7 +57,7 @@ To identify the current causal chain, you should look for the most recent non-ze
 
 ## Step 4: Tracking Causal Chains Across Timeframes
 
-Our framework provides a roadmap of directional change using progressively lower timeframes, so both short and long term directional changes can be modelled. The following examples demonstrate how an initial directional shift can either fully evolve or fade, depending on its propagation across different timeframes.
+The CIL provides a roadmap of directional change using progressively lower timeframes, so both short and long term directional changes can be modelled. The following examples demonstrate how an initial directional shift can either fully evolve or fade, depending on its propagation across different timeframes.
 
 ### Example: A Fully Evolved Chain
 
@@ -90,8 +87,8 @@ By tracking causal chains from short timeframes to longer ones, we can illustrat
 
 ### Tracking a Positive Directional Change
 
-This example demonstrates how our framework autonomously identified a [fully evolved positive causal chain in BTCUSDT](https://datawrapper.dwcdn.net/cfxxB/15/) with no training data or fine-tuning. The initial indicator began on the 1 second timeframe and propagated across multiple timeframes, leading to a significant price increase from $75,000 to over $100,000 between April and May 2025.
+This example demonstrates how the CIL autonomously identified a [fully evolved positive causal chain in BTCUSDT](https://datawrapper.dwcdn.net/cfxxB/15/) with no training data or fine-tuning. The initial indicator was identified on the 1 second timeframe and propagated across multiple timeframes, leading to a significant price increase from $75,000 to over $100,000 between April and May 2025.
 
 ### Identifying and Navigating Temporary Market Reversals
 
-Our framework autonomously understands and navigates market dynamics. During a [temporary price reversal in BTCUSDT](https://datawrapper.dwcdn.net/5cPh1/6/), we identified a short-term directional change before successfully realigning with the larger, underlying positive chain. This ability to distinguish between minor fluctuations and significant directional changes showcases our framework's unique insight into both micro and macro-level system dynamics.
+The CIL can autonomously understands and navigates market dynamics. During a [temporary price reversal in BTCUSDT](https://datawrapper.dwcdn.net/5cPh1/6/), the CIL identified a short-term directional change before successfully realigning with the larger, underlying positive chain. This ability to distinguish between minor fluctuations and significant directional changes showcases the CIL's unique insight into both micro and macro-level system dynamics.

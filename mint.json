@@ -28,6 +28,7 @@
         {
             "group": "Blog",
             "pages": [
+                "/info/manifesto",
                 "/blog/implementation"
             ]
         },
@@ -35,7 +36,6 @@
         {
             "group": "Get Started",
             "pages": [
-                "/info/manifesto",
                 "/info/signup"
             ]
         },
