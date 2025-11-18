@@ -1,32 +1,33 @@
 ---
-title: "Sign Up"
+title: "API Design"
 slug: "/api-ref/sign-up"
-description: "Use this endpoint to sign up for API access."
 ---
 
-## Base URL
+## Base URL + Headers
 
 ```python
- https://www.sumtyme.tech
+ https://www.sumtyme.com
 ```
 
-## Request Endpoint
-
-```python
-POST /signup
-```
-
-## Request Header
+**Request Header**
 
 <ParamField header="Content-Type" type="string" required>
   Must be set to `application/json`
 </ParamField>
 
-## Request Body
-
-<ParamField body="company_id" type="string">
-  
+<ParamField header="X-API-Key" type="string" required>
+  I will provide the API key
 </ParamField>
+
+## Create New Account
+
+**Request Endpoint**
+
+```python
+POST /user/signup 
+```
+
+**Request Body**
 
 <ParamField body="email" type="string" required>
   
@@ -36,24 +37,247 @@ POST /signup
   Minimum of 8 alphanumeric characters.
 </ParamField>
 
-<ParamField body="confirm_password" type="string" required>
-  Must match the password field exactly.
+<ParamField body="type" type="string" required>
+  Should either be 'developer' or 'production'.
 </ParamField>
 
-## Response Fields
+**Response Fields**
 
-<ResponseField name="message" type="string">
-  Your API key has been generated. This is the only time you will see it. Please copy it now and store it in a secure place (e.g., a password manager, an environment variable).
-</ResponseField>
-
-<ResponseField name="email" type="string">
+<ResponseField name="api_key" type="string">
   
 </ResponseField>
 
-<ResponseField name="api_key" type="string">
+**Example**
 
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com", "password":"safepassword1", "type":"developer"
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body">
+  ```json
+  {
+  "apikey": "stai-3247rr29gfbajkbdjskbfasbfjabsjalaajndadn"
+  }
+  ```
+</Accordion>
+
+## Check Usage
+
+**Request Endpoint**
+
+```python
+POST /user/usage 
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+<ResponseField name="total_calls" type="int">
+  
 </ResponseField>
 
-<Warning>
-  Your API key is generated securely and we do not store or have access to it after its creation. For your security, it’s important to save it immediately in a safe place like a password manager or environment variable, as you won’t be able to retrieve it again if lost.
-</Warning>
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com"
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body">
+  ```json
+  {
+  "total_calls": 10
+  }
+  ```
+</Accordion>
+
+## Retrieve API Key
+
+**Request Endpoint**
+
+```python
+POST /user/apikey 
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+<ResponseField name="apikey" type="int">
+  
+</ResponseField>
+
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com"
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body">
+  ```json
+  {
+  "apikey": "stai-3247rr29gfbajkbdjskbfasbfjabsjalaajndadn"
+  }
+  ```
+</Accordion>
+
+## Reset Password
+
+**Request Endpoint**
+
+```python
+POST /user/reset_pwd 
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+<ParamField body="new_password" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+<ResponseField name="message" type="int">
+  1 = success or 0 = failed.
+</ResponseField>
+
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com",
+  "new_password": "reset_pwd111"
+  
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - Password has been changed">
+  ```json
+  {
+  "message": 1
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - Password has not been changed">
+  ```json
+  {
+  "message": 0
+  }
+  ```
+</Accordion>
+
+## Refresh API Key
+
+**Request Endpoint**
+
+```python
+POST /user/apikey_refresh 
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+<ResponseField name="apikey" type="int">
+  
+</ResponseField>
+
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com"
+  "password": "safe_password1"
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body">
+  ```json
+  {
+  "apikey": "stai-a75bfw3292hfc29hf4n"
+  }
+  ```
+</Accordion>
+
+## Revoke API Key
+
+**Request Endpoint**
+
+```python
+POST /user/deactivate
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+<ResponseField name="message" type="int">
+  1 = success or 0 = failed.
+</ResponseField>
+
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com"
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - API key has been revoked">
+  ```json
+  {
+  "message": 1
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - API key has not been revoked">
+  ```json
+  {
+  "message": 0
+  }
+  ```
+</Accordion>
