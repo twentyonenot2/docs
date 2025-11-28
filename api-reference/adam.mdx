@@ -236,7 +236,7 @@ POST /user/apikey_refresh
   ```
 </Accordion>
 
-## Revoke API Key
+## Deactivate API Key
 
 **Request Endpoint**
 
@@ -275,6 +275,147 @@ POST /user/deactivate
 </Accordion>
 
 <Accordion title="API Response Body - API key has not been revoked">
+  ```json
+  {
+  "message": 0
+  }
+  ```
+</Accordion>
+
+## Reactivate API Key
+
+**Request Endpoint**
+
+```python
+POST /user/reactivate
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+<ResponseField name="message" type="int">
+  1 = success or 0 = failed.
+</ResponseField>
+
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com"
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - API key has been reactivated">
+  ```json
+  {
+  "message": 1
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - Failure">
+  ```json
+  {
+  "message": 0
+  }
+  ```
+</Accordion>
+
+## Delete User
+
+**Request Endpoint**
+
+```python
+POST /user/delete
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com"
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - API key has been revoked">
+  ```json
+  {
+    "message": f"User test@sumtyme.ai and associated data successfully deleted.", 
+    "email": email,
+    "deleted_keys_count": total_deleted_keys
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - Failure">
+  ```json
+  {
+  "message": 0
+  }
+  ```
+</Accordion>
+
+## Retrieve User Stats
+
+**Request Endpoint**
+
+```python
+POST /user/stats
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com"
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - Success">
+  ```json
+  {
+    "message": f"Successfully retrieved stats for user test@sumtyme.ai.", 
+    "stats": {
+            "email": user@sumtyme.ai,
+            "api_key_prefix": "str472224...",
+            "active_status": 'Y',
+            "plan_type": production,
+            "monthly_calls": 221,
+            "compute_hours": 3,
+            "created_at": 2025-08-19 21:12:00
+        }
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - Failure">
   ```json
   {
   "message": 0
