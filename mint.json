@@ -5,7 +5,7 @@
         "dark": "/logo/mark white.png",
         "light": "/logo/mark.png"
     },
-    "favicon": "/logo/mark.svg",
+    "favicon": "/logo/mark.png",
     "colors": {
         "primary": "#141616",
         "light": "#141616",
