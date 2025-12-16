@@ -192,6 +192,58 @@ POST /user/stats
   ```
 </Accordion>
 
+## Reset Email
+
+**Request Endpoint**
+
+```python
+POST /user/reset_email 
+```
+
+**Request Body**
+
+<ParamField body="email" type="string" required>
+  
+</ParamField>
+
+<ParamField body="password" type="string" required>
+  
+</ParamField>
+
+**Response Fields**
+
+<ResponseField name="message" type="int">
+  1 = success or 0 = failed.
+</ResponseField>
+
+**Example**
+
+<Accordion title="API Request Body">
+  ```json
+  {
+  "email": "user@hotmail.com",
+  "new_password": "reset_pwd111"
+  
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - Password has been changed">
+  ```json
+  {
+  "message": 1
+  }
+  ```
+</Accordion>
+
+<Accordion title="API Response Body - Password has not been changed">
+  ```json
+  {
+  "message": 0
+  }
+  ```
+</Accordion>
+
 ## Reset Password
 
 **Request Endpoint**
