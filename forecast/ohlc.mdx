@@ -19,7 +19,7 @@ This function forecasts the continuation of the current directional change over 
 | `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                              |
 | `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                            |
 
-#### Response Descriptors
+#### Function Response 
 
 | Response | Type  | Description                                                                                   |
 | :------- | :---- | :-------------------------------------------------------------------------------------------- |
@@ -67,6 +67,6 @@ forecast = client.ohlc_forecast(
 
 """
 Returns a single key-value pair dictionary: {datetime_string:chain_detected}
-chain_detected values: 1 (positive chain), -1 (negative chain), 0 (no chain detected on current timeframe, early stage formation detected on higher frequencies.)
+chain_detected values: 1, -1, 0 
 """
 ```
