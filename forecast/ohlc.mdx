@@ -19,6 +19,14 @@ This function forecasts the continuation of the current directional change over 
 | `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                              |
 | `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                            |
 
+#### Response Descriptors
+
+| Response | Type  | Description                                                                                   |
+| :------- | :---- | :-------------------------------------------------------------------------------------------- |
+| `1`      | `int` | Positive chain detected.                                                                      |
+| `0`      | `int` | No chain detected on current timeframe, early-stage formation detected on higher frequencies. |
+| `-1`     | `int` | Negative chain detected.                                                                      |
+
 ### Data Columns
 
 Your input data (file or DataFrame) must contain the following columns:
@@ -35,12 +43,12 @@ Your input data (file or DataFrame) must contain the following columns:
 
 A placeholder value of 0 is required in the input fields for the forecasted period (e.g. 2025-08-19 at 17:00 in the example below).
 
-| # | datetime | open | high | low | close |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | 2025-01-23 09:00:00 | 100 | 110 | 90 | 95 |
-| 2 | 2025-01-23 10:00:00 | 95 | 98 | 86 | 88 |
-| ... | ... | ... | ... | ... | ... |
-| 5001 | 2025-08-19 17:00:00 | 0 | 0 | 0 | 0 |
+| #    | datetime            | open | high | low | close |
+| :--- | :------------------ | :--- | :--- | :-- | :---- |
+| 1    | 2025-01-23 09:00:00 | 100  | 110  | 90  | 95    |
+| 2    | 2025-01-23 10:00:00 | 95   | 98   | 86  | 88    |
+| ...  | ...                 | ...  | ...  | ... | ...   |
+| 5001 | 2025-08-19 17:00:00 | 0    | 0    | 0   | 0     |
 
 #### Python Code Example
 
@@ -59,6 +67,6 @@ forecast = client.ohlc_forecast(
 
 """
 Returns a single key-value pair dictionary: {datetime_string:chain_detected}
-chain_detected values: 1 (positive chain), -1 (negative chain), 0 (no chain detected)
+chain_detected values: 1 (positive chain), -1 (negative chain), 0 (no chain detected on current timeframe, early stage formation detected on higher frequencies.)
 """
 ```
