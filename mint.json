@@ -26,20 +26,6 @@
     ],
     "navigation": [
         {
-            "group": "Blog",
-            "pages": [
-                "/info/manifesto"
-            ]
-        },
-
-        {
-            "group": "Get Started",
-            "pages": [
-                "/info/guide",
-                "/info/signup"
-            ]
-        },
-        {
             "group": "Single Forecast",
             "pages": [
                 "/forecast/ohlc",
