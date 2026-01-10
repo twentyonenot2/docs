@@ -15,10 +15,7 @@
         }
     },
     "topbarLinks": [
-        {
-            "name": "Early Access",
-            "url": "https://tally.so/r/nWvBEQ"
-        },
+    
       {
             "name": "Discord",
             "url": "https://discord.gg/F8SsSVydW"
