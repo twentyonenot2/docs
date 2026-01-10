@@ -20,6 +20,14 @@ This function generates a rolling forecast that predicts the continuation of the
 | `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                            |
 | `output_file`    | `string` | `False`  | The base name for the output file. For example, 'saved_output' will create a csv file 'saved_output.csv'.                                                         |
 
+#### Function Response 
+
+| Response | Type  | Description                                                                                   |
+| :------- | :---- | :-------------------------------------------------------------------------------------------- |
+| `1`      | `int` | Positive causal chain detected.                                                                      |
+| `0`      | `int` | No chain detected on current timeframe, early-stage formation on higher frequencies or multi-frequency overlap.  |
+| `-1`     | `int` | Negative causal chain detected.                                                                      |
+
 ### Data Columns
 
 Your input data (file or DataFrame) must contain the following columns:

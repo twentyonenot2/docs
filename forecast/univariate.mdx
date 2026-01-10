@@ -4,7 +4,7 @@ title: "Univariate Time Series"
 
 `univariate_forecast`
 
-`Minimum data periods: 5001 (including forecast).`
+`Minimum data periods: 5001 (including forecast period).`
 
 This function forecasts the continuation of the current directional change over the selected timeframe, based on the identified emergent shift.
 
@@ -23,9 +23,9 @@ This function forecasts the continuation of the current directional change over 
 
 | Response | Type  | Description                                                                                   |
 | :------- | :---- | :-------------------------------------------------------------------------------------------- |
-| `1`      | `int` | Positive chain detected.                                                                      |
-| `0`      | `int` | No chain detected on current timeframe, early-stage formation detected on higher frequencies. |
-| `-1`     | `int` | Negative chain detected.                                                                      |
+| `1`      | `int` | Positive causal chain detected.                                                                      |
+| `0`      | `int` | No chain detected on current timeframe, early-stage formation on higher frequencies or multi-frequency overlap.  |
+| `-1`     | `int` | Negative causal chain detected.                                                                      |
 
 ### Data Columns
 
