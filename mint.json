@@ -2,10 +2,10 @@
     "$schema": "https://mintlify.com/schema.json",
     "name": "sumtyme.ai",
     "logo": {
-        "dark": "/logo/Sumtyme_Brandmark_white.svg",
-        "light": "/logo/Sumtyme_Brandmark_Black.svg"
+        "dark": "/logo/neg.svg",
+        "light": "/logo/pos.svg"
     },
-    "favicon": "/logo/Sumtyme_Brandmark_Black.svg",
+    "favicon": "/logo/pos.svg",
     "colors": {
         "primary": "#141616",
         "light": "#141616",
