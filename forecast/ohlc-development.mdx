@@ -1,0 +1,91 @@
+---
+title: "Financial Time Series"
+mode: "wide"
+---
+
+`ohlc_forecast`
+
+`Minimum data periods: 5001 (including forecast period).`
+
+This function analyses a market's dynamics to identify two structural states:
+
+- **Initiation:** Signals the emergence of a new causal trajectory, showing the start of a new causal chain.
+- **Persistence:** Validates the continuation of an established trajectory, indicating the current causal chain is still evolving.
+
+---
+
+<Tabs>
+  <Tab title="Overview">
+    #### Function Parameters
+
+    | Parameter        | Type     | Required | Description                                                                                                                                                                                           |
+    | :--------------- | :------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `data_input`     | `object` | `True`   | The financial time series data to be analysed. This can be a file path (e.g., 'folder/ohlc_data.csv') or a pandas DataFrame. Supported file formats include CSV, TSV, Parquet, Excel, JSON, and HTML. |
+    | `interval`       | `int`    | `True`   | The frequency of the time series data. Use in conjunction with `interval_unit`.                                                                                                                       |
+    | `interval_unit`  | `string` | `True`   | The unit of time for the interval. Accepts one of the following values: 'seconds', 'minutes' and 'days'.                                                                                              |
+    | `reasoning_mode` | `string` | `True`   | The reasoning strategy the algorithms use to make decisions: 'proactive' acts early with minimal information while 'reactive' waits for sufficient evidence before acting.                            |
+
+    #### Function Response
+
+    | Response | Type  | Description                                                                                                     |
+    | :------- | :---- | :-------------------------------------------------------------------------------------------------------------- |
+    | `1`      | `int` | Positive causal chain detected.                                                                                 |
+    | `0`      | `int` | No chain detected on current timeframe, early-stage formation on higher frequencies or multi-frequency overlap. |
+    | `-1`     | `int` | Negative causal chain detected.                                                                                 |
+  </Tab>
+  <Tab title="Schema">
+    ✌️ Here's content that's only inside the second tab.
+
+    This one has a <Icon icon="leaf" /> icon!
+  </Tab>
+  <Tab title="Usage">
+    💪 Here's content that's only inside the third tab.
+  </Tab>
+  <Tab title="Walkthrough">
+    💪 Here's content that's only inside the third tab.
+  </Tab>
+</Tabs>
+
+#### Data Columns
+
+Your input data (file or DataFrame) must contain the following columns:
+
+- datetime (string): A timestamp for each data point.
+- open (float): The opening price for the interval.
+- high (float): The highest price reached during the interval.
+- low (float): The lowest price reached during the interval.
+- close (float): The closing price for the interval.
+
+---
+
+**Example Data Format for Financial Time Series**
+
+A placeholder value of 0 is required in the input fields for the next period (e.g. 2025-08-19 at 17:00 in the example below).
+
+| #    | datetime            | open | high | low | close |
+| :--- | :------------------ | :--- | :--- | :-- | :---- |
+| 1    | 2025-01-23 09:00:00 | 100  | 110  | 90  | 95    |
+| 2    | 2025-01-23 10:00:00 | 95   | 98   | 86  | 88    |
+| ...  | ...                 | ...  | ...  | ... | ...   |
+| 5001 | 2025-08-19 17:00:00 | 0    | 0    | 0   | 0     |
+
+#### Python Code Example
+
+```python
+from sumtyme import EIPClient
+
+# Initialise the EIPClient with the provided API key
+client = EIPClient(apikey='your-api-key-here')
+
+forecast = client.ohlc_forecast(
+    data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
+    interval=1,
+    interval_unit='minutes',
+    reasoning_mode='reactive'
+)
+
+"""
+Returns a single key-value pair dictionary: {datetime_string:chain_detected}
+chain_detected values: 1, -1, 0 
+"""
+```
