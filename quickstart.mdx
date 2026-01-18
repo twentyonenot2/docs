@@ -1,0 +1,68 @@
+---
+title: "CIL Quickstart"
+---
+
+This quickstart guide enables you to model complex multiscale systems, such as financial markets, with no reliance on training data.
+
+The CIL models directional changes as a continuous causal chain, eliminating the need for historical datasets and providing a deterministic view of system evolution.
+
+In this guide you will learn:
+
+- **Identification:** How to pinpoint system changes at their exact point of inception within the microscale.
+- **Tracking:** How to follow an initial causal signal's evolution across multiple scales with zero information loss.
+- **Detection:** How to identify the closure of a causal chain, signifying the end of a directional evolution.
+
+## Prerequisites
+
+#### 1. Create a Virtual Environment
+
+We recommend using a virtual environment to prevent dependency conflicts with other projects.
+
+On Windows:
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+On Windows:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+#### 2. Install the Package
+
+Once your environment is active, install the core library required for causal chain modelling.
+
+```bash
+pip install sumtyme
+```
+
+<Note>
+   The sumtyme package provides the underlying engine for detecting directional changes and analysing multiscale systems without requiring external training datasets.
+</Note>
+
+#### 3. Verify Installation
+
+You can quickly verify that the package is ready for use by checking the version in your terminal:
+
+```bash
+  python -c "import sumtyme; print(sumtyme.__version__)"
+```
+
+## Gold Price Volatility Analysis (Oct 2025)
+
+| Event | Description                           |
+| -------- | ------------------------------------- |
+| Details     | Gold reached record highs followed by an 11% correction.        |
+| Asset     | SPDR Gold Trust (GLD)                   |
+| Analysis Period   | October 20 to October 28, 2025 |
+| Peak Price   | 403.3 (2025-10-20 19:59:14) |
+| Trough Price   | 357.62 (2025-10-28 09:08:40) |
+| Peak Price   | Whether the user joined the community |
+| Maximum Drawdown  | 11.32% |
+
+
+
