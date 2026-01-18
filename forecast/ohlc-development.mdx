@@ -37,6 +37,27 @@ aass
   ```
 </Panel>
 
+<Panel>
+  
+  ```python
+  from sumtyme import Client
+
+  # Initialise the Client with the provided API key
+  client = Client(apikey='your-api-key-here')
+
+  forecast = client.ohlc_forecast(
+      data_input='folder/ohlc_data.csv', # or can be a pandas dataframe 
+      interval=1,
+      interval_unit='minutes',
+      reasoning_mode='reactive'
+  )
+
+  """
+  Returns a single key-value pair dictionary: {datetime_string:chain_detected}
+  chain_detected values: 1, -1, 0 
+  """
+  ```
+</Panel>
 ---
 
 <Tabs>
