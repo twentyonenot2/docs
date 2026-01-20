@@ -41,7 +41,7 @@ pip install sumtyme
 ```
 
 <Note>
-   The sumtyme package provides the underlying engine for detecting directional changes and analysing multiscale systems without requiring external training datasets.
+  The sumtyme package provides the underlying engine for detecting directional changes and analysing multiscale systems without requiring external training datasets.
 </Note>
 
 #### 3. Verify Installation
@@ -54,23 +54,124 @@ You can quickly verify that the package is ready for use by checking the version
 
 ## Gold Price Volatility Analysis (Oct 2025)
 
-| Metric | Description                           |
-| -------- | ------------------------------------- |
-| Market Context     | Gold reached record highs followed by an 11% correction.        |
-| Asset Under Review     | SPDR Gold Trust (GLD)                   |
-| Analysis Period   | October 20 to October 28, 2025 |
-| Peak Price   | 403.30 (Recorded Oct 20, 19:59) |
-| Trough Price   | 357.62 (Recorded Oct 28, 09:08) |
-| Maximum Drawdown  | 11.32% |
-
+| Metric             | Description                                              |
+| ------------------ | -------------------------------------------------------- |
+| Market Context     | Gold reached record highs followed by an 11% correction. |
+| Asset Under Review | SPDR Gold Trust (GLD)                                    |
+| Analysis Period    | October 20 to October 28, 2025                           |
+| Peak Price         | 403.30 (Recorded Oct 20, 19:59)                          |
+| Trough Price       | 357.62 (Recorded Oct 28, 09:08)                          |
+| Maximum Drawdown   | 11.32%                                                   |
 
 ### Phase 1: Pinpointing Microscale Inception
-<Note>Detect the exact moment a change starts at the micro-level before it is visible in macro data.</Note>
+
+<Note>
+  Detect the exact moment a change starts at the micro-level before it is visible in macro data.
+</Note>
+
+```python
+
+  import sumtyme 
+  
+  client = sumtyme.client(apikey='xxxxxxx')
+  # Ensure this method returns a list of dictionaries
+  gold_data = client.download_data_outputs('GLD')
+  
+  # Date to start analysis  
+  analysis_start_date = "2025-10-20 20:00:00"
+  
+  # Filter data: Using 'timestamp' consistently
+  filtered_data = [row for row in gold_data if row['timestamp'] >= analysis_start_date]
+  
+  print(f"Starting simulation for {len(filtered_data)} data points...")
+  
+  # Simulate the API calls 
+  for i in range(len(filtered_data)):
+      current_tick = filtered_data[i]
+      
+      # Extracting variables
+      timestamp = current_tick['timestamp']
+      price = current_tick['price']
+      chain_detected = current_tick.get('chain_detected') # .get() prevents crashing if key is missing
+  
+      # Look for start of causal chain
+      # Assuming -1 is your specific trigger code
+      if chain_detected == -1:
+          print(f"--- Event Detected at {timestamp} ---")
+          print(f"Price: ${price}")
+          
+          # Here is where you would call your 'action' function
+          # example: execute_trade(price)
+        
+  print("Simulation complete.")
+```
 
 ### Phase 2: Mapping Multiscale Signal Propagation
 
-<Note>Follow the signal as it scales upward, evolving from a minor fluctuation into a significant trend.</Note>
+<Note>
+  Follow the signal as it scales upward, evolving from a minor fluctuation into a significant trend.
+</Note>
+
+```python
+  # 1. Configuration: Order of propagation
+  scales = [
+      ('1s', gold_1s_data),
+      ('5s', gold_5s_data),
+      ('15s', gold_15s_data),
+      ('30s', gold_30s_data),
+      ('1m', gold_1m_data),
+      ('5m', gold_5m_data),
+      ('10m', gold_10m_data)
+  ]
+  
+  # 2. Initialise tracking
+  # We start at the exact inception point in the highest frequency (1s)
+  current_signal_time = pd.to_datetime("2025-10-20 20:00:00")
+  causal_path = []
+  target_direction = None 
+  
+  print(f"--- Starting Causal Chain Tracking at {current_signal_time} ---")
+  
+  # 3. Iterate through the scales
+  for label, df in scales:
+      df['datetime'] = pd.to_datetime(df['datetime'])
+      
+      # Filter for signals occurring at or after the current_signal_time
+      # For scales > 1s, we also filter for the 'identical' signal direction found at inception
+      if target_direction is None:
+          # This is the 1s scale: establish the direction of the causal chain
+          match = df[df['datetime'] >= current_signal_time].head(1)
+      else:
+          # Sub-scales: find the first instance where the signal matches the inception direction
+          match = df[(df['datetime'] >= current_signal_time) & 
+                     (df['chain_detected'] == target_direction)].head(1)
+      
+      if not match.empty:
+          inception_point = match.iloc[0]
+          
+          # Update state for the next scale
+          current_signal_time = inception_point['datetime']
+          if target_direction is None:
+              target_direction = inception_point['chain_detected']
+              print(f"Inception Direction Identified: {target_direction}")
+  
+          causal_path.append({
+              "Scale": label,
+              "Inception_Time": current_signal_time,
+              "Price": inception_point['open']
+          })
+          
+          print(f"Scale {label:3}: Signal propagated at {current_signal_time}")
+      else:
+          print(f"Scale {label:3}: Causal chain broken. No matching signal found.")
+          break
+  
+  # 4. Final Result
+  causal_chain_df = pd.DataFrame(causal_path)
+```
 
 ### Phase 3: Causal Chain Completion
 
-<Note>Identify the end point of the sequence, marking the end of the directional move.</Note>
+<Note>
+  Identify the end point of the sequence, marking the end of the directional move.
+</Note>
