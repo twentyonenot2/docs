@@ -74,6 +74,7 @@ You can quickly verify that the package is ready for use by checking the version
   import sumtyme 
   
   client = sumtyme.client(apikey='xxxxxxx')
+
   # Ensure this method returns a list of dictionaries
   gold_data = client.download_data_outputs('GLD')
   
@@ -170,8 +171,3 @@ You can quickly verify that the package is ready for use by checking the version
   causal_chain_df = pd.DataFrame(causal_path)
 ```
 
-### Phase 3: Causal Chain Completion
-
-<Note>
-  Identify the end point of the sequence, marking the end of the directional move.
-</Note>
